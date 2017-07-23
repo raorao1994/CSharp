@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReaderPicture", "ReaderPicture\ReaderPicture.csproj", "{058F4C5E-7F4A-4E1F-8F22-5155308A6E7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureHelper", "PictureHelper\PictureHelper.csproj", "{3534290C-3D1C-47BA-9479-3DFD8CDD2545}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{058F4C5E-7F4A-4E1F-8F22-5155308A6E7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{058F4C5E-7F4A-4E1F-8F22-5155308A6E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{058F4C5E-7F4A-4E1F-8F22-5155308A6E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{058F4C5E-7F4A-4E1F-8F22-5155308A6E7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3534290C-3D1C-47BA-9479-3DFD8CDD2545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3534290C-3D1C-47BA-9479-3DFD8CDD2545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3534290C-3D1C-47BA-9479-3DFD8CDD2545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3534290C-3D1C-47BA-9479-3DFD8CDD2545}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
