@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>上传文件</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <h1>12312312</h1>
+    <form method="post" enctype="multipart/form-data" action="/UpFile">
+        <input type="file" name="url" id="url" />
+        <input type="text" name="name"  value="这是我的值" placeholder="文件名" />
+        <input type="submit" value="上传文件"/>
+    </form>
+</body>
+</html>
+<script>
+    window.onload = function () {
+        document.getElementsByTagName("input[type=submit]")[0].onclick = function () {
+            var file = document.getElementsByName('url')[0].files[0];
+            document.getElementsByName("name").value = file.name;
+            alert("设置");
+        }
+    }
+</script>
