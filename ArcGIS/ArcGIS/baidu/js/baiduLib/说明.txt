@@ -1,0 +1,3 @@
+﻿此文件夹放置百度地图拓展文件
+api地址：
+http://lbsyun.baidu.com/index.php?title=open/library

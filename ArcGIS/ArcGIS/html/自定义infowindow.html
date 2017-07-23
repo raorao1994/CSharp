@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>自定义infowindow</title>
+    <link rel="stylesheet" href="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.15/3.15/esri/css/esri.css" />
+    <script type="text/javascript" src="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.15/3.15/init.js"></script>
+    <style>
+        .esriDivPanel {
+            position: absolute;
+            z-index: 100;
+        }
+
+        .esriDivPanel_title {
+            border: 2px solid rgb(140, 151, 148);
+            height: 32px;
+            width: 100%;
+            background-color: #8c9794;
+            border-radius: 5px 5px 0px 0px;
+        }
+
+        .esriDivPanel_titleClose {
+            float: right;
+            width: 24px;
+            height: 24px;
+            margin: 5px;
+        }
+
+            .esriDivPanel_titleClose span {
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+                overflow: hidden;
+                position: relative;
+            }
+
+                .esriDivPanel_titleClose span:hover {
+                    background-color: slategrey;
+                }
+
+                .esriDivPanel_titleClose span::before, .esriDivPanel_titleClose span::after {
+                    position: absolute;
+                    content: '';
+                    top: 50%;
+                    left: 0;
+                    margin-top: -1px;
+                    background-color: #000000;
+                    width: 100%;
+                    height: 3px;
+                }
+
+                .esriDivPanel_titleClose span::before {
+                    -webkit-transform: rotate(45deg);
+                    -moz-transform: rotate(45deg);
+                }
+
+                .esriDivPanel_titleClose span::after {
+                    -webkit-transform: rotate(-45deg);
+                    -moz-transform: rotate(-45deg);
+                }
+
+        .esriDivPanel_titleTxt {
+            overflow: hidden;
+            width: 75%;
+            height: 32px;
+            line-height: 32px;
+            margin-left: 5px;
+            color: white;
+        }
+
+        .esriDivPanel_content {
+            width: 100%;
+            border: 2px solid #8c9794;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div style="width:100%;height:500px;" id="map">
+
+    </div>
+    <div>
+        <button id="btn0">添加点</button>
+        <button id="btn1">修改点</button>
+        <div id="xy" style="width:100%;"></div>
+    </div>
+</body>
+</html>
+<script src="../js/jquery.js"></script>
+<script src="../js/portal/InfoWindow.js"></script>
+<script>
+    var info = null;
+    var map = null, pointlayer;
+    require(["esri/map", "esri/layers/FeatureLayer", "esri/renderers/HeatmapRenderer", "esri/toolbars/Draw",
+            "esri/toolbars/Draw", "esri/SpatialReference", "esri/tasks/query", "esri/toolbars/navigation",
+            "esri/InfoTemplate", "esri/layers/GraphicsLayer", "dojo/Colors", "esri/renderers/SimpleRenderer",
+            "esri/graphic", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol","esri/symbols/TextSymbol",
+            "esri/symbols/PictureMarkerSymbol", "esri/symbols/SimpleFillSymbol", "dojo/_base/Color",
+            "esri/tasks/GeometryService", "esri/tasks/BufferParameters","esri/geometry/Point",
+            "esri/tasks/LengthsParameters", "esri/tasks/AreasAndLengthsParameters", "dojo/on"
+    ], function () {
+        //初始化地图
+        map = new esri.Map("map", { logo: false, nav: false, slider: true, spatialReference: esri.SpatialReference({ "wkid": 102100 }) });
+        var mapsrc = "http://www.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer";
+        //加载地图图层
+        var maplayer = new esri.layers.ArcGISTiledMapServiceLayer(mapsrc);
+        map.addLayer(maplayer);
+        map.on("mouse-move", function (evt) {
+            $("#xy").html("x:" + evt.mapPoint.x + " y:" + evt.mapPoint.y);
+        });
+        //根据所在城市进行定位
+        dojo.connect(map, "onLoad", function () {
+            var point = new esri.geometry.Point(13381389.297932945, 3501448.604221201, new esri.SpatialReference({ "wkid": 102100 }));
+            map.setLevel(8);//设置缩放等级
+            map.disableDoubleClickZoom();//不允许双击缩放
+            map.centerAt(point);
+            pointlayer = new esri.layers.GraphicsLayer({ id: "point" });
+            map.addLayer(pointlayer);
+        });
+
+
+
+        $("#btn0").click(function () {
+            Toolbar.InitToobar();
+            Toolbar.DrawToolbar.activate(esri.toolbars.Draw.POINT);
+            Toolbar.DrawHandler = dojo.connect(Toolbar.DrawToolbar, "onDrawEnd", function (evt) {
+                var symbol = new esri.symbol.SimpleMarkerSymbol();
+                symbol.color = new dojo.Color("red");
+                symbol.size = 12;
+                //设置点的信息
+                var data = { "id": 0, "x": 123, "y:": 123 };
+                var graphic = new esri.Graphic(evt, symbol, data);
+                pointlayer.add(graphic);
+                //重置工具
+                Toolbar.InitToobar();
+
+                info = new esriDivPanelCss(map, evt.x, evt.y, "握手啊", "<h1>12313</h1>");
+            });
+        });
+        $("#btn1").click(function () {
+            info.setTitle("123132");
+            info.setContent("123132");
+        });
+    });
+</script>
+<script>
+    var Toolbar = {
+        /*Navigation 地图导航工具条 */
+        NavToolbar: null,
+        /*Draw 地图绘图工具条 */
+        DrawToolbar: null,
+        /*DrawHandler 地图绘图连接句柄 */
+        DrawEndHandler: null,
+        /*Click 点击连接句柄 */
+        ClickHandler: null,
+        /*MouseOver 连接句柄 */
+        MouseOverHandler: null,
+        /*MouseMove 连接句柄 */
+        MouseMoveHandler: null,
+        /*document dblclick 句柄 */
+        DblClickHandler: null,
+
+        /*InitToobar 初始化工具条 */
+        InitToobar: function () {
+            if (Toolbar.DrawToolbar == null || !Toolbar.DrawToolbar.map) {
+                Toolbar.DrawToolbar = new esri.toolbars.Draw(map);
+            } else {
+                Toolbar.DrawToolbar.deactivate();
+            }
+            if (Toolbar.NavToolbar == null || !Toolbar.NavToolbar.map) {
+                Toolbar.NavToolbar = new esri.toolbars.Navigation(map);
+            } else {
+                Toolbar.NavToolbar.deactivate();
+            }
+            if (Toolbar.DrawHandler) {
+                dojo.disconnect(Toolbar.DrawHandler);
+                Toolbar.DrawHandler = null;
+            }
+            if (Toolbar.ClickHandler) {
+                dojo.disconnect(Toolbar.ClickHandler);
+                Toolbar.ClickHandler = null;
+            }
+            if (Toolbar.MouseOverHandler) {
+                dojo.disconnect(Toolbar.MouseOverHandler);
+                Toolbar.MouseOverHandler = null;
+            }
+            if (Toolbar.MouseMoveHandler) {
+                dojo.disconnect(Toolbar.MouseMoveHandler);
+                Toolbar.MouseMoveHandler = null;
+            }
+            if (Toolbar.DblClickHandler) {
+                dojo.disconnect(Toolbar.DblClickHandler);
+                Toolbar.DblClickHandler = null;
+            }
+        }
+    }
+</script>

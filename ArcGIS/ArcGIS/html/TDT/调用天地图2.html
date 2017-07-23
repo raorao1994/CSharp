@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>调用天地图</title>
+    <link rel="stylesheet" href="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.9/3.9/js/esri/css/esri.css" />
+    <style>
+        #map {
+            width: 100%;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map">
+
+    </div>
+    <div id="text" style="position:absolute;width:400px;height:40px; z-index:200;background-color:gray;">
+
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    dojoConfig = {
+        parseOnLoad: true,
+        packages: [{
+            name: 'tdlib',
+            location: location.pathname.replace(/\/[^/]*$/, '') + '/tdlib'
+        }]
+    };
+</script>
+<script type="text/javascript" src="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.9/3.9/init.js"></script>
+<script src="../../js/jquery.js"></script>
+<script type="text/javascript">
+    var map;
+    require(["esri/map", "tdlib/TDLayer", "tdlib/TDAnnoLayer","tdlib/gaodeLayer", "esri/geometry/Point", "dijit/form/Button", "dojo/domReady!"],
+    function (Map, TDTLayer, TDTAnnoLayer,gaodeLayer, Point, Button) {
+        map = new Map("map", { logo: false });
+        var basemap = new TDTLayer();
+        //map.addLayer(basemap,0);
+        var annolayer = new TDTAnnoLayer();
+        //map.addLayer(annolayer,2);
+        //basemap.hide();
+        var mapsrc = "http://www.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer";
+        //加载地图图层
+        var maplayer = new esri.layers.ArcGISDynamicMapServiceLayer(mapsrc, { id: "j" });
+        map.addLayer(maplayer,3);
+
+        //map.addLayer(new gaodeLayer(), 1);
+
+        map.centerAndZoom(new Point(117.155944, 39.098795), 16);
+
+        
+
+
+        map.on("mouse-move", function (evt) {
+            $("#text").html("X:" + evt.mapPoint.x + " --Y:" + evt.mapPoint.y);
+        });
+        map.on("zoom-end", function (evt) {
+            var zoom = map.getZoom();
+            console.log(zoom);
+            if (zoom > 14) {
+
+            }
+            if (zoom < 14) {
+
+            }
+            if (zoom >= 15) {
+                //l1.hide();
+                //l2.hide();
+            }
+        });
+
+        map.on("click", function (evt) {
+            console.log(evt.mapPoint);
+        });
+
+        $("#text").click(function () {
+            console.log(map.getZoom());
+            var point = new esri.geometry.Point(117.155935, 39.098767, new esri.SpatialReference({ wkid: 4326 }));
+            var symbol = new esri.symbol.SimpleMarkerSymbol();
+            var graphic = new esri.Graphic(point, symbol);
+            map.graphics.add(graphic);
+        });
+
+    });
+</script>

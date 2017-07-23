@@ -1,0 +1,220 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>heatmap.js ArcGIS JavaScript API Heatmap Layer</title>
+        <link rel="stylesheet" href="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.15/3.15/esri/css/esri.css" />
+        <script type="text/javascript" src="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.15/3.15/init.js"></script>
+        <style>
+            body, html {
+                margin:0;
+                padding:0;
+                font-family:Arial;
+            }
+            h1 {
+                margin-bottom:10px;
+            }
+            h2 {
+                margin-top:0;
+            }
+            #main {
+                position:relative;
+                width:1020px;
+                padding:20px;
+                margin:auto;
+            }
+            #heatmapArea {
+                position:relative;
+                float:left;
+                width:800px;
+                height:600px;
+                border:1px dashed black;
+            }
+            #configArea {
+                position:relative;
+                float:left;
+                width:200px;
+                padding:15px;
+                padding-top:0;
+                padding-right:0;
+            }
+            .btn {
+                margin-top:25px;
+                padding:10px 20px 10px 20px;
+                -moz-border-radius:15px;
+                -o-border-radius:15px;
+                -webkit-border-radius:15px;
+                border-radius:15px;
+                border:2px solid black;
+                cursor:pointer;
+                color:white;
+                background-color:black;
+            }
+            #map {
+                width:800px;
+                height:600px;
+            }
+            #title {
+                font-family:arial;
+                display:inline-block;
+                position:absolute;
+                font-weight:bold;
+                font-size:21px;
+                line-height:28px;
+                top:20px;
+                right:20px;
+                z-index:99;
+                background:rgba(255, 255, 255, 0.65);
+                padding:10px 20px;
+                -webkit-border-radius: 3px;
+                border-radius: 3px;
+                text-shadow:1px 1px 1px #FFFFFF -webkit-box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.1);
+                box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.1);
+            }
+        </style>
+        <script type="text/javascript">
+            var djConfig = {
+                parseOnLoad: true
+            };
+        </script>
+        <script type="text/javascript" src="src/heatmap.js"></script>
+        <script type="text/javascript" src="src/heatmap-arcgis.js"></script>
+        <script type="text/javascript">
+            dojo.require("esri.map");
+            dojo.require("esri.layers.FeatureLayer");
+
+            // Variables
+            var map;
+            var heatLayer;
+            var featureLayer;
+
+            // get the features within the current extent from the feature layer
+            function getFeatures() {
+                // set up query
+                var query = new esri.tasks.Query();
+                // only within extent
+                query.geometry = map.extent;
+                // give me all of them!
+                query.where = "1=1";
+                // make sure I get them back in my spatial reference
+                query.outSpatialReference = map.spatialReference;
+                // get em!
+                featureLayer.queryFeatures(query, function (featureSet) {
+                    //var str=JSON.stringify(featureSet.features);
+                    var obj = {
+                        features: featureSet.features,
+                        spatialReference: null,
+                    };
+                    //var str = JSON.stringify(obj);
+                    console.log(featureSet);
+                    var data = [];
+                    // if we get results back
+                    if (featureSet && featureSet.features && featureSet.features.length > 0) {
+                        // set data to features
+                        data = featureSet.features;
+                    }
+                    // set heatmap data
+                    heatLayer.setData(data);
+                });
+            }
+
+            // Init
+            function init() {
+                // initial extent of map
+                var initExtent = new esri.geometry.Extent({
+                    xmax: -13624229.32056175,
+                    xmin: -13625120.886837104,
+                    ymax: 4548374.604660432,
+                    ymin: 4547966.144290476,
+                    "spatialReference": {
+                        "wkid": 102100
+                    }
+                });
+                // create map
+                map = new esri.Map("map", { logo: false, nav: false, slider: true, spatialReference: esri.SpatialReference({ "wkid": 102100 }) });
+                var mapsrc = "http://www.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer";
+                //加载地图图层
+                var maplayer = new esri.layers.ArcGISTiledMapServiceLayer(mapsrc);
+                map.addLayer(maplayer);
+                // once map is loaded
+                dojo.connect(map, 'onLoad', function (theMap) {
+                    //resize the map when the browser resizes
+                    dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
+                    // create heat layer
+                    heatLayer = new HeatmapLayer({
+                        config: {
+                            "useLocalMaximum": true,
+                            "radius": 40,
+                            "gradient": {
+                                0.45: "rgb(000,000,255)",
+                                0.55: "rgb(000,255,255)",
+                                0.65: "rgb(000,255,000)",
+                                0.95: "rgb(255,255,000)",
+                                1.00: "rgb(255,000,000)"
+                            }
+                        },
+                        "map": map,
+                        "domNodeId": "heatLayer",
+                        "opacity": 0.85
+                    });
+                    // add heat layer to map
+                    map.addLayer(heatLayer);
+                    // resize map
+                    map.resize();
+                    // create feature layer to get the points from
+                    featureLayer = new esri.layers.FeatureLayer("http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer/0", {
+                        mode: esri.layers.FeatureLayer.MODE_ONDEMAND,
+                        visible: false
+                    });
+                    map.addLayer(featureLayer);
+                    // get features from this layer
+                    getFeatures();
+                    // on map extent change
+                    dojo.connect(map, "onExtentChange", getFeatures);
+                    dojo.connect(dojo.byId('tog'), "onclick", function () {
+                        if (heatLayer.visible) {
+                            heatLayer.hide();
+                        } else {
+                            heatLayer.show();
+                        }
+                    });
+                    dojo.connect(dojo.byId('tog2'), "onclick", function () {
+                        if (featureLayer.visible) {
+                            featureLayer.hide();
+                        } else {
+                            featureLayer.show();
+                        }
+                    });
+                    dojo.connect(dojo.byId('tog3'), "onclick", function () {
+                        if (heatLayer.config.useLocalMaximum) {
+                            this.innerHTML = 'Local Max Off'
+                            heatLayer.config.useLocalMaximum = false;
+                        } else {
+                            this.innerHTML = 'Local Max On'
+                            heatLayer.config.useLocalMaximum = true;
+                        }
+                    });
+                });
+            }
+            // call init on load of dojo
+            dojo.addOnLoad(init);
+        </script>
+    </head>
+
+    <body class="claro">
+        <div id="main">
+            <div id="heatmapArea">
+                <div id="heatLayer"></div>
+                <div id="map"></div>
+            </div>
+        </div>
+        <div>
+            <div id="tog3">tog3</div>
+            <div id="tog2">tog2</div>
+            <div id="tog">tog1</div>
+        </div>
+    </body>
+</html>

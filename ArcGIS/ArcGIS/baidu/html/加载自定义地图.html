@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>加载自定义地图</title>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=o9j6mw2LBWd7tRd4GBIFeoY6"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script src="../../js/jquery.js"></script>
+    <script src="../js/raorao-baidu-setting.js"></script>
+    <script src="../js/raorao-map-baidu.js"></script>
+    <style>
+        body {
+            margin:0px;
+            padding:0px;
+        }
+    </style>
+</head>
+<body>
+    <div id="baidu-map" style="width:100%;height:600px;"></div>
+    <div>
+        <button onclick="add_control()">添加图层</button>
+        <button onclick="delete_control()">删除图层</button>
+    </div>
+</body>
+</html>
+<script>
+    var tileLayer = null;
+    $(function () {
+        RaoRao.BMap.InitMap(function () {
+            tileLayer = new BMap.TileLayer();
+            tileLayer.getTilesUrl = function (tileCoord, zoom) {
+                var x = tileCoord.x;
+                var y = tileCoord.y;
+                var url = '../tiles/' + zoom + '/tile' + x + '_' + y + '.png';     //根据当前坐标，选取合适的瓦片图
+                return url;
+            }
+        });
+    });
+    function add_control() {
+        RaoRao.BMap.Map2DControl.addTileLayer(tileLayer);
+    }
+    function delete_control() {
+        RaoRao.BMap.Map2DControl.removeTileLayer(tileLayer);
+    }
+</script>

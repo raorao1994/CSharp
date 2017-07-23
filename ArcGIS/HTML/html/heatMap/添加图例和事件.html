@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <style>
+        .heatmap {
+            width: 100%;
+            height: 600px;
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div id="heatmap" class="heatmap">
+        <div class="tooltip"></div>
+        <div>
+            <div id="min"></div>
+            <div id="max"></div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="heatmap-2.0.js"></script>
+<script>
+    /*  start legend code */
+    // we want to display the gradient, so we have to draw it
+    var legendCanvas = document.createElement('canvas');
+    legendCanvas.width = 100;
+    legendCanvas.height = 10;
+    var min = document.querySelector('#min');
+    var max = document.querySelector('#max');
+    var gradientImg = document.querySelector('#gradient');
+    var legendCtx = legendCanvas.getContext('2d');
+    var gradientCfg = {};
+    //刷新提示值
+    function updateLegend(data) {
+        //min.innerHTML = data.min;
+        //max.innerHTML = data.max;
+        //// regenerate gradient image
+        //if (data.gradient != gradientCfg) {
+        //    gradientCfg = data.gradient;
+        //    var gradient = legendCtx.createLinearGradient(0, 0, 100, 1);
+        //    for (var key in gradientCfg) {
+        //        gradient.addColorStop(key, gradientCfg[key]);
+        //    }
+        //    legendCtx.fillStyle = gradient;
+        //    legendCtx.fillRect(0, 0, 100, 10);
+        //    gradientImg.src = legendCanvas.toDataURL();
+        //}
+    };
+    /* legend code end */
+    var heatmapInstance = h337.create({
+        container: document.getElementById('heatmap'),
+        // onExtremaChange 每当有新的最大值或最小值时，就会被调用
+        onExtremaChange: function (data) {
+            updateLegend(data);
+        }
+    });
+    /* tooltip code start */
+    var demoWrapper = document.getElementById('heatmap');
+    var tooltip = document.querySelector('.tooltip');
+    function updateTooltip(x, y, value) {
+        // + 15 for distance to cursor
+        var transl = 'translate(' + (x + 15) + 'px, ' + (y + 15) + 'px)';
+        tooltip.style.webkitTransform = transl;
+        tooltip.innerHTML = value;
+    };
+    demoWrapper.onmousemove = function (ev) {
+        var x = ev.layerX;
+        var y = ev.layerY;
+        // getValueAt gives us the value for a point p(x/y)
+        var value = heatmapInstance.getValueAt({
+            x: x,
+            y: y
+        });
+        tooltip.style.display = 'block';
+        updateTooltip(x, y, value);
+    };
+    // hide tooltip on mouseout
+    demoWrapper.onmouseout = function () {
+        tooltip.style.display = 'none';
+    };
+    /* tooltip code end */
+
+    // generate some random data
+    var points = [];
+    var max = 0;
+    var min = 1234;
+    var width = 840;
+    var height = 400;
+    var len = 200;
+
+    while (len--) {
+        var val = Math.floor(Math.random() * 1234);
+        max = Math.max(max, val);
+        min = Math.min(min, val);
+        var point = {
+            x: Math.floor(Math.random() * width),
+            y: Math.floor(Math.random() * height),
+            value: val
+        };
+        points.push(point);
+    }
+    var data = { max: max, min: min, data: points };
+    heatmapInstance.setData(data);
+</script>

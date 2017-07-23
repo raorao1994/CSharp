@@ -1,0 +1,241 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Shapes and Symbols</title>
+    <link rel="stylesheet" href="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.15/3.15/esri/css/esri.css" />
+    <script type="text/javascript" src="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.15/3.15/init.js"></script>
+    <style>
+        #info {
+            top: 20px;
+            color: #444;
+            height: auto;
+            font-family: arial;
+            right: 20px;
+            margin: 5px;
+            padding: 10px;
+            position: absolute;
+            width: 115px;
+            z-index: 40;
+            border: solid 2px #666;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+
+        html, body, #mapDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+        }
+
+        button {
+            display: block;
+        }
+    </style>
+
+    <script>
+        var map, tb;
+
+        require([
+          "esri/map", "esri/toolbars/draw",
+          "esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol",
+          "esri/symbols/PictureFillSymbol", "esri/symbols/CartographicLineSymbol",
+          "esri/graphic",
+          "esri/Color", "dojo/dom", "dojo/on", "dojo/domReady!", "esri/geometry/jsonUtils", "esri/geometry/Point",
+          "esri/geometry/geometryEngine", "esri/symbols/SimpleFillSymbol", "esri/units", "esri/geometry/Circle"
+          , "esri/symbols/SimpleFillSymbol", "esri/layers/ArcGISDynamicMapServiceLayer"
+        ], function (
+          Map, Draw,
+          SimpleMarkerSymbol, SimpleLineSymbol,
+          PictureFillSymbol, CartographicLineSymbol,
+          Graphic,
+          Color, dom, on
+        ) {
+            map = new Map("mapDiv", {
+                //basemap: "streets",
+                center: [-25.312, 34.307],
+                zoom: 3
+            });
+            var mapsrc = "http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer";
+            //加载地图图层
+            var maplayer = new esri.layers.ArcGISTiledMapServiceLayer(mapsrc);
+            map.addLayer(maplayer);
+            map.on("load", initToolbar);
+
+            // markerSymbol is used for point and multipoint, see http://raphaeljs.com/icons/#talkq for more examples
+            var markerSymbol = new SimpleMarkerSymbol();
+            markerSymbol.setPath("M16,4.938c-7.732,0-14,4.701-14,10.5c0,1.981,0.741,3.833,2.016,5.414L2,25.272l5.613-1.44c2.339,1.316,5.237,2.106,8.387,2.106c7.732,0,14-4.701,14-10.5S23.732,4.938,16,4.938zM16.868,21.375h-1.969v-1.889h1.969V21.375zM16.772,18.094h-1.777l-0.176-8.083h2.113L16.772,18.094z");
+            markerSymbol.setColor(new Color("#00FFFF"));
+
+            // lineSymbol used for freehand polyline, polyline and line.
+            var lineSymbol = new CartographicLineSymbol(
+              CartographicLineSymbol.STYLE_SOLID,
+              new Color([255, 0, 0]), 10,
+              CartographicLineSymbol.CAP_ROUND,
+              CartographicLineSymbol.JOIN_MITER, 2
+            );
+
+            // fill symbol used for extent, polygon and freehand polygon, use a picture fill symbol
+            // the images folder contains additional fill images, other options: sand.png, swamp.png or stiple.png
+            var fillSymbol = new PictureFillSymbol(
+              "images/mangrove.png",
+              new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+                new Color('#000'),
+                1
+              ),
+              42,
+              42
+            );
+
+            function initToolbar() {
+                tb = new Draw(map);
+                tb.on("draw-end", addGraphic);
+
+                // event delegation so a click handler is not
+                // needed for each individual button
+                on(dom.byId("info"), "click", function (evt) {
+                    if (evt.target.id === "info") {
+                        return;
+                    }
+                    var tool = evt.target.id.toLowerCase();
+                    map.disableMapNavigation();
+                    tb.activate(tool);
+                });
+            }
+
+            function addGraphic(evt) {
+                tb.deactivate();
+                map.enableMapNavigation();
+                var symbol;
+                if (evt.geometry.type === "point" || evt.geometry.type === "multipoint") {
+                    symbol = markerSymbol;
+                } else if (evt.geometry.type === "line" || evt.geometry.type === "polyline") {
+                    symbol = lineSymbol;
+                }
+                else {
+                    symbol = fillSymbol;
+                }
+
+                //map.graphics.add(new Graphic(evt.geometry, symbol));
+
+                for (var i = 0; i < evt.geometry.rings[0].length; i++) {
+                    var point = new esri.geometry.Point(evt.geometry.rings[0][i][0], evt.geometry.rings[0][i][1], evt.geometry.spatialReference);
+                    map.graphics.add(new Graphic(point, markerSymbol));
+                }
+                //画圆
+                //GetCircle2(evt.geometry, function (geometry, length, l) {
+                //    map.graphics.add(new Graphic(geometry, markerSymbol));
+                //    console.log(length);
+
+                //    var circleGeometry = new esri.geometry.Circle({
+                //        center: geometry,
+                //        radius: length
+                //        //radiusUnit: "METERS"
+                //    });
+
+                //    var Symbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                //        new esri.symbol.SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
+                //        new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.25])
+                //    );
+                //    map.graphics.add(new Graphic(circleGeometry, Symbol));
+                //    map.graphics.add(new Graphic(l, lineSymbol));
+                //});
+
+                //画多边形
+                var polylineJson = {
+                    "rings": evt.geometry.rings,
+                    "spatialReference": evt.geometry.spatialReference
+                };
+                var g = new esri.geometry.Polygon(polylineJson);
+                map.graphics.add(new Graphic(g, fillSymbol));
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+    <div id="info">
+        <div>Select a shape then draw on map to add graphic</div>
+        <button id="Point">Point</button>
+        <button id="Multipoint">Multipoint</button>
+        <button id="Line">Line</button>
+        <button id="Polyline">Polyline</button>
+        <button id="FreehandPolyline">Freehand Polyline</button>
+        <button id="Triangle">Triangle</button>
+        <button id="Extent">Rectangle</button>
+        <button id="Circle">Circle</button>
+        <button id="Ellipse">Ellipse</button>
+        <button id="Polygon">Polygon</button>
+        <button id="FreehandPolygon">Freehand Polygon</button>
+    </div>
+
+    <div id="mapDiv"></div>
+
+</body>
+</html>
+<script>
+    function GetCircle(geometry, callback) {
+        require(["esri/geometry/geometryEngine"], function (geometryEngine) {
+            var x = 0.0, y = 0.0;
+            for (var i = 0; i < geometry.rings[0].length; i++) {
+                x += geometry.rings[0][i][0];
+                y += geometry.rings[0][i][1];
+            }
+            x = x / geometry.rings[0].length;
+            y = y / geometry.rings[0].length;
+            var start = new esri.geometry.Point(x, y, geometry.spatialReference);
+            var end = new esri.geometry.Point(geometry.rings[0][0][0], geometry.rings[0][0][1], geometry.spatialReference);
+            var line = new esri.geometry.Polyline(geometry.spatialReference);
+            line.addPath([start, end]);
+            var radius;//
+            if (geometry.spatialReference.isWebMercator() || geometry.spatialReference.wkid == "4326") {//在web麦卡托投影和WGS84坐标系下的计算方法
+                radius = geometryEngine.geodesicLength(line, "meters");
+                //radius = geometryEngine.planarLength(line, "meters");
+            } else {//在其他投影坐标系下的计算方法
+                radius = geometryEngine.planarLength(line, "meters")
+            }
+            radius = parseFloat(radius);
+            callback(start, radius, line);
+        });
+    }
+    function lonlat2mercator(lonlat) {
+        var x = lonlat.x * 20037508.34 / 180;
+        var y = Math.log(Math.tan((90 + lonlat.y) * Math.PI / 360)) / (Math.PI / 180);
+        y = y * 20037508.34 / 180;
+        //var p = new esri.geometry.Point(x, y, RaoRao.Map.Map2DControl.spatialReference)
+        var obj = {x:x,y:y};
+        return obj;
+    }
+
+    function GetCircle2(geometry, callback) {
+            var x = 0.0, y = 0.0;
+            for (var i = 0; i < geometry.rings[0].length; i++) {
+                x += geometry.rings[0][i][0];
+                y += geometry.rings[0][i][1];
+            }
+            
+            x = x / geometry.rings[0].length;
+            y = y / geometry.rings[0].length;
+            var point1 = {x:x,y:y};
+            var point2 = {x:geometry.rings[0][0][0], y:geometry.rings[0][0][1]};
+            var a = lonlat2mercator(point1);
+            var b = lonlat2mercator(point2);
+            var radius;//
+            var count = Math.pow((a.x - b.x), 2) + Math.pow((a.y - b.y), 2);
+            radius = Math.sqrt(count);
+
+
+            var start = new esri.geometry.Point(x, y, geometry.spatialReference);
+            var end = new esri.geometry.Point(geometry.rings[0][0][0], geometry.rings[0][0][1], geometry.spatialReference);
+            var line = new esri.geometry.Polyline(geometry.spatialReference);
+            line.addPath([start, end]);
+
+            callback(start, radius, line);
+    }
+</script>

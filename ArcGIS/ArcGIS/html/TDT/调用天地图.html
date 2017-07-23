@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>调用天地图</title>
+    <link rel="stylesheet" href="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.9/3.9/js/esri/css/esri.css" />
+    <style>
+        #map {
+            width: 100%;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map">
+
+    </div>
+    <div id="text" style="position:absolute;width:400px;height:40px; z-index:200;background-color:gray;">
+
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.9/3.9/init.js"></script>
+<script src="../../js/jquery.js"></script>
+<script src="TDTAnnoLayer.js"></script>
+<script src="TDTLayer.js"></script>
+<script>
+    dojo.require("esri.map");
+    var flag = true;
+    var maplayer = null;
+    var l1 = null, l2 = null;
+    function init() {
+        TDTLayer();
+        TDTAnnoLayer();
+        var map = new esri.Map("map", { maxZoom: 25, minZoom: 0 });//, { maxZoom: 25, minZoom: 0 }
+        l1 = new TDTTiledMapServiceLayer();
+        l2 = new TDTAnnoTiledMapServiceLayer();
+        map.addLayer(l1);
+        map.addLayer(l2);
+       
+       
+        
+        var mapsrc = "http://www.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer";
+        //加载地图图层
+        //var maplayer = new esri.layers.ArcGISTiledMapServiceLayer(mapsrc);
+        maplayer = new esri.layers.ArcGISDynamicMapServiceLayer(mapsrc, { id: "j" });
+        //map.addLayer(maplayer);
+        //maplayer.setOpacity(1);
+
+        //var pt = new esri.geometry.Point(117.155926, 39.098778, new esri.SpatialReference({ wkid: 4326 }));//, new esri.SpatialReference({ wkid: 4326 })
+        //map.centerAndZoom(pt,5);
+
+        var point = new esri.geometry.Point(117.14948333394622, 39.092726936462405, new esri.SpatialReference({ wkid: 4326 }));
+        var symbol = new esri.symbol.SimpleMarkerSymbol();
+        var graphic = new esri.Graphic(point, symbol);
+        //map.centerAndZoom(point, 15);
+        //map.graphics.add(graphic);
+
+
+        map.on("mouse-move", function (evt) {
+            $("#text").html("X:" + evt.mapPoint.x + " --Y:" + evt.mapPoint.y);
+        });
+        map.on("zoom-end", function (evt) {
+            var zoom = map.getZoom();
+            console.log(zoom);
+            if (zoom > 14) {
+
+            }
+            if (zoom < 14) {
+
+            }
+            if (zoom >= 15) {
+                //l1.hide();
+                //l2.hide();
+            }
+        });
+
+        map.on("click", function (evt) {
+            console.log(evt.mapPoint);
+        });
+
+        $("#text").click(function () {
+            //console.log(map.getZoom());
+            //console.log(map.spatialReference);
+
+            var point = new esri.geometry.Point(117.155935, 39.098795, new esri.SpatialReference({ wkid: 4326 }));
+            var symbol = new esri.symbol.SimpleMarkerSymbol();
+            var graphic = new esri.Graphic(point, symbol);
+            //map.centerAndZoom(point, 15);
+            map.graphics.add(graphic);
+            if (flag) {
+                //maplayer.hide();
+                flag = false;
+            } else {
+                //maplayer.show();
+                flag = true;
+            }
+        });
+    }
+    dojo.ready(init);
+</script>

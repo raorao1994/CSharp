@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #heatmap {
+            width: 100%;
+            height: 600px;
+            border: 1px solid red;
+            border-color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div id="heatmap"></div>
+</body>
+</html>
+<script src="heatmap-2.0.js"></script>
+<script>
+    var heatmapInstance = h337.create({
+        // required container
+        container: document.getElementById('heatmap'),
+        // 设置背景颜色
+        backgroundColor: 'rgba(0,0,0,0.95)',
+        // custom gradient colors
+        gradient: {
+            // enter n keys between 0 and 1 here
+            // for gradient color customization
+            '0.5': 'white',//rgba(0,0,0,0.95)
+            '0.8': 'blue',
+            '0.95': 'red'
+        },
+        maxOpacity: 0.9,
+        minOpacity: 0.3
+    });
+
+    var points = [];
+    var max = 0;
+    var width = document.getElementById('heatmap').clientWidth;
+    var height = document.getElementById('heatmap').clientHeight;
+    var len = 300;
+
+    while (len--) {
+        var val = Math.floor(Math.random() * 100);
+        var radius = Math.floor(Math.random() * 70);
+
+        max = Math.max(max, val);
+        var point = {
+            x: Math.floor(Math.random() * width),
+            y: Math.floor(Math.random() * height),
+            value: val,
+            radius: radius
+        };
+        points.push(point);
+    }
+    var data = {
+        max: max,
+        data: points
+    };
+    heatmapInstance.setData(data);
+</script>

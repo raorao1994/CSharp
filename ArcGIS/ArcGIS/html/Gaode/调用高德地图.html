@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>调用高德地图</title>
+    <link rel="stylesheet" href="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.9/3.9/js/esri/css/esri.css" />
+    <style>
+        html, body, #map {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .base-map-ano {
+            position: absolute;
+            right: 0pt;
+            top: 18pt;
+            background: #e6edf1;
+            border: #96aed1 1px solid;
+            padding: 4px 5px;
+            padding-left: 0px;
+            padding-top: 0px;
+            display: none;
+            font-weight: normal;
+        }
+
+        .base-map {
+            position: absolute;
+            right: 15pt;
+            top: 15pt;
+            background: #f0f0f0;
+            border: #96aed1 1px solid;
+            width: auto;
+            height: auto;
+            z-index: 99;
+            font: normal 11px "宋体",Arial;
+            color: #868686;
+        }
+
+        .base-map-switch {
+            padding: 4px 8px;
+            float: left;
+        }
+
+        .base-map-switch-active {
+            background: #e6edf1;
+            font-weight: bold;
+            color: #4d4d4d;
+        }
+
+        .base-map-switch:hover {
+            cursor: pointer;
+        }
+
+        .base-map-switch-center {
+            border: 1px #96aed1 solid;
+            border-top: none;
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="map">
+        <div class="base-map">
+            <div id="vec" class="base-map-switch base-map-switch-active" onclick="showMap('vec')">地图</div>
+            <div id="img" class="base-map-switch base-map-switch-center" onclick="showMap('img')">
+                影像
+                <div id="ano" class="base-map-ano">
+                    <input id="chkAno" type="checkbox" name="chkAno" value="chkAno" onchange="anoCtrl()" />标注
+                </div>
+            </div>
+            <button onclick="hide()">隐藏</button>
+        </div>
+        <div id="text" style="position:absolute;width:200px;z-index:200;background-color:gray;">
+
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    dojoConfig = {
+        parseOnLoad: true,
+        packages: [{
+            name: 'extLayers',
+            location: location.pathname.replace(/\/[^/]*$/, '') + '/extLayers'
+        }]
+    }
+</script>
+<script type="text/javascript" src="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.9/3.9/init.js"></script>
+<script src="../../js/jquery.js"></script>
+<script>
+    var layer = null;
+    var map = null;
+    var maplayer = null;
+    require(["esri/map", "extLayers/gaodeLayer", "dojo/domReady!"], function (Map) {
+        map = new Map("map", {
+            //center: [117, 39],
+            zoom: 5
+        });
+        map.spatialReference = new esri.SpatialReference({ wkid: 4326 });
+        var mapsrc = "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer";
+        mapsrc = "http://10.129.125.147:6080/arcgis/rest/services/Net/唐山/MapServer";
+        mapsrc = "http://www.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer";
+        //加载地图图层
+        //var maplayer = new esri.layers.ArcGISTiledMapServiceLayer(mapsrc);
+        //maplayer = new esri.layers.ArcGISDynamicMapServiceLayer(mapsrc, { id: "j" });
+        //map.addLayer(maplayer);
+        //maplayer.setOpacity(0.5);
+        //layer = new gaodeLayer();//默认加载矢量 new gaodeLayer({layertype:"road"});也可以
+        //var baselayer = new gaodeLayer({layertype: "st"});//加载卫星图
+        //var baselayer = new gaodeLayer({layertype: "label"});//加载标注图
+        //map.addLayer(layer);//添加高德地图到map容器
+        var pt = new esri.geometry.Point(118.17, 39.60, new esri.SpatialReference({ wkid: 4326 }));//, new esri.SpatialReference({ wkid: 4326 })
+        map.centerAndZoom(pt, 5);
+
+        var point = new esri.geometry.Point(117.155935, 39.098795, new esri.SpatialReference({ wkid: 4326 }));
+        var symbol = new esri.symbol.SimpleMarkerSymbol();
+        map.centerAndZoom(point, 15);
+        map.addLayer(new gaodeLayer());
+
+        var graphic = new esri.Graphic(point, symbol);
+        map.graphics.add(graphic);
+        map.on("mouse-move", function (evt) {
+            $("#text").html("X:" + evt.mapPoint.x + " --Y:" + evt.mapPoint.y);
+        });
+        map.on("click", function (evt) {
+
+            console.log(evt);
+        });
+    });
+    var flag = true;
+    function hide() {
+        var pt = new esri.geometry.Point(118.17, 39.60, new esri.SpatialReference({ wkid: 4326 }));//
+        map.centerAndZoom(pt, 5);
+
+        var s = mercator2lonlat({ x: -20037508.342787, y: 20037508.342787 });
+        console.log(s);
+
+        //maplayer.hide();
+        //map.removeLayer(maplayer);
+        //map.removeAllLayers();
+
+        //var mapsrc = "http://www.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer";
+        //maplayer = new esri.layers.ArcGISDynamicMapServiceLayer(mapsrc, { id: "j" });
+        //map.addLayer(maplayer);
+
+        //layer.setOpacity(0.5);
+        //if (flag) {
+        //    layer.hide();
+        //    flag = false;
+        //}
+        //else {
+        //    layer.show();
+        //    flag = true;
+        //}
+    }
+</script>

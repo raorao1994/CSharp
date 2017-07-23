@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>heatmap</title>
+    <link rel="stylesheet" href="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.15/3.15/esri/css/esri.css" />
+    <script type="text/javascript" src="http://localhost/arcgis_js_v39_sdk/arcgis_js_api/library/3.15/3.15/init.js"></script>
+    <style>
+        #heatmapArea {
+            position: relative;
+            float: left;
+            width: 800px;
+            height: 600px;
+            border: 1px dashed black;
+        }
+    </style>
+</head>
+<body>
+    <div style="width:100%;height:500px;" id="map">
+        <div id="heatLayer"></div>
+    </div>
+    <div>
+        <button id="btn0">添加点</button>
+        <button id="btn1">修改点</button>
+        <div id="xy" style="width:100%;"></div>
+    </div>
+</body>
+</html>
+<script src="../js/jquery.js"></script>
+<script src="../js/portal/raorao-map-arcgis.js"></script>
+<script src="../js/portal/pcloud-raorao-portal.js"></script>
+<script>
+    var info = null;
+    var map = null, pointlayer;
+    require(["esri/map", "esri/layers/FeatureLayer", "esri/renderers/HeatmapRenderer", "esri/toolbars/Draw",
+            "esri/toolbars/Draw", "esri/SpatialReference", "esri/tasks/query", "esri/toolbars/navigation",
+            "esri/InfoTemplate", "esri/layers/GraphicsLayer", "dojo/Colors", "esri/renderers/SimpleRenderer",
+            "esri/graphic", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol", "esri/symbols/TextSymbol",
+            "esri/symbols/PictureMarkerSymbol", "esri/symbols/SimpleFillSymbol", "dojo/_base/Color",
+            "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/geometry/Point",
+            "esri/tasks/LengthsParameters", "esri/tasks/AreasAndLengthsParameters", "dojo/on"
+    ], function () {
+        //初始化地图
+        map = new esri.Map("map", { logo: false, nav: false, slider: true, spatialReference: esri.SpatialReference({ "wkid": 102100 }) });
+        var mapsrc = "http://10.129.125.147:6080/arcgis/rest/services/Net/唐山/MapServer";
+        //加载地图图层
+        var maplayer = new esri.layers.ArcGISDynamicMapServiceLayer(mapsrc);
+        map.addLayer(maplayer);
+        map.on("mouse-move", function (evt) {
+            $("#xy").html("x:" + evt.mapPoint.x + " y:" + evt.mapPoint.y);
+        });
+        //根据所在城市进行定位
+        dojo.connect(map, "onLoad", function () {
+            //var point = new esri.geometry.Point(13381389.297932945, 3501448.604221201, new esri.SpatialReference({ "wkid": 102100 }));
+            map.setLevel(8);//设置缩放等级
+            map.disableDoubleClickZoom();//不允许双击缩放
+            //map.centerAt(point);
+            pointlayer = new esri.layers.GraphicsLayer({ id: "point" });
+            map.addLayer(pointlayer);
+        });
+
+
+
+        $("#btn0").click(function () {
+            var featureLayer = new esri.layers.FeatureLayer("http://10.129.125.147:6080/arcgis/rest/services/Net/唐山/MapServer/13", { outFields: ["*"] });
+            console.log(featureLayer);
+            map.addLayer(featureLayer);
+            var heatmapRenderer = new esri.renderer.HeatmapRenderer({
+                field: "CENTROID_X",
+                //colors: ["rgba(100, 100, 100,0.2)", "rgba(100, 100, 100,0.2)", "rgba(255, 100, 255,0.2)"],
+                blurRadius: 4//,
+                //maxPixelIntensity: 250,
+                //minPixelIntensity: 10
+            });
+            heatmapRenderer.setColorStops([
+            { ratio: 0, color: "rgba(248, 195, 213,0.1)" },
+            { ratio: 0.6, color: "rgb(248, 134, 171)" },
+            { ratio: 0.85, color: "rgb(251, 106, 154)" },
+            { ratio: 0.95, color: "rgb(247, 62, 123)" }
+            ]);
+            featureLayer.setRenderer(heatmapRenderer);
+        });
+        $("#btn1").click(function () {
+            var featureLayer = new esri.layers.FeatureLayer("http://10.129.125.147:6080/arcgis/rest/services/Net/唐山/MapServer/13", { outFields: ["*"] });
+            var query = new esri.tasks.Query();
+            query.where = "1=1";
+            query.outSpatialReference = map.spatialReference;
+            featureLayer.queryFeatures(query, function (featureSet) {
+                RaoRao.Portal.ThemeMap.HeatMapLayer(map, featureSet.features, 4, "CENTROID_X");
+            });
+        });
+    });
+</script>
+<script>
+    function getFeatures() {
+        // set up query
+        var query = new esri.tasks.Query();
+        // only within extent
+        query.geometry = map.extent;
+        // give me all of them!
+        query.where = "1=1";
+        // make sure I get them back in my spatial reference
+        query.outSpatialReference = map.spatialReference;
+        // get em!
+        featureLayer.queryFeatures(query, function (featureSet) {
+
+        });
+    }
+    var testData = {
+        max: 8,
+        data: [
+            { x: 24.6408, y: 46.7728, count: 3 },
+            { x: 50.75, y: -1.55, count: 1 },
+            { x: 52.6333, y: 1.75, count: 1 },
+            { x: 48.15, y: 9.4667, count: 1 },
+            { x: 52.35, y: 4.9167, count: 2 },
+            { x: 60.8, y: 11.1, count: 1 },
+            { x: 43.561, y: -116.214, count: 1 },
+            { x: 47.5036, y: -94.685, count: 1 },
+            { x: 42.1818, y: -71.1962, count: 1 },
+            { x: 42.0477, y: -74.1227, count: 1 },
+            { x: 40.0326, y: -75.719, count: 1 },
+            { x: 40.7128, y: -73.2962, count: 2 },
+            { x: 27.9003, y: -82.3024, count: 1 },
+            { x: 38.2085, y: -85.6918, count: 1 },
+            { x: 46.8159, y: -100.706, count: 1 },
+            { x: 30.5449, y: -90.8083, count: 1 },
+            { x: 44.735, y: -89.61, count: 1 },
+            { x: 41.4201, y: -75.6485, count: 2 },
+            { x: 39.4209, y: -74.4977, count: 1 },
+            { x: 39.7437, y: -104.979, count: 1 },
+            { x: 39.5593, y: -105.006, count: 1 },
+            { x: 45.2673, y: -93.0196, count: 1 },
+            { x: 41.1215, y: -89.4635, count: 1 },
+            { x: 43.4314, y: -83.9784, count: 1 },
+            { x: 43.7279, y: -86.284, count: 1 },
+            { x: 40.7168, y: -73.9861, count: 1 },
+            { x: 47.7294, y: -116.757, count: 1 },
+            { x: 47.7294, y: -116.757, count: 2 },
+            { x: 35.5498, y: -118.917, count: 1 },
+            { x: 34.1568, y: -118.523, count: 1 },
+            { x: 39.501, y: -87.3919, count: 3 },
+            { x: 33.5586, y: -112.095, count: 1 },
+            { x: 38.757, y: -77.1487, count: 1 },
+            { x: 33.223, y: -117.107, count: 1 },
+            { x: 30.2316, y: -85.502, count: 1 },
+            { x: 39.1703, y: -75.5456, count: 8 },
+            { x: 30.0041, y: -95.2984, count: 2 },
+            { x: 29.7755, y: -95.4152, count: 1 }
+        ]
+    };
+</script>

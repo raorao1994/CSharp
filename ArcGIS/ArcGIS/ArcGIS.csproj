@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{02246905-A350-4B27-B96C-216EFFF1CCCE}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ArcGIS</RootNamespace>
+    <AssemblyName>ArcGIS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="baidu\html\加载自定义地图.html" />
+    <Content Include="baidu\html\加载百度地图.html" />
+    <Content Include="baidu\js\baiduLib\BMapLib_GeoUtils.js" />
+    <Content Include="baidu\js\baiduLib\DistanceTool_min.js" />
+    <Content Include="baidu\js\baiduLib\DrawingManager_min.js" />
+    <Content Include="baidu\js\baiduLib\GeoUtils.js" />
+    <Content Include="baidu\js\baiduLib\Heatmap_min.js" />
+    <Content Include="baidu\js\baiduLib\JavaScript1.js" />
+    <Content Include="baidu\js\baiduLib\MarkerClusterer_min.js" />
+    <Content Include="baidu\js\baiduLib\SearchInfoWindow_min.js" />
+    <Content Include="baidu\js\baiduLib\TextIconOverlay_min.js" />
+    <Content Include="baidu\js\baiduLib\说明.txt" />
+    <Content Include="baidu\js\raorao-baidu-setting.js" />
+    <Content Include="baidu\js\raorao-map-baidu.js" />
+    <Content Include="baidu\js\百度地图切图工具.exe" />
+    <Content Include="GIS测量\Measure\custom\MeasureTools.js" />
+    <Content Include="GIS测量\Measure\custom\tiandituAnnoLayer.js" />
+    <Content Include="GIS测量\Measure\custom\tiandituVecLayer.js" />
+    <Content Include="GIS测量\Measure\measure.html" />
+    <Content Include="GIS测量\Measure\MeasureTs.js" />
+    <Content Include="Global.asax" />
+    <Content Include="html\Gaode\extLayers\gaodeLayer.js" />
+    <Content Include="html\Gaode\调用高德地图.html" />
+    <Content Include="html\baidu\js\bdlib\BDAnoLayer.js" />
+    <Content Include="html\baidu\js\bdlib\BDimgLayer.js" />
+    <Content Include="html\baidu\js\bdlib\BDVecLayer.js" />
+    <Content Include="html\TDT\tdlib\gaodeLayer.js" />
+    <Content Include="html\TDT\tdlib\TDAnnoLayer.js" />
+    <Content Include="html\TDT\tdlib\TDLayer.js" />
+    <Content Include="html\TDT\TDTAnnoLayer.js" />
+    <Content Include="html\TDT\TDTLayer.js" />
+    <Content Include="html\TDT\调用天地图2.html" />
+    <Content Include="html\TDT\调用天地图.html" />
+    <Content Include="html\自定义图层.html" />
+    <Content Include="html\画图.html" />
+    <Content Include="html\heatmap.html" />
+    <Content Include="html\自定义infowindow.html" />
+    <Content Include="html\baidu\调用百度地图.html" />
+    <Content Include="html\路径分析.html" />
+    <Content Include="html\量算.html" />
+    <Content Include="html\点的添加修改删除.html" />
+    <Content Include="js\heatmap\ArcGIS-Heatmap\index.html" />
+    <Content Include="js\heatmap\ArcGIS-Heatmap\src\heatmap-arcgis.js" />
+    <Content Include="js\heatmap\ArcGIS-Heatmap\src\heatmap.js" />
+    <Content Include="js\heatmap\heatmap-2.0.js" />
+    <Content Include="js\heatmap\heatmap-google\gmaps-heatmap.js" />
+    <Content Include="js\heatmap\heatmap-google\heatmap.js" />
+    <Content Include="js\heatmap\heatmap-google\index.html" />
+    <Content Include="js\portal\InfoWindow.js" />
+    <Content Include="js\portal\MeasureTools.js" />
+    <Content Include="js\jquery.js" />
+    <Content Include="js\portal\pcloud-raorao-portal.js" />
+    <Content Include="js\portal\pcloud-raorao-setting.js" />
+    <Content Include="js\portal\raorao-map-arcgis.js" />
+    <Content Include="js\portal\raorao-map-baidu.js" />
+    <Content Include="js\portal\RaoRao.js" />
+    <Content Include="my\css\bootstrap.css" />
+    <Content Include="my\css\clndr.css" />
+    <Content Include="my\css\style.css" />
+    <Content Include="my\images\arrows.png" />
+    <Content Include="my\images\banner.jpg" />
+    <Content Include="my\images\bg.jpg" />
+    <Content Include="my\images\g1.jpg" />
+    <Content Include="my\images\g2.jpg" />
+    <Content Include="my\images\g3.jpg" />
+    <Content Include="my\images\g4.jpg" />
+    <Content Include="my\images\g5.jpg" />
+    <Content Include="my\images\logo.png" />
+    <Content Include="my\images\logo2.png" />
+    <Content Include="my\images\pic1.jpg" />
+    <Content Include="my\images\pic2.jpg" />
+    <Content Include="my\images\pic3.jpg" />
+    <Content Include="my\images\pic4.jpg" />
+    <Content Include="my\images\pic5.jpg" />
+    <Content Include="my\images\pic6.jpg" />
+    <Content Include="my\images\pic7.jpg" />
+    <Content Include="my\images\pic8.jpg" />
+    <Content Include="my\images\pic9.jpg" />
+    <Content Include="my\images\s1.jpg" />
+    <Content Include="my\images\s2.jpg" />
+    <Content Include="my\images\s3.jpg" />
+    <Content Include="my\images\s4.jpg" />
+    <Content Include="my\images\social.png" />
+    <Content Include="my\images\top_arrow.png" />
+    <Content Include="my\index.html" />
+    <Content Include="my\js\clndr.js" />
+    <Content Include="my\js\easing.js" />
+    <Content Include="my\js\jquery-1.11.1.min.js" />
+    <Content Include="my\js\moment-2.2.1.js" />
+    <Content Include="my\js\move-top.js" />
+    <Content Include="my\js\nav.js" />
+    <Content Include="my\js\site.js" />
+    <Content Include="my\js\underscore-min.js" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>7667</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:7667/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

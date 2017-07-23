@@ -1,0 +1,134 @@
+﻿var maptype=map.getMapType();
+var pp=maptype.getProjection();
+var projection = pp.lngLatToPoint(p);
+alert(projection.x+":"+projection.y);
+
+ public class tileutils {
+     private int minlevel;
+     private int maxlevel;
+     private int piclevel;
+     private double mercatorx;
+     private double mercatory;
+     private string pic;
+     private string savepath;
+ 
+     public tileutils(string pic, double mercatorx, double mercatory,
+             string savepath) {
+         this.pic = pic;
+         this.mercatorx = mercatorx;
+         this.mercatory = mercatory;
+         this.savepath = savepath;
+     }
+ 
+     public tileutils(string pic, int minlevel, int maxlevel, int piclevel, double mercatorx,
+             double mercatory, string savepath) {
+         this.pic = pic;
+         this.minlevel = minlevel;
+         this.maxlevel = maxlevel;
+         this.mercatorx = mercatorx;
+         this.mercatory = mercatory;
+         this.savepath = savepath;
+         this.piclevel = piclevel;
+     }
+ 
+     public void cutterall() throws exception {
+         for (int i = minlevel; i <= maxlevel; i++) {
+             cutterone(i);
+         }
+     }
+ 
+     public void cutterone(int level) throws exception {
+         //图片中心的像素坐标(pixelx,pixely)，图片中心的平面坐标即魔卡托坐标(mercatorx, mercatory)
+         //像素坐标  = 平面坐标 * math.pow(2, level - 18)
+         double pixelx = mercatorx * math.pow(2, level - 18);
+         double pixely = mercatory * math.pow(2, level - 18);
+         system.out.println("pixelx : " + pixelx);
+         system.out.println("pixely : " + pixely);
+         bufferedimage bi = imageio.read(new file(pic));
+         int width = bi.getwidth();
+         int height = bi.getheight();
+         //图片遵循原则：当前图片所属级别piclevel不缩放即像素级别相等。
+         //按照公式缩放：当前级别图片长度 = 原图片长度 * math.pow(2, level - piclevel)
+         //minx: 图片左下角x坐标
+         //miny: 图片左下角y坐标
+         //maxx: 图片右上角x坐标
+         //maxy: 图片右上角y坐标
+         double minx = pixelx - width * math.pow(2, level - piclevel) / 2;
+         double miny = pixely - height * math.pow(2, level - piclevel) / 2;
+         double maxx = pixelx + width  * math.pow(2, level - piclevel) / 2;
+         double maxy = pixely + height * math.pow(2, level - piclevel)  / 2;
+         system.out.println("(minx,miny) = (" + minx + ", " + miny + ")" );
+         system.out.println("(maxx,maxy) = (" + maxx + ", " + maxy + ")" );
+         int neatminx = (int) minx / 256;
+         int remminx = (int) minx % 256;
+         int neatminy = (int) miny / 256;
+         int remminy = (int) miny % 256 ;
+         
+         int neatmaxx = (int) maxx / 256;
+         int remmaxx = 256 - (int) maxx % 256;
+         int neatmaxy = (int) maxy / 256;
+         int remmaxy = 256 - (int) maxy % 256;
+         //(neatminx,neatminy)为图片左下角最近的整数图块坐标,neatminx到neatmaxx即当前级别下切割图块的图块坐标x
+         //(neatmaxx,neatmaxy)为图片右上角最近的整数图块坐标,neatminy到neatmaxy即当前级别下切割图块的图块坐标y
+         system.out.println("neatminx: " + neatminx);
+         system.out.println("neatmaxx: " + neatmaxx);
+         system.out.println("neatminy: " + neatminy);
+         system.out.println("neatmaxy: " + neatmaxy);
+         system.out.println("remminx width remmaxx : " + remminx + " "+ width + " "+ remmaxx );
+         system.out.println("remminy height remmaxy : " + remminy + " " +  height +" " + remmaxy );
+         
+         // 扩充原图片为width * height --- > (remminx + width + remmaxx ) * (remminy +
+         // height +remmaxy)
+         int extendwidth = (neatmaxx - neatminx + 1 ) * 256;
+         int extendheight = (neatmaxy - neatminy + 1 ) * 256;
+         system.out.println("extendwidth: " + extendwidth);
+         system.out.println("extendheight: " + extendheight);
+         
+         bufferedimage outputimage = null;
+         graphics2d g = bi.creategraphics();
+         bufferedimage extend = g.getdeviceconfiguration().createcompatibleimage(extendwidth, extendheight, transparency.translucent);
+         g.dispose();
+         g = extend.creategraphics();
+         g.drawimage(extend, 0, 0, extendwidth, extendheight, null);
+         g.drawimage(bi, remminx, remmaxy, (int) (width * math.pow(2, level - piclevel)), (int)(height * math.pow(2, level - piclevel)), null);
+         outputimage = extend;
+         
+         //切割图片，共( neatmaxx - neatminx + 1) * (neatmaxy - neatminy + 1)份 256*256图片
+         string dirname = savepath.substring(0, savepath.lastindexof("\\")) + "\\tiles\\" + level;
+         system.out.println("dirname : " + dirname);
+         
+         
+         file dir = new file(dirname);
+         image image = extend.getscaledinstance(extendwidth, extendheight, image.scale_default);
+         if(dir.exists()) {
+             system.out.println("创建目录失败！, 目录已存在！");
+         } else {
+             if(dir.mkdirs()) {
+                 imageio.write(extend, "png", new file(dirname + savepath.substring(savepath.lastindexof("\\"))));
+                 system.out.println("savepath : " + dirname + savepath.substring(savepath.lastindexof("\\")));
+                 system.out.println("extend success!");
+                 int w = neatmaxx - neatminx + 1;
+                 int h = neatmaxy - neatminy + 1;
+                 for(int i = 0; i < w; i++) {
+                     for(int j = 1; j <= h; j++) {
+                         imagefilter cropfilter = new cropimagefilter(256 * i, 256* (h - j), 256, 256);
+                         image img = toolkit.getdefaulttoolkit().createimage(new filteredimagesource(image.getsource(),cropfilter));
+                         bufferedimage tag = new bufferedimage(256, 256 , bufferedimage.type_int_bgr);
+                         graphics2d gs = tag.creategraphics();
+                         tag = gs.getdeviceconfiguration().createcompatibleimage(256, 256, transparency.translucent);
+                         gs.dispose();
+                         gs = tag.creategraphics();
+                         gs.drawimage(img, 0, 0, null);
+                         g.dispose();
+                         string croppicname = dirname + "\\tile" + (neatminx + i) + "_" + (neatminy + j - 1) + ".png"; 
+                         imageio.write(tag, "png", new file(croppicname));
+                     }
+                 }
+                 system.out.println("切割图片成功！");
+             } else {
+                 system.out.println("创建目录失败！");
+             }
+         }
+     }
+ 
+ }

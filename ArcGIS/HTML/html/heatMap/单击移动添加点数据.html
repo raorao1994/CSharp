@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <style>
+        .heatmap {
+            width: 100%;
+            height: 600px;
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div id="heatmap" class="heatmap"></div>
+    <div>
+        <button id="btn1">添加单击事件</button>
+        <button id="btn2">添加移动事件</button>
+        <button id="btn3">清空事件</button>
+    </div>
+</body>
+</html>
+<script src="heatmap-2.0.js"></script>
+<script>
+    // create instance
+    var heatmapInstance = h337.create({
+        container: document.getElementById('heatmap'),
+        radius: 9
+    });
+   
+    document.getElementById('btn1').onclick = function () {
+        document.getElementById('heatmap').onmousemove = null;
+        document.getElementById('heatmap').onclick = function (ev) {
+            heatmapInstance.addData({
+                x: ev.layerX,
+                y: ev.layerY,
+                value: 1
+            });
+        };
+    }
+    document.getElementById('btn2').onclick = function () {
+        document.getElementById('heatmap').onclick = null;
+        document.getElementById('heatmap').onmousemove = function (ev) {
+            heatmapInstance.addData({
+                x: ev.layerX,
+                y: ev.layerY,
+                value: 1
+            });
+        };
+    }
+    document.getElementById('btn3').onclick = function () {
+        document.getElementById('heatmap').onclick = null;
+        document.getElementById('heatmap').onmousemove = null;
+        var data = {
+            max: 10,
+            data: []
+        };
+        heatmapInstance.setData(data);
+    }
+</script>

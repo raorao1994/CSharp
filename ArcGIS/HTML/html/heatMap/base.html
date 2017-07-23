@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .heatmap{
+            width: 600px;
+            height: 400px;
+            border: 1px solid;
+            border-color: grey;
+        }
+        #heatmap {
+            width: 600px;
+            height: 400px;
+            border: 1px solid;
+            border-color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div id="heatmap"></div>
+</body>
+</html>
+<script src="heatmap-2.0.js"></script>
+<script type="text/javascript">
+    var heatmapInstance = h337.create({
+        container: document.getElementById('heatmap')
+    });
+
+    var points = [];
+    var max = 0;
+    var width = 840;
+    var height = 400;
+    var len = 200;
+
+    while (len--) {
+        var val = Math.floor(Math.random() * 100);
+        max = Math.max(max, val);
+        var point = {
+            x: Math.floor(Math.random() * width),
+            y: Math.floor(Math.random() * height),
+            value: val
+        };
+        points.push(point);
+    }
+    var data = {
+        max: max,
+        data: points
+    };
+    heatmapInstance.setData(data);
+</script>

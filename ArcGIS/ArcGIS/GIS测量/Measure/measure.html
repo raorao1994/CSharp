@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ArcGIS JS 实现仿百度地图的距离量测和面积量测 </title>
+<link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
+<style>
+  html,body,#map{
+    height:100%;
+	width:100%;
+	margin:0px;
+	padding:0px;
+  }
+  #measureTools{
+	  position:absolute;
+	  top:0px;
+	  left:0px;
+	  z-index:99;	
+  }
+   #qqInfo{
+	  position:absolute;
+	  bottom:10px;
+	  left:10px;
+	  z-index:99;
+	  color:red;
+	  font-size:50px;
+	  font-family:Arial, Helvetica, sans-serif;	
+  }
+</style>
+ <script type="text/javascript">
+        var dojoConfig = {
+            async: true,
+            packages: [{
+                "name": "layerjs",
+                "location": location.pathname.replace(/\/[^/]+$/, "")+ "/custom"
+            }]
+        };			
+</script>
+<script src="https://js.arcgis.com/3.18/"></script>
+<script type="text/javascript">
+   require([
+           "esri/map",		 
+		   "layerjs/MeasureTools",  
+		   "layerjs/tiandituVecLayer",
+		   "layerjs/tiandituAnnoLayer",
+		   "dojo/domReady!"
+         ],function(
+		    Map,deMeasureTools,TiandituVecLayer,TiandituAnnoLayer
+		  ){        
+			 var map=new Map("map",{
+				 showAttribution:false,
+				 fadeOnZoom:true,
+				 force3DTransforms:true,
+				 center:[101.7,24.6],
+				 zoom:10,
+				 autoResize:true,
+				 sliderPosition:"bottom-right",
+				 logo:false
+			 });
+			 var veclayer=new TiandituVecLayer();
+		     map.addLayer(veclayer);
+		     var annolayer=new TiandituAnnoLayer();
+		     map.addLayer(annolayer);
+			 var measureTool=new deMeasureTools({
+				 map:map
+			 },"measureTools");
+   });
+</script>
+</head>
+<body>
+<div style="float:right;">
+	<button class="measure-distance">测距</button>
+    <button class="measure-area">侧面积</button>
+</div>
+    <div id="map" >
+        <div id="measureTools">
+            <button class="measure-distance">距离</button>
+            <button class="measure-area">面积</button>
+        </div>
+        
+    </div>      
+</body>
+</html>
