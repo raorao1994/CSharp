@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interface", "Interface\Interface.csproj", "{489212F2-7BEE-405D-9302-2323C81DC3D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{2A4168A1-8A66-435C-98CD-831CCC205745}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{67EF5528-F179-4377-AD4B-818A5E7CA030}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Host", "Service.Host\Service.Host.csproj", "{DDFA5E88-79AA-453E-A738-714EE8B5DAC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStackAPP", "ServiceStackAPP\ServiceStackAPP.csproj", "{7CF132FC-83CC-47CD-BCF0-6CA13FEFCB9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceStack", "WebServiceStack\WebServiceStack.csproj", "{461B01E1-8E13-4032-9CEC-0103B31A5FB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imgur", "Imgur-master\src\Imgur\Imgur.csproj", "{6F4EF73A-7D66-4BA6-9708-8C49DBCDE229}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{489212F2-7BEE-405D-9302-2323C81DC3D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{489212F2-7BEE-405D-9302-2323C81DC3D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{489212F2-7BEE-405D-9302-2323C81DC3D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{489212F2-7BEE-405D-9302-2323C81DC3D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A4168A1-8A66-435C-98CD-831CCC205745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A4168A1-8A66-435C-98CD-831CCC205745}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A4168A1-8A66-435C-98CD-831CCC205745}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A4168A1-8A66-435C-98CD-831CCC205745}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67EF5528-F179-4377-AD4B-818A5E7CA030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67EF5528-F179-4377-AD4B-818A5E7CA030}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67EF5528-F179-4377-AD4B-818A5E7CA030}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67EF5528-F179-4377-AD4B-818A5E7CA030}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDFA5E88-79AA-453E-A738-714EE8B5DAC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDFA5E88-79AA-453E-A738-714EE8B5DAC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDFA5E88-79AA-453E-A738-714EE8B5DAC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDFA5E88-79AA-453E-A738-714EE8B5DAC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CF132FC-83CC-47CD-BCF0-6CA13FEFCB9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CF132FC-83CC-47CD-BCF0-6CA13FEFCB9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CF132FC-83CC-47CD-BCF0-6CA13FEFCB9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CF132FC-83CC-47CD-BCF0-6CA13FEFCB9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{461B01E1-8E13-4032-9CEC-0103B31A5FB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{461B01E1-8E13-4032-9CEC-0103B31A5FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{461B01E1-8E13-4032-9CEC-0103B31A5FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{461B01E1-8E13-4032-9CEC-0103B31A5FB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F4EF73A-7D66-4BA6-9708-8C49DBCDE229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F4EF73A-7D66-4BA6-9708-8C49DBCDE229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F4EF73A-7D66-4BA6-9708-8C49DBCDE229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F4EF73A-7D66-4BA6-9708-8C49DBCDE229}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
