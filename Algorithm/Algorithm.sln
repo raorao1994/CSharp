@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GISHelper", "GISHelper\GISHelper.csproj", "{195A4B73-7AD2-4A83-99EC-4BF25EF93E7B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{195A4B73-7AD2-4A83-99EC-4BF25EF93E7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{195A4B73-7AD2-4A83-99EC-4BF25EF93E7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{195A4B73-7AD2-4A83-99EC-4BF25EF93E7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{195A4B73-7AD2-4A83-99EC-4BF25EF93E7B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
