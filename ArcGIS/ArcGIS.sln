@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcGIS", "ArcGIS\ArcGIS.csproj", "{02246905-A350-4B27-B96C-216EFFF1CCCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTML", "HTML\HTML.csproj", "{2F698B9D-3076-45D7-856B-9DA0ABA6BD63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaiduTileCutter", "BaiduTileCutter\BaiduTileCutter.csproj", "{5DA77CED-1606-4475-9620-D9C28DD281ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureHelper", "..\Picture\PictureHelper\PictureHelper.csproj", "{3534290C-3D1C-47BA-9479-3DFD8CDD2545}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02246905-A350-4B27-B96C-216EFFF1CCCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02246905-A350-4B27-B96C-216EFFF1CCCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02246905-A350-4B27-B96C-216EFFF1CCCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02246905-A350-4B27-B96C-216EFFF1CCCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F698B9D-3076-45D7-856B-9DA0ABA6BD63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F698B9D-3076-45D7-856B-9DA0ABA6BD63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F698B9D-3076-45D7-856B-9DA0ABA6BD63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F698B9D-3076-45D7-856B-9DA0ABA6BD63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DA77CED-1606-4475-9620-D9C28DD281ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DA77CED-1606-4475-9620-D9C28DD281ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DA77CED-1606-4475-9620-D9C28DD281ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DA77CED-1606-4475-9620-D9C28DD281ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3534290C-3D1C-47BA-9479-3DFD8CDD2545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3534290C-3D1C-47BA-9479-3DFD8CDD2545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3534290C-3D1C-47BA-9479-3DFD8CDD2545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3534290C-3D1C-47BA-9479-3DFD8CDD2545}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
