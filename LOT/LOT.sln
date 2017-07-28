@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LotTcpServer", "LotTcpServer\LotTcpServer.csproj", "{86FEC26A-40F9-4C8F-8989-E29C7D593FF3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Socket", "Socket", "{35F1A2F7-ECBC-4F6F-948A-DF9C0E04A66F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaoRao.Socket.TCPHelper", "RaoRao.Socket.TCPHelper\RaoRao.Socket.TCPHelper.csproj", "{3EB1E1F9-AD6D-465E-AC31-40F14013DA86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaoRao.Socket.UDPHelper", "RaoRao.Socket.UDPHelper\RaoRao.Socket.UDPHelper.csproj", "{DACF947F-54F0-42B4-A437-E2FB2E556E6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaoRao.Socket.WebSocket", "RaoRao.Socket.WebSocket\RaoRao.Socket.WebSocket.csproj", "{BC5F11E4-0F00-45A2-975D-71DF57F8612C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86FEC26A-40F9-4C8F-8989-E29C7D593FF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86FEC26A-40F9-4C8F-8989-E29C7D593FF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86FEC26A-40F9-4C8F-8989-E29C7D593FF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86FEC26A-40F9-4C8F-8989-E29C7D593FF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EB1E1F9-AD6D-465E-AC31-40F14013DA86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EB1E1F9-AD6D-465E-AC31-40F14013DA86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EB1E1F9-AD6D-465E-AC31-40F14013DA86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EB1E1F9-AD6D-465E-AC31-40F14013DA86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DACF947F-54F0-42B4-A437-E2FB2E556E6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DACF947F-54F0-42B4-A437-E2FB2E556E6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DACF947F-54F0-42B4-A437-E2FB2E556E6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DACF947F-54F0-42B4-A437-E2FB2E556E6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC5F11E4-0F00-45A2-975D-71DF57F8612C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC5F11E4-0F00-45A2-975D-71DF57F8612C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC5F11E4-0F00-45A2-975D-71DF57F8612C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC5F11E4-0F00-45A2-975D-71DF57F8612C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3EB1E1F9-AD6D-465E-AC31-40F14013DA86} = {35F1A2F7-ECBC-4F6F-948A-DF9C0E04A66F}
+		{DACF947F-54F0-42B4-A437-E2FB2E556E6A} = {35F1A2F7-ECBC-4F6F-948A-DF9C0E04A66F}
+		{BC5F11E4-0F00-45A2-975D-71DF57F8612C} = {35F1A2F7-ECBC-4F6F-948A-DF9C0E04A66F}
+	EndGlobalSection
+EndGlobal
