@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace RaoRao.Socket.UDPHelper
 {
@@ -27,17 +28,9 @@ namespace RaoRao.Socket.UDPHelper
         /// </summary>
         public int ClientCount = 0;
         /// <summary>
-        /// 客户端连接代理
-        /// </summary>
-        public Action<IPEndPoint> ClientConnected = null;
-        /// <summary>
         /// 客户端信息接收代理
         /// </summary>
         public Action<EndPoint, string> MessageReceived = null;
-        /// <summary>
-        /// 客户端下线收代理
-        /// </summary>
-        public Action<IPEndPoint> ClientDisconnected = null;
         /// <summary>
         /// 初始化WebSocket端口
         /// </summary>
@@ -54,13 +47,14 @@ namespace RaoRao.Socket.UDPHelper
         public bool CreateTcpSocket(int ClientCount)
         {
             IPEndPoint localEP = new IPEndPoint(IPAddress.Any, port);
+            localEP.Address = IPAddress.Parse("192.168.1.37");
             socketEngine = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             try
             {
                 socketEngine.Bind(localEP);
-                //socketEngine.Listen(ClientCount);
-                socketEngine.BeginAccept(new AsyncCallback(accept), socketEngine);
                 Console.WriteLine("创建服务成功：服务地址为：127.0.0.1:" + port.ToString());
+                Thread t = new Thread(recieve);//开启接收消息线程
+                t.Start();
                 return true;
             }
             catch (Exception e)
@@ -70,70 +64,25 @@ namespace RaoRao.Socket.UDPHelper
             }
         }
         /// <summary>
-        /// 客户端连接
-        /// </summary>
-        /// <param name="ar"></param>
-        private void accept(IAsyncResult ar)
-        {
-            //获取socket服务套接字
-            System.Net.Sockets.Socket server = (System.Net.Sockets.Socket)ar.AsyncState;
-            // 在原始套接字上调用EndAccept方法，返回新的套接字
-            System.Net.Sockets.Socket SockeClient = server.EndAccept(ar);
-            byte[] buffer = new byte[4096];
-            try
-            {
-                SockeClient.BeginReceive(buffer, 0, buffer.Length,
-                    SocketFlags.None, new AsyncCallback(recieve), SockeClient);
-                //保存客户端对象到socket池
-                UDPClient session = new UDPClient();
-                session.IP = SockeClient.RemoteEndPoint.ToString();
-                session.buffer = buffer;
-                lock (ClientPool)
-                {
-                    if (ClientPool.ContainsKey(session.IP))
-                    {
-                        ClientPool.Remove(session.IP);
-                    }
-                    ClientPool.Add(session.IP, session);
-                }
-                //准备接受下一个客户端
-                server.BeginAccept(new AsyncCallback(accept), server);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-        /// <summary>
         /// 接受信息
         /// </summary>
         /// <param name="ar"></param>
-        private void recieve(IAsyncResult ar)
+        private void recieve()
         {
-            System.Net.Sockets.Socket client = (System.Net.Sockets.Socket)ar.AsyncState;
-            string ip = client.RemoteEndPoint.ToString();
-            if (client == null || !ClientPool.ContainsKey(ip))
-            {
-                return;
-            }
-            IPEndPoint clientip = client.RemoteEndPoint as IPEndPoint;
             try
             {
-                int length = client.EndReceive(ar);
-                byte[] buffer = ClientPool[ip].buffer;
-                client.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(recieve), client);
-                string msg = Encoding.UTF8.GetString(buffer, 0, length);
-                Console.WriteLine("接受到来自客户端:" + clientip + "的信息：" + msg);
-                MessageReceived(clientip, msg);
+                while (true)
+                {
+                    EndPoint point = new IPEndPoint(IPAddress.Any, 0);//用来保存发送方的ip和端口号
+                    byte[] buffer = new byte[1024];
+                    int length = socketEngine.ReceiveFrom(buffer, ref point);//接收数据报
+                    string message = Encoding.UTF8.GetString(buffer, 0, length);
+                    MessageReceived(point, message);
+                    Console.WriteLine("接受到来自客户端:" + point + "的信息：" + message);
+                }
             }
             catch (Exception e)
             {
-                //断开连接
-                client.Disconnect(true);
-                ClientPool.Remove(ip);
-                Console.WriteLine("客户端:" + ip + "下线了");
-                if (ClientDisconnected != null)
-                    ClientDisconnected(clientip);
                 return;
             }
         }
@@ -144,14 +93,14 @@ namespace RaoRao.Socket.UDPHelper
         /// <param name="ip">IPEndPoint</param>
         /// <param name="msg">msg</param>
         /// <returns></returns>
-        public bool SendMsg(IPEndPoint ip, string msg)
+        public bool SendMsg(EndPoint ip, string msg)
         {
             try
             {
                 bool result = false;
                 byte[] buffer = UDPHelper.PackHandShakeData(msg);
                 UdpClient client = new UdpClient();
-                client.Send(buffer, buffer.Length, ip);//将数据发送到远程端点
+                client.Send(buffer, buffer.Length, ip as IPEndPoint);//将数据发送到远程端点
                 client.Close();//关闭连接
                 result = true;
                 return result;

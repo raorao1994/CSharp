@@ -21,6 +21,7 @@ namespace LotTcpServer
         public static void receivemsg(EndPoint ip,string str)
         {
             Console.WriteLine(ip.ToString()+":"+str);
+            engine.SendMsg(ip, str);
         }
     }
 }
