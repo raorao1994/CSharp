@@ -92,7 +92,6 @@ namespace RaoRao.Socket.UDPHelper
                     SocketFlags.None, new AsyncCallback(recieve), SockeClient);
                 //保存客户端对象到socket池
                 UDPClient session = new UDPClient();
-                session.SockeClient = SockeClient;
                 session.IP = SockeClient.RemoteEndPoint.ToString();
                 session.buffer = buffer;
                 lock (ClientPool)
@@ -156,39 +155,11 @@ namespace RaoRao.Socket.UDPHelper
             try
             {
                 bool result = false;
-                UDPClient session = ClientPool[ip.ToString()];
-                if (session != null)
-                {
-                    byte[] buffer =  UDPHelper.PackHandShakeData(msg);
-                    session.SockeClient.Send(buffer);
-                    result = true;
-                }
-                return result;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        /// 给所有用户发送信息
-        /// </summary>
-        /// <param name="msg"></param>
-        public bool SendAll(string msg)
-        {
-            try
-            {
-                bool result = false;
-                foreach (UDPClient item in ClientPool.Values)
-                {
-                    UDPClient session = item;
-                    if (session != null)
-                    {
-                        byte[] buffer = UDPHelper.PackHandShakeData(msg);
-                        session.SockeClient.Send(buffer);
-                        result = true;
-                    }
-                }
+                byte[] buffer = UDPHelper.PackHandShakeData(msg);
+                UdpClient client = new UdpClient();
+                client.Send(buffer, buffer.Length, ip);//将数据发送到远程端点
+                client.Close();//关闭连接
+                result = true;
                 return result;
             }
             catch (Exception e)
