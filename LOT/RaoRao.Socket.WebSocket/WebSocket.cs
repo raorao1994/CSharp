@@ -11,12 +11,6 @@ namespace RaoRao.Socket.WebSocket
     /// </summary>
     public class WebSocket
     {
-        /// <summary>
-        /// 接受信息代理
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="msg"></param>
-        public delegate void MyAction(IPEndPoint p, string msg);
         //默认服务端口号
         private int port = 9000;
         //默认服务地址
@@ -39,7 +33,7 @@ namespace RaoRao.Socket.WebSocket
         /// <summary>
         /// 客户端信息接收代理
         /// </summary>
-        public MyAction MessageReceived = null;
+        public Action<EndPoint, string> MessageReceived = null;
         /// <summary>
         /// 客户端下线收代理
         /// </summary>

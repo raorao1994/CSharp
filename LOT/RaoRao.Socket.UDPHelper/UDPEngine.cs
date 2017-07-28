@@ -11,12 +11,6 @@ namespace RaoRao.Socket.UDPHelper
     /// </summary>
     public class UDPEngine
     {
-        /// <summary>
-        /// 接受信息代理
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="msg"></param>
-        public delegate void MyAction(IPEndPoint p, string msg);
         //默认服务端口号
         private int port = 9000;
         //默认服务地址
@@ -39,7 +33,7 @@ namespace RaoRao.Socket.UDPHelper
         /// <summary>
         /// 客户端信息接收代理
         /// </summary>
-        public MyAction MessageReceived = null;
+        public Action<EndPoint, string> MessageReceived = null;
         /// <summary>
         /// 客户端下线收代理
         /// </summary>
@@ -60,11 +54,11 @@ namespace RaoRao.Socket.UDPHelper
         public bool CreateTcpSocket(int ClientCount)
         {
             IPEndPoint localEP = new IPEndPoint(IPAddress.Any, port);
-            socketEngine = new System.Net.Sockets.Socket(localEP.Address.AddressFamily, SocketType.Stream, ProtocolType.Udp);
+            socketEngine = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             try
             {
                 socketEngine.Bind(localEP);
-                socketEngine.Listen(ClientCount);
+                //socketEngine.Listen(ClientCount);
                 socketEngine.BeginAccept(new AsyncCallback(accept), socketEngine);
                 Console.WriteLine("创建服务成功：服务地址为：127.0.0.1:" + port.ToString());
                 return true;
