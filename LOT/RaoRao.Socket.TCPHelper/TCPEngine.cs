@@ -171,6 +171,32 @@ namespace RaoRao.Socket.TCPHelper
             }
         }
         /// <summary>
+        /// 为某一用户发送一次信息
+        /// </summary>
+        /// <param name="ip">IPEndPoint</param>
+        /// <param name="msg">msg</param>
+        /// <returns></returns>
+        public static bool Send(IPEndPoint ip, string msg)
+        {
+            try
+            {
+                bool result = false;
+                System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient();
+                byte[] buffer = TCPHelper.PackHandShakeData(msg);
+                client.Connect(ip);
+                NetworkStream dataStream = client.GetStream();
+                dataStream.Write(buffer, 0, buffer.Length);
+                result = true;
+                dataStream.Dispose();
+                client.Close();
+                return result;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        /// <summary>
         /// 给所有用户发送信息
         /// </summary>
         /// <param name="msg"></param>
