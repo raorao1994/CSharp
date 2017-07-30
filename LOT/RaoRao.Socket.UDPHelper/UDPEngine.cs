@@ -102,6 +102,7 @@ namespace RaoRao.Socket.UDPHelper
                 client.Send(buffer, buffer.Length, ip as IPEndPoint);//将数据发送到远程端点
                 client.Close();//关闭连接
                 result = true;
+                Console.WriteLine("发送信息到客户端" + ip + ":" + msg);
                 return result;
             }
             catch (Exception e)

@@ -48,10 +48,10 @@ namespace RaoRao.Socket.TCPHelper
         }
 
         /// <summary>
-        /// 创建服务WebSocke对象
+        /// 创建服务TCP服务对象
         /// </summary>
         /// <param name="ports">端口号</param>
-        public bool CreateSocket(int ClientCount)
+        public bool CreateServer(int ClientCount)
         {
             IPEndPoint localEP = new IPEndPoint(IPAddress.Any, port);
             socketEngine = new System.Net.Sockets.Socket(localEP.Address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -67,6 +67,23 @@ namespace RaoRao.Socket.TCPHelper
             {
                 Console.WriteLine("创建失败");
                 return false;
+            }
+        }
+        /// <summary>
+        /// 创建服务TCP链接对象
+        /// </summary>
+        /// <param name="ports">端口号</param>
+        public TCPClientEngine CreateClient(string ip,int ClientCount)
+        {
+            try
+            {
+                TCPClientEngine client = new TCPClientEngine(ip, ClientCount);
+                return client;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("创建失败");
+                return null;
             }
         }
         /// <summary>
@@ -156,6 +173,7 @@ namespace RaoRao.Socket.TCPHelper
                     byte[] buffer = TCPHelper.PackHandShakeData(msg);
                     session.SockeClient.Send(buffer);
                     result = true;
+                    Console.WriteLine("发送信息到客户端"+ip+":"+msg);
                 }
                 return result;
             }
@@ -183,6 +201,7 @@ namespace RaoRao.Socket.TCPHelper
                 result = true;
                 dataStream.Dispose();
                 client.Close();
+                Console.WriteLine("发送信息到客户端" + ip + ":" + msg);
                 return result;
             }
             catch (Exception e)
@@ -207,6 +226,7 @@ namespace RaoRao.Socket.TCPHelper
                         byte[] buffer = TCPHelper.PackHandShakeData(msg);
                         session.SockeClient.Send(buffer);
                         result = true;
+                        Console.WriteLine("发送信息到客户端" + session.IP + ":" + msg);
                     }
                 }
                 return result;

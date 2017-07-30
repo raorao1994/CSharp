@@ -15,6 +15,7 @@ namespace LotTcpServer
         public static WebSocketEngine websocketengine = null;
         static void Main(string[] args)
         {
+            CreateWebSocketServer();
             Console.Read();
         }
         static void CreateTCPServer()
@@ -42,8 +43,21 @@ namespace LotTcpServer
         /// <param name="str"></param>
         public static void receivemsg(EndPoint ip,string str)
         {
+            str = "发送到客户端信息：" + str;
             Console.WriteLine(ip.ToString()+":"+str);
-            engine.SendMsg(ip as IPEndPoint, str);
+            try {
+                websocketengine.SendMsg(ip as IPEndPoint, str);
+            }catch (Exception e) { }
+            try
+            {
+                tcpengine.SendMsg(ip as IPEndPoint, str);
+            }
+            catch (Exception e) { }
+            try
+            {
+                udpengine.SendMsg(ip as IPEndPoint, str);
+            }
+            catch (Exception e) { }
         }
     }
 }

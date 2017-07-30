@@ -170,6 +170,7 @@ namespace RaoRao.Socket.WebSocket
                     byte[] buffer = WebSocketHelper.PackageServerData(msg);
                     session.SockeClient.Send(buffer);
                     result = true;
+                    Console.WriteLine("发送信息到客户端" + ip + ":" + msg);
                 }
                 return result;
             }
@@ -195,6 +196,7 @@ namespace RaoRao.Socket.WebSocket
                         byte[] buffer = WebSocketHelper.PackageServerData(msg);
                         session.SockeClient.Send(buffer);
                         result = true;
+                        Console.WriteLine("发送信息到客户端" + session.IP + ":" + msg);
                     }
                 }
                 return result;
