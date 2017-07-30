@@ -9,7 +9,7 @@ namespace RaoRao.Socket.WebSocket
     /// <summary>
     /// WebSocket服务类
     /// </summary>
-    public class WebSocket
+    public class WebSocketEngine
     {
         //默认服务端口号
         private int port = 9000;
@@ -42,7 +42,7 @@ namespace RaoRao.Socket.WebSocket
         /// 初始化WebSocket端口
         /// </summary>
         /// <param name="Port"></param>
-        public WebSocket(int Port)
+        public WebSocketEngine(int Port)
         {
             port = Port;
         }
@@ -60,7 +60,7 @@ namespace RaoRao.Socket.WebSocket
                 socketEngine.Bind(localEP);
                 socketEngine.Listen(ClientCount);
                 socketEngine.BeginAccept(new AsyncCallback(accept), socketEngine);
-                Console.WriteLine("创建服务成功：服务地址为：127.0.0.1:" + port.ToString());
+                Console.WriteLine("创建WebSocket服务成功：服务地址为：127.0.0.1:" + port.ToString());
                 return true;
             }
             catch (Exception e)

@@ -52,7 +52,7 @@ namespace RaoRao.Socket.UDPHelper
             try
             {
                 socketEngine.Bind(localEP);
-                Console.WriteLine("创建服务成功：服务地址为：127.0.0.1:" + port.ToString());
+                Console.WriteLine("创建UDP服务成功：服务地址为：127.0.0.1:" + port.ToString());
                 Thread t = new Thread(recieve);//开启接收消息线程
                 t.Start();
                 return true;

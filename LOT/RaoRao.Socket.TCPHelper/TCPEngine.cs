@@ -60,7 +60,7 @@ namespace RaoRao.Socket.TCPHelper
                 socketEngine.Bind(localEP);
                 socketEngine.Listen(ClientCount);
                 socketEngine.BeginAccept(new AsyncCallback(accept), socketEngine);
-                Console.WriteLine("创建服务成功：服务地址为：127.0.0.1:" + port.ToString());
+                Console.WriteLine("创建TCP服务成功：服务地址为：127.0.0.1:" + port.ToString());
                 return true;
             }
             catch (Exception e)
