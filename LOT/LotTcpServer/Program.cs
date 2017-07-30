@@ -10,14 +10,36 @@ namespace LotTcpServer
 {
     class Program
     {
-        public static UDPEngine engine = null;
+        public static UDPEngine udpengine = null;
+        public static TCPEngine tcpengine = null;
+        public static WebSocketEngine websocketengine = null;
         static void Main(string[] args)
         {
-            engine = new UDPEngine(9000);
-            engine.CreateTcpSocket(100);
-            engine.MessageReceived += receivemsg;
             Console.Read();
         }
+        static void CreateTCPServer()
+        {
+            tcpengine = new TCPEngine(9000);
+            tcpengine.CreateSocket(100);
+            tcpengine.MessageReceived += receivemsg;
+        }
+        static void CreateUDPServer()
+        {
+            udpengine = new UDPEngine(9000);
+            udpengine.CreateSocket();
+            udpengine.MessageReceived += receivemsg;
+        }
+        static void CreateWebSocketServer()
+        {
+            websocketengine = new WebSocketEngine(9000);
+            websocketengine.CreateSocket(100);
+            websocketengine.MessageReceived += receivemsg;
+        }
+        /// <summary>
+        /// 接收信息
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="str"></param>
         public static void receivemsg(EndPoint ip,string str)
         {
             Console.WriteLine(ip.ToString()+":"+str);

@@ -51,7 +51,7 @@ namespace RaoRao.Socket.TCPHelper
         /// 创建服务WebSocke对象
         /// </summary>
         /// <param name="ports">端口号</param>
-        public bool CreateTcpSocket(int ClientCount)
+        public bool CreateSocket(int ClientCount)
         {
             IPEndPoint localEP = new IPEndPoint(IPAddress.Any, port);
             socketEngine = new System.Net.Sockets.Socket(localEP.Address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);

@@ -44,10 +44,9 @@ namespace RaoRao.Socket.UDPHelper
         /// 创建服务WebSocke对象
         /// </summary>
         /// <param name="ports">端口号</param>
-        public bool CreateTcpSocket(int ClientCount)
+        public bool CreateSocket()
         {
             IPEndPoint localEP = new IPEndPoint(IPAddress.Any, port);
-            //localEP.Address = IPAddress.Parse("192.168.1.37");
             socketEngine = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             try
             {
