@@ -47,7 +47,7 @@ namespace RaoRao.Socket.UDPHelper
         public bool CreateTcpSocket(int ClientCount)
         {
             IPEndPoint localEP = new IPEndPoint(IPAddress.Any, port);
-            localEP.Address = IPAddress.Parse("192.168.1.37");
+            //localEP.Address = IPAddress.Parse("192.168.1.37");
             socketEngine = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             try
             {
