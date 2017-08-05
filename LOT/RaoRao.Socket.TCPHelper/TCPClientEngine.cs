@@ -22,7 +22,7 @@ namespace RaoRao.Socket.TCPHelper
         /// <summary>
         /// 接收信息
         /// </summary>
-        public Action<string> Receive = null;
+        public Action<string> Receive =null;
         Thread t1 = null;
         bool isclose = false;
         public TCPClientEngine(string ip, int port)
@@ -56,9 +56,11 @@ namespace RaoRao.Socket.TCPHelper
             try
             {
                 //写数据流对象  
-                StreamWriter sw = new StreamWriter(stream);
-                sw.Write(msg);
-                sw.Flush();             //刷新流 
+                //StreamWriter sw = new StreamWriter(stream);
+                //sw.Write(msg);
+                //sw.Flush();             //刷新流 
+                byte[] buffer = TCPHelper.PackHandShakeData(msg);
+                stream.Write(buffer, 0, buffer.Length);
                 return true;
             }
             catch (Exception e)

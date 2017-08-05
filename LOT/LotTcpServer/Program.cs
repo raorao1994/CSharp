@@ -5,6 +5,7 @@ using RaoRao.Socket.TCPHelper;
 using RaoRao.Socket.UDPHelper;
 using RaoRao.Socket.WebSocket;
 using System.Net;
+using System.Threading;
 
 namespace LotTcpServer
 {
@@ -15,13 +16,35 @@ namespace LotTcpServer
         public static WebSocketEngine websocketengine = null;
         static void Main(string[] args)
         {
-            CreateWebSocketServer();
+            //CreateWebSocketServer();
+            CreateTCPClient();
             Console.Read();
+        }
+        static void CreateTCPClient()
+        {
+            TCPEngine engine = new TCPEngine(8181);
+            TCPClientEngine cilent = engine.CreateClient("121.42.180.30");//121.42.180.30
+            cilent.Receive +=(str) => {
+                Console.WriteLine(str);
+            };
+            cilent.SendMsg("{\"M\":\"checkin\",\"ID\":\"2795\",\"K\":\"d843dc6d8\"}\n");
+            Thread.Sleep(1000);
+            int i = 1000;
+            while (i>0)
+            {
+                double d = 23.0;
+                double r = new Random().Next(-10,10);
+                d = d + r*1.0/10;
+                cilent.SendMsg("{\"M\":\"update\",\"ID\":\"2795\",\"V\":{\"2697\":"+d+ ",\"2713\":" + d + "}}\n");
+                Console.WriteLine("发送信息");
+                Thread.Sleep(2000);
+                i--;
+            }
         }
         static void CreateTCPServer()
         {
             tcpengine = new TCPEngine(9000);
-            tcpengine.CreateSocket(100);
+            tcpengine.CreateServer(100);
             tcpengine.MessageReceived += receivemsg;
         }
         static void CreateUDPServer()

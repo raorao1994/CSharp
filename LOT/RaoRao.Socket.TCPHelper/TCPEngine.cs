@@ -73,11 +73,11 @@ namespace RaoRao.Socket.TCPHelper
         /// 创建服务TCP链接对象
         /// </summary>
         /// <param name="ports">端口号</param>
-        public TCPClientEngine CreateClient(string ip,int ClientCount)
+        public TCPClientEngine CreateClient(string ip)
         {
             try
             {
-                TCPClientEngine client = new TCPClientEngine(ip, ClientCount);
+                TCPClientEngine client = new TCPClientEngine(ip, port);
                 return client;
             }
             catch (Exception e)
