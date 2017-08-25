@@ -26,7 +26,21 @@ int main()
 	czSize.height = pSrcImage->height * fScale;
 
 	//创建图像并缩放  
+	/*
+	第一个参数表示图像的大小。
+	第二个参数表示图像的深度，可以为IPL_DEPTH_8U，IPL_DEPTH_16U等等。
+	第三个参数表示图像的通道数。
+	*/
 	pDstImage = cvCreateImage(czSize, pSrcImage->depth, pSrcImage->nChannels);
+	/*
+		第一个参数表示输入图像。
+		第二个参数表示输出图像。
+		第三个参数表示插值方法，可以有以下四种：
+		CV_INTER_NN - 最近邻插值,
+		CV_INTER_LINEAR - 双线性插值 (缺省使用)
+		CV_INTER_AREA - 使用象素关系重采样。当图像缩小时候，该方法可以避免波纹出现。当图像放大时，类似于 CV_INTER_NN 方法..
+		CV_INTER_CUBIC - 立方插值.
+	*/
 	cvResize(pSrcImage, pDstImage, CV_INTER_AREA);
 
 	//创建窗口  
