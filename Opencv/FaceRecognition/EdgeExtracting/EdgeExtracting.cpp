@@ -1,7 +1,7 @@
 // EdgeExtracting.cpp : 定义控制台应用程序的入口点。
-//
+//http://blog.csdn.net/morewindows/article/category/1291764
 #include "stdafx.h"
-//第二课：图像的Canny边缘检测  
+//第三课：图像的Canny边缘检测  
 #include <opencv2/opencv.hpp>  
 using namespace std;
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")  

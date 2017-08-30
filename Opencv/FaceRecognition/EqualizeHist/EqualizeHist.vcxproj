@@ -19,11 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{32293551-3B79-47A1-953C-6808B6C9D7AB}</ProjectGuid>
+    <ProjectGuid>{1E561BDA-D34C-4DAA-954B-AD0440D96FD6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ImageZoom</RootNamespace>
+    <RootNamespace>EqualizeHist</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>02ImageZoom</ProjectName>
+    <ProjectName>08EqualizeHist</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -150,7 +150,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ImageZoom.cpp" />
+    <ClCompile Include="EqualizeHist.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

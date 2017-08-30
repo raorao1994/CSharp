@@ -1,5 +1,5 @@
 // ConsoleApplication1.cpp : 定义控制台应用程序的入口点。
-//
+//第一课
 
 #include "stdafx.h"
 #include <opencv2\opencv.hpp>

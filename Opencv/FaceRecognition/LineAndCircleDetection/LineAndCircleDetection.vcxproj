@@ -19,11 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{32293551-3B79-47A1-953C-6808B6C9D7AB}</ProjectGuid>
+    <ProjectGuid>{18C3ED49-B846-4087-880B-49781CE7E59B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ImageZoom</RootNamespace>
+    <RootNamespace>LineAndCircleDetection</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>02ImageZoom</ProjectName>
+    <ProjectName>06LineAndCircleDetection</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -150,7 +150,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ImageZoom.cpp" />
+    <ClCompile Include="LineAndCircleDetection.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

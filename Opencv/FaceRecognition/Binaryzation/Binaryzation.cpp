@@ -1,5 +1,6 @@
 // Binaryzation.cpp : 定义控制台应用程序的入口点。
 //第四课：图像的二值化
+//http://blog.csdn.net/morewindows/article/details/8239678
 
 #include "stdafx.h"
 #include <opencv2/opencv.hpp>  

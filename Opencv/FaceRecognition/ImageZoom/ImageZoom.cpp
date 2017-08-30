@@ -1,5 +1,6 @@
 // ImageZoom.cpp : 定义控制台应用程序的入口点。
-//
+//http://blog.csdn.net/morewindows/article/category/1291764
+//第二篇 缩放图像
 
 #include "stdafx.h"
 #include <opencv2/opencv.hpp>  
