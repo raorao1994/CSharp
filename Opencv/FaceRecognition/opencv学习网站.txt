@@ -1,0 +1,11 @@
+怎样使用OpenCV进行人脸识别:http://www.cnblogs.com/guoming0000/archive/2012/09/27/2706019.html
+
+基于 OpenCV 的人脸识别(强烈推荐) :http://blog.csdn.net/u013346007/article/details/50569626
+
+opencv 人脸识别 （一）训练样本的处理 :http://blog.csdn.net/abcjennifer/article/details/20396869
+
+OpenCV入门指南 第一篇 安装OpenCV :http://blog.csdn.net/morewindows/article/details/8225783
+
+Win10+VS2015下配置OpenCV3.2教程:http://jingyan.baidu.com/article/4b52d702b3209afc5c774b3c.html
+
+_CRT_SECURE_NO_WARNINGS
