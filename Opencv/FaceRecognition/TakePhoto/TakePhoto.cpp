@@ -37,7 +37,7 @@ int takephoto()
 	}
 	return 0;
 }
-
+//视频边缘提取
 int video()
 {
 	VideoCapture cap(0);
@@ -49,13 +49,20 @@ int video()
 	Mat edges;
 
 	bool stop = false;
+	cvNamedWindow("视频", CV_WINDOW_FULLSCREEN);//CV_WINDOW_FULLSCREEN
 	while (!stop)
 	{
 		cap >> frame;
 		cvtColor(frame, edges, CV_BGR2GRAY);
 		GaussianBlur(edges, edges, Size(7, 7), 1.5, 1.5);
 		Canny(edges, edges, 0, 30, 3);
-		imshow("当前视频", edges);
+
+		IplImage *img_v = &IplImage(edges);
+
+		cvResize(img_v, img_v, CV_INTER_NN);
+		resize(edges, edges, Size(), 1.5, 1.5);
+		imshow("视频", edges);
+		//cvShowImage("视频", img_v);
 		char key = waitKey(100);
 		if (key=='p')
 			stop = true;
@@ -184,8 +191,8 @@ int video3()
 
 int main()
 {
-	takephoto();
-	//video();
+	//takephoto();
+	video();
 	//video2();
 	//video3();
 	return 0;

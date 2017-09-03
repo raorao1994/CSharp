@@ -110,10 +110,10 @@ int main() {
 	int scale_w = 2;
 	int scale_h = 2;
 	// path to csv file
-	string fn_csv = "face1.csv";
+	string fn_csv = "Face/face.csv";
 	// path to haarcascades
 	string fn_haar = "data/haarcascade_frontalface_alt.xml";
-	vector<string> names = { "xiaoyan","1","2","3","4","5","6","7","8","9","10","11","12","CXW","14","CJD","16","17","18","19","20","21","22","23","24","25","26" };
+	vector<string> names = { "0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26" };
 	//default command, method could be 0 or 1, param could be any id of a person
 	//默认命令，方法可能是0或1，参数可以是任何身份的人
 	int method = 0;//是否特定识别某人0：识别所有人，1识别某一个人
