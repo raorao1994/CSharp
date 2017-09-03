@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5F0963CD-0F74-4D22-AE87-47E88FE383BB}</ProjectGuid>
+    <ProjectGuid>{3E83672C-BA3B-4FBE-85B4-EFE070962BEE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Eigenfaces</RootNamespace>
+    <RootNamespace>Discriminate</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -149,8 +149,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="code1.cpp" />
-    <ClCompile Include="Eigenfaces.cpp" />
+    <ClCompile Include="Discriminate.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

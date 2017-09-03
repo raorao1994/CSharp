@@ -24,10 +24,11 @@ int facea()
 	CascadeClassifier cascade;
 	bool stop = false;
 	//训练好的文件名称，放置在可执行文件同目录下  
-	const char *filepath1 = "D://opencv//build//data//lbpcascades//lbpcascade_frontalface.xml";
-	cascade.load(filepath1);
+	const char *frontalface = "D://opencv//build//data//lbpcascades//lbpcascade_frontalface.xml";
+	cascade.load(frontalface);
 	Ptr<cv::face::FaceRecognizer> modelPCA = cv::face::createEigenFaceRecognizer();
 	const char *filepath2 = "einfacedata/at.txt";
+	filepath2 = "F://SVN//CShap//trunk//Opencv//FaceRecognition//Eigenfaces//face1.csv";
 	//modelPCA->load("MyFacePCAModel.xml");
 	modelPCA->load(filepath2);
 	while (1)
@@ -95,10 +96,9 @@ int facea()
 }
 
 
-int main()
+int main1()
 {
-	facea();
-
+	//facea();
 	cout << "usage:   <csv.ext> <output_folder> " << endl;
     return 0;
 }

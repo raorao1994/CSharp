@@ -29,10 +29,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Eigenfaces.cpp">
+    <ClCompile Include="ImageROI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="code1.cpp">
+    <ClCompile Include="code.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
