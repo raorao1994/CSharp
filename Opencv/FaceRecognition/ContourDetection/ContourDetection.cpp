@@ -1,6 +1,6 @@
 // ContourDetection.cpp : 定义控制台应用程序的入口点。
 //学习地址：http://blog.csdn.net/morewindows/article/details/8253174
-//第五篇 轮廓检测 上
+//第五篇 轮廓检测
 #include "stdafx.h"
 #include <opencv2/opencv.hpp>  
 using namespace std;
@@ -142,8 +142,8 @@ int ContourDetection2()
 
 int main(int argc, char** argv)
 {
-	//int i=ContourDetection1();
-	int i = ContourDetection2();
+	int i=ContourDetection1();
+	//int i = ContourDetection2();
 	return 0;
 }
 
