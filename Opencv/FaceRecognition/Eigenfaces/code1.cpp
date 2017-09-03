@@ -261,13 +261,13 @@ int main() {
 	}
 	#pragma endregion
 	/******************************************************/
-
-	//Ptr<FaceRecognizer> model1 = createFisherFaceRecognizer();
-	//Ptr<FaceRecognizer> model2 = createLBPHFaceRecognizer();
-	Ptr<FaceRecognizer> model3 = createEigenFaceRecognizer();
-	//model1->train(images, labels);
-	//model2->train(images, labels);
-	model3->train(images, labels);
+	//三种识别模式
+	//Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
+	//Ptr<FaceRecognizer> model = createLBPHFaceRecognizer();
+	Ptr<FaceRecognizer> model = createEigenFaceRecognizer();
+	//model->train(images, labels);
+	//model->train(images, labels);
+	model->train(images, labels);
 
 	int count = 0;
 	int frame_count = 0;
@@ -318,7 +318,7 @@ int main() {
 				double confidence, confidence2, confidence3 = 10000.0;
 				//model1->predict(face_resized, prediction, confidence);
 				//model2->predict(face_resized, prediction2, confidence2);
-				model3->predict(face_resized, prediction3, confidence3);
+				model->predict(face_resized, prediction3, confidence3);
 				string name = names[prediction3]+" confidence = "+ convertToString(confidence3);
 				cout << "这是第几个:" << names[prediction3] << "相识度为:" << confidence3 << endl;
 				//Mat save_resized;
