@@ -101,7 +101,8 @@ string convertToString(double d) {
 }
 
 int main() {
-
+    char *rtsp = "rtsp://localhost:8554/vlc";
+	rtsp = "rtmp://live.hkstv.hk.lxdns.com/live/hks";
 	/********************************* hard coded values **************************************/
 	// size of recognized face
 	int minsize = 50;
@@ -113,7 +114,7 @@ int main() {
 	string fn_csv = "Face/face.csv";
 	// path to haarcascades
 	string fn_haar = "data/haarcascade_frontalface_alt.xml";
-	vector<string> names = { "0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26" };
+	vector<string> names = { "CXW","CJD","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26" };
 	//default command, method could be 0 or 1, param could be any id of a person
 	//默认命令，方法可能是0或1，参数可以是任何身份的人
 	int method = 0;//是否特定识别某人0：识别所有人，1识别某一个人
@@ -213,10 +214,10 @@ int main() {
 	#pragma endregion
 	/*************************************************************************************************************/
 
-	//CvCapture *cap1 = cvCaptureFromFile(DEFAULT_RTSP);
-	VideoCapture cap1(0);
+	//CvCapture *cap = cvCaptureFromFile(rtsp);
 	//获取摄像头  
-	//CvCapture* cap1 = cvCreateCameraCapture(-1);
+	VideoCapture cap1(0);
+	
 	CascadeClassifier cascade;
 	//cvNamedWindow("face recognition", CV_WINDOW_AUTOSIZE);
 	// These vectors hold the images and corresponding labels:
@@ -279,12 +280,13 @@ int main() {
 	{
 		frame_count++;
 		frame_count = frame_count % 100000;
+		
+		//获取要识别的图片
 		Mat frame;
 		cap1 >> frame;
-		IplImage *img_v = &IplImage(frame);
-
-
-		//IplImage *img_v = cvQueryFrame(cap1);
+		IplImage *img_v = &IplImage(frame);//本地摄像头
+		
+		//IplImage *img_v = cvQueryFrame(cap);//rtsp流
 		if (!img_v) {
 			printf("no image %d\n", frame_count);
 			continue;
@@ -294,7 +296,6 @@ int main() {
 
 		Mat gray, smallImg(cvRound(img.rows / scale_h), cvRound(img.cols / scale_w), CV_8UC1);
 		cvtColor(img, gray, CV_BGR2GRAY);
-
 		resize(img, smallImg, smallImg.size(), 0, 0, INTER_LINEAR);
 
 		string json_result = "";

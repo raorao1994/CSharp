@@ -9,6 +9,7 @@ using namespace cv;
 #include <opencv2/highgui/highgui.hpp>  
 #include <opencv2/imgproc/imgproc.hpp>  
 #include <iostream>  
+//≈ƒ’’£¨±£¥ÊÕº∆¨
 int takephoto() 
 {
 	VideoCapture cap(0);
@@ -56,11 +57,10 @@ int video()
 		cvtColor(frame, edges, CV_BGR2GRAY);
 		GaussianBlur(edges, edges, Size(7, 7), 1.5, 1.5);
 		Canny(edges, edges, 0, 30, 3);
-
-		IplImage *img_v = &IplImage(edges);
-
-		cvResize(img_v, img_v, CV_INTER_NN);
-		resize(edges, edges, Size(), 1.5, 1.5);
+		//Õº∆¨Àı∑≈
+		//IplImage *img_v = &IplImage(edges);
+		//cvResize(img_v, img_v, CV_INTER_NN);
+		//resize(edges, edges, Size(), 1.5, 1.5);
 		imshow(" ”∆µ", edges);
 		//cvShowImage(" ”∆µ", img_v);
 		char key = waitKey(100);
@@ -191,8 +191,8 @@ int video3()
 
 int main()
 {
-	//takephoto();
-	video();
+	takephoto();
+	//video();
 	//video2();
 	//video3();
 	return 0;
