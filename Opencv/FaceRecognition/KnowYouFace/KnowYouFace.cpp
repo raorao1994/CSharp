@@ -82,6 +82,9 @@ int main()
 		Mat frame;
 		//从视频中获取图像
 		cap >> frame;
+		//IplImage *pImage = cvLoadImage("F://SVN//CShap//trunk//Opencv//FaceRecognition//KnowYouFace//Face//s13//17.jpg", CV_LOAD_IMAGE_UNCHANGED);
+		//frame= cv::cvarrToMat(pImage);
+		//frame = images[0];
 		//转成灰色
 		//对图像进行缩放，增加识别速度
 		int scale = 2;
@@ -138,11 +141,19 @@ int main()
 			    //将图片转为测试图片大小
 				resize(Testface, face_resized, Size(im_width, im_height), 1.0, 1.0, INTER_CUBIC);
 				int prediction= -1;//比对结果index
-				double confidence = 10000.0;//比对匹配度
+				double confidence = 0.0;//比对匹配度
 				//人脸比对
 				model->predict(face_resized, prediction, confidence);
 				cout << "这是第" << prediction << "个  相识度为:" << confidence << endl;
-				string text = format("%x, confidence = %f", prediction, confidence);
+				string text = format("%f, confidence = %f", prediction, confidence);
+				int n = prediction;
+				std::stringstream ss,ss1;
+				std::string str,str1;
+				ss << n;
+				ss >> str;
+				ss1 << confidence;
+				ss1 >> str1;
+				text = str+", confidence = "+ str1;
 				//将文字添加到img
 				putText(frame, text, Point(center.x - faces[i].width, center.y- faces[i].height), FONT_HERSHEY_PLAIN, 1.0, CV_RGB(0, 255, 0), 2.0);
 			}
