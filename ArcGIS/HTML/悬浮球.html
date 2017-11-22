@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="js/jquery.js"></script>
+    <style>
+        .mapselect * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .mapselect {
+            position: absolute;
+            top: 100px;
+            left: 100px;
+        }
+
+        .mapselect_icon {
+            width: 44px;
+            height: 35px;
+            border-radius: 14px;
+            box-shadow: 0 1px 5px rgba(0,0,0,.4);
+            background: #fff;
+            background-size: cover;
+        }
+
+            .mapselect_icon img {
+                width: 31px;
+                height: 27px;
+                margin-left: 7px;
+                margin-top: 4px;
+            }
+        .mapselect_sel {
+            box-shadow: 0 1px 5px rgba(0,0,0,.4);
+            background: #fff;
+            font-size:12px;
+            display:none;
+            width:60px;
+            text-align:center;
+        }
+            .mapselect_sel div {
+                width:100%;
+                height:20px;
+            }
+                .mapselect_sel div:hover {
+                    background-color:lightgreen;
+                    cursor:pointer;
+                }
+    </style>
+</head>
+<body>
+    <!--地图选择-->
+    <div class="mapselect">
+        <div class="mapselect_icon">
+            <img src="img/layer.png" />
+        </div>
+        <div class="mapselect_sel">
+            <div data-item="百度地图">百度地图</div>
+            <div data-item="四维地图">四维地图</div>
+            <div data-item="Google">Google</div>
+            <div data-item="高德地图">高德地图</div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        //图层选择
+        $(".mapselect").mouseover(function () {
+            $(".mapselect_icon").css("display", "none");
+            $(".mapselect_sel").css("display", "block");
+        });
+        $(".mapselect").mouseout(function () {
+            $(".mapselect_sel").css("display", "none");
+            $(".mapselect_icon").css("display", "block");
+        });
+        $(".mapselect_sel div").click(function () {
+            var item = $(this).data("item");
+            alert(item);
+        });
+    });
+</script>
