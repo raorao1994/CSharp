@@ -1,0 +1,18 @@
+static void Main(string[] args)
+{
+    Console.Title = "ServiceStack Console Client";
+
+    using (var client = new Soap11ServiceClient("http://localhost:1337"))
+    {
+        List<Ticket> queuedTickets = client.Send<List<Ticket>>(
+            new GetAllTicketsInQueueRequest()) ;
+        if (queuedTickets != null)
+        {
+            foreach (Ticket ticket in queuedTickets)
+            {
+                PrintTicket(ticket);
+            }
+        }
+    }
+
+    Console.ReadKey();
