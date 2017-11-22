@@ -40,6 +40,22 @@ int main()
 
 	cv::waitKey();
 
+	//frame= cv::cvarrToMat(pImage); img转mat
+
+	//1. cv::Mat->IplImage
+	//	cv::Mat matimg = cv::imread("heels.jpg");
+	//IplImage* iplimg;
+	//*iplimg = IplImage(matimg);
+	//2. IplImage->cv::Mat
+	//	IplImage* iplimg = cvLoadImage("heels.jpg");
+	//cv::Mat matimg;
+	//matimg = cv::Mat(iplimg);
+
+	//图片提取
+	//创建宽度为 320,高度为 240 的 3 通道图像
+	//Mat img(Size(320, 240), CV_8UC3);
+	//roi 是表示 img 中 Rect(10,10,100,100)区域的对象
+	//Mat roi(img, Rect(10, 10, 100, 100));
 	return 0;
 }
 

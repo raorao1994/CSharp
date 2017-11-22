@@ -94,7 +94,7 @@ int main()
 		resize(gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR);
 		//变换后的图像进行直方图均值化处理
 		equalizeHist(smallImg, smallImg);
-		
+		//imshow("灰度图像", smallImg);
 		cascade.detectMultiScale(smallImg, faces,
 			1.1, 2, 0
 			//|CV_HAAR_FIND_BIGGEST_OBJECT
@@ -132,14 +132,28 @@ int main()
 				center.y = cvRound((faces[i].y + faces[i].height*0.5)*scale);
 				int radius = cvRound((faces[i].width + faces[i].height)*0.25*scale);
 				CvRect rr = cvRect(center.x - radius, center.y - radius, faces[i].width * 2, faces[i].height * 2);
-				rectangle(frame, rr, color, 1, 8, 0);
-				//开始人脸比对
-				Mat face_resized;
+				rectangle(frame, rr, color, 1, 8, 0);//画矩形框
 				//获取测试图片大小
 				int im_width = images[0].cols;
 				int im_height = images[0].rows;
+				CvRect rect = cvRect(center.x- im_width/2, center.y - im_height / 2, im_width, im_height);
+				//开始人脸比对
+				Mat face_resized(Size(im_height, im_height), CV_8UC1);
+				try
+				{
+					Mat fa(frame, rect);//cvRect(0,0, im_width, im_height)
+					imshow("人脸", fa);
+					cvtColor(fa, face_resized, CV_BGR2GRAY);
+					//face_resized = fa;
+				}
+				catch (const std::exception&)
+				{
+					continue;
+				}
+				
 			    //将图片转为测试图片大小
-				resize(Testface, face_resized, Size(im_width, im_height), 1.0, 1.0, INTER_CUBIC);
+				//resize(Testface, face_resized, Size(im_width, im_height), 1.0, 1.0, INTER_CUBIC);
+				imshow("人脸", face_resized);
 				int prediction= -1;//比对结果index
 				double confidence = 0.0;//比对匹配度
 				//人脸比对
