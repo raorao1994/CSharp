@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -121,43 +122,43 @@
     <Content Include="js\portal\raorao-map-arcgis.js" />
     <Content Include="js\portal\raorao-map-baidu.js" />
     <Content Include="js\portal\RaoRao.js" />
-    <Content Include="my\css\bootstrap.css" />
-    <Content Include="my\css\clndr.css" />
-    <Content Include="my\css\style.css" />
-    <Content Include="my\images\arrows.png" />
-    <Content Include="my\images\banner.jpg" />
-    <Content Include="my\images\bg.jpg" />
-    <Content Include="my\images\g1.jpg" />
-    <Content Include="my\images\g2.jpg" />
-    <Content Include="my\images\g3.jpg" />
-    <Content Include="my\images\g4.jpg" />
-    <Content Include="my\images\g5.jpg" />
-    <Content Include="my\images\logo.png" />
-    <Content Include="my\images\logo2.png" />
-    <Content Include="my\images\pic1.jpg" />
-    <Content Include="my\images\pic2.jpg" />
-    <Content Include="my\images\pic3.jpg" />
-    <Content Include="my\images\pic4.jpg" />
-    <Content Include="my\images\pic5.jpg" />
-    <Content Include="my\images\pic6.jpg" />
-    <Content Include="my\images\pic7.jpg" />
-    <Content Include="my\images\pic8.jpg" />
-    <Content Include="my\images\pic9.jpg" />
-    <Content Include="my\images\s1.jpg" />
-    <Content Include="my\images\s2.jpg" />
-    <Content Include="my\images\s3.jpg" />
-    <Content Include="my\images\s4.jpg" />
-    <Content Include="my\images\social.png" />
-    <Content Include="my\images\top_arrow.png" />
-    <Content Include="my\index.html" />
-    <Content Include="my\js\clndr.js" />
-    <Content Include="my\js\easing.js" />
-    <Content Include="my\js\jquery-1.11.1.min.js" />
-    <Content Include="my\js\moment-2.2.1.js" />
-    <Content Include="my\js\move-top.js" />
-    <Content Include="my\js\nav.js" />
-    <Content Include="my\js\site.js" />
-    <Content Include="my\js\underscore-min.js" />
+    <Content Include="RaoRao\css\bootstrap.css" />
+    <Content Include="RaoRao\css\clndr.css" />
+    <Content Include="RaoRao\css\style.css" />
+    <Content Include="RaoRao\images\arrows.png" />
+    <Content Include="RaoRao\images\banner.jpg" />
+    <Content Include="RaoRao\images\bg.jpg" />
+    <Content Include="RaoRao\images\g1.jpg" />
+    <Content Include="RaoRao\images\g2.jpg" />
+    <Content Include="RaoRao\images\g3.jpg" />
+    <Content Include="RaoRao\images\g4.jpg" />
+    <Content Include="RaoRao\images\g5.jpg" />
+    <Content Include="RaoRao\images\logo.png" />
+    <Content Include="RaoRao\images\logo2.png" />
+    <Content Include="RaoRao\images\pic1.jpg" />
+    <Content Include="RaoRao\images\pic2.jpg" />
+    <Content Include="RaoRao\images\pic3.jpg" />
+    <Content Include="RaoRao\images\pic4.jpg" />
+    <Content Include="RaoRao\images\pic5.jpg" />
+    <Content Include="RaoRao\images\pic6.jpg" />
+    <Content Include="RaoRao\images\pic7.jpg" />
+    <Content Include="RaoRao\images\pic8.jpg" />
+    <Content Include="RaoRao\images\pic9.jpg" />
+    <Content Include="RaoRao\images\s1.jpg" />
+    <Content Include="RaoRao\images\s2.jpg" />
+    <Content Include="RaoRao\images\s3.jpg" />
+    <Content Include="RaoRao\images\s4.jpg" />
+    <Content Include="RaoRao\images\social.png" />
+    <Content Include="RaoRao\images\top_arrow.png" />
+    <Content Include="RaoRao\index.html" />
+    <Content Include="RaoRao\js\clndr.js" />
+    <Content Include="RaoRao\js\easing.js" />
+    <Content Include="RaoRao\js\jquery-1.11.1.min.js" />
+    <Content Include="RaoRao\js\moment-2.2.1.js" />
+    <Content Include="RaoRao\js\move-top.js" />
+    <Content Include="RaoRao\js\nav.js" />
+    <Content Include="RaoRao\js\site.js" />
+    <Content Include="RaoRao\js\underscore-min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
