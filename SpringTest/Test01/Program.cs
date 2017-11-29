@@ -6,8 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 /*
- 控制反转（Inversion of Control，英文缩写为IoC），也叫依赖注入（Dependency Injection）。
-     */
+ * 我们使用Spring.NET框架经常用到的一下几个文件：
+*Common.Logging.dll(必要)
+*Spring.Core.dll(必要)
+*Spring.Data.dll
+*Spring.Aop.dll(可选)
+*Spring.Data.NHibernate21.dll
+*Spring.Web.dll
+*在以后的博客里我们会学习一些与NHibernate和Asp.NET MVC结合的例子，可以到Hibernate的官方网站和Asp.NET的官方网站下载各自的框架安装文件。
+*控制反转（Inversion of Control，英文缩写为IoC），也叫依赖注入（Dependency Injection）。
+*/
 namespace Test01
 {
     class Program
