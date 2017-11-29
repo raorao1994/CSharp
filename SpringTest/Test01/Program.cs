@@ -36,7 +36,7 @@ namespace Test01
         private static void IoCMethod()
         {
             IApplicationContext ctx = ContextRegistry.GetContext();
-            IPersonDao dao = ctx.GetObject("PersonDao") as IPersonDao;
+            IPersonDao dao = ctx.GetObject("PersonDao1") as IPersonDao;
             if (dao != null)
             {
                 dao.Save();
