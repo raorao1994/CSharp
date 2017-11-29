@@ -26,7 +26,7 @@ namespace Test02
         static void AppRegistry()
         {
             IApplicationContext ctx = ContextRegistry.GetContext();
-            Console.WriteLine(ctx.GetObject("PersonDao").ToString());
+            Console.WriteLine(ctx.GetObject("PersonDao1").ToString());
         }
 
         static void XmlSystem()

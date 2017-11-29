@@ -9,4 +9,7 @@ namespace Test02
     class PersonDao
     {
     }
+    class PersonDao1
+    {
+    }
 }
