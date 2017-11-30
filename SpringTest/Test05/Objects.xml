@@ -2,12 +2,11 @@
 <objects xmlns="http://www.springframework.net">
   <description>一个简单的控制反转例子</description>
   <object id="computer" type="Test05.Computer, Test05" />
-  <object id="Hoe" type="Test05.Hoe, Test05" />
+  <object id="Hoe1" type="Test05.Hoe, Test05" />
   
   <object id="modernPerson" type="Test05.ModernPerson, Test05">
     <!--<property name="Tool" ref="computer"/>-->
-    <property name="Tool" ref="Hoe"/>
-
+    <property name="Tool" ref="Hoe1"/>
   </object>
 </objects>
 

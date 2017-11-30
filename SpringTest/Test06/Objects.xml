@@ -15,5 +15,17 @@
     <property name="Entity" ref="person" />
 
   </object>
-
+  <object id="MyClass" type="Test06.MyClass, Test06">
+    <!--属性值类型注入-->
+    <property name="me">
+      <object type="Test06.My, Test06">
+        <property name="age" value="28"/>
+        <property name="name" value="cxw"/>
+      </object>
+    </property>
+  </object>
+  <object id="My" type="Test06.My, Test06">
+    <property name="age" value="27"/>
+    <property name="name" value="wwwww"/>
+  </object>
 </objects>

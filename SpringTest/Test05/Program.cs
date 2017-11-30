@@ -21,11 +21,11 @@ namespace Test05
             };
             context = new XmlApplicationContext(xmlFiles);
             //依赖注入(应用篇)
-            //test1();
+            test1();
             //依赖对象的注入(基础篇)
             //test2();
             //集合类型的注入(基础篇)
-            test3();
+            //test3();
             Console.ReadLine();
         }
 

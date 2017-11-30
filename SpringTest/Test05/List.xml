@@ -3,12 +3,12 @@
   <object id="p" type="Test05.Spear, Test05" />
   <object id="PersonList" type="Test05.PersonList, Test05">
     <!--空集合属性-->
-    <property name="Spears">
+    <!--<property name="Spear">
       <list element-type="Spear">
         <null/>
 
       </list>
-    </property>
+    </property>-->
     <!--System.Collections.IList注入 -->
     <property name="HappyYears">
       <list>
@@ -42,5 +42,6 @@
   </object>
   <object id="oneYear" type="Test05.OneYear,Test05"/>
   <object id="happy" type="Test05.Happy,Test05"/>
+  <object id="Spear" type="Test05.Spear,Test05"></object>
 </objects>
 

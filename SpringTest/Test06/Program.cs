@@ -12,6 +12,9 @@ namespace Test06
     {
         static void Main(string[] args)
         {
+            ObjectFactory factory = ObjectFactory.Instance(@"E:\Github\C#\trunk\SpringTest\Test06\Objects.xml");
+            MyClass ccccc = (MyClass)factory.GetObject("MyClass");
+            ccccc.func();
             //打造简易的依赖注入框架(练习篇)
             //test1();
             //方法的注入(基础篇)

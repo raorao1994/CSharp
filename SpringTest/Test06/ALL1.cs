@@ -8,6 +8,34 @@ using System.Xml.Linq;
 
 namespace Test06
 {
+    public interface Myinterface
+    {
+        string name { get; set; }
+        int age { get; set; }
+        void say();
+    }
+    public class My : Myinterface
+    {
+        public int age
+        {get;set;}
+        public string name
+        { get;set;}
+        public void say()
+        {
+            Console.WriteLine("name:" + name + " age:" + age);
+        }
+    }
+
+    public class MyClass
+    {
+        public Myinterface me;
+
+        public void func()
+        {
+            me.say();
+        }
+    }
+
     public class Person
     {
         public string Name { get; set; }
