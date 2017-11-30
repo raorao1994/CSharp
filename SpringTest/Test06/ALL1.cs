@@ -16,10 +16,8 @@ namespace Test06
     }
     public class My : Myinterface
     {
-        public int age
-        {get;set;}
-        public string name
-        { get;set;}
+        public string name { get; set; }
+        public int age { get; set; }
         public void say()
         {
             Console.WriteLine("name:" + name + " age:" + age);
@@ -28,11 +26,13 @@ namespace Test06
 
     public class MyClass
     {
-        public Myinterface me;
+        public Myinterface mmmm { get; set; } 
+
+        public string name { get; set; }
 
         public void func()
         {
-            me.say();
+            mmmm.say();
         }
     }
 
