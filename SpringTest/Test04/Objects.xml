@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+  <!-- 泛型类型 GenericClass<int> -->
+  <!--<object id="genericClass" type="Test04.GenericClass&lt;int>, Test04" />-->
+  <!--单例模式-->
+  <object id="personDao" type="Test04.PersonDao, Test04" />
+  <!--非单例模式-->
+  <object id="person" type="Test04.Person, Test04" singleton="false" />
+</objects>
