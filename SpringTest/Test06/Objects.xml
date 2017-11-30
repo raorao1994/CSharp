@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects>
+
+  <object id="person" type="Test06.Person, Test06">
+    <!--属性值类型注入-->
+    <property name="Name" value="Liu Dong"/>
+    <property name="Age" value="27"/>
+
+  </object>
+
+  <object id="personDao" type="Test06.PersonDao, Test06">
+    <!--构造器注入-->
+    <constructor-arg name="intProp" value="1"/>
+
+    <property name="Entity" ref="person" />
+
+  </object>
+
+</objects>

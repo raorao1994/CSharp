@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects>
+  <!--查询方法-->
+  <object id="personDao1" type="Test06.PersonDao1, Test06" singleton="false"/>
+  <object id="objectFactory1" type="Test06.ObjectFactory1, Test06">
+    <lookup-method name="CreatePersonDao" object="personDao1"/>
+  </object>
+  <!--替换方法-->
+  <object id="userDao" type="Test06.UserDao, Test06">
+    <replaced-method name="GetValue" replacer="replaceValue">
+      <arg-type match="String"/>
+    </replaced-method>
+  </object>
+  <object id="replaceValue" type="Test06.ReplaceValue, Test06"/>
+  <!--事件注入-->
+  <object id="men" type="Test06.Men, Test06">
+    <listener event="OpenTheDoor" method="OpenThisDoor">
+      <ref object="door"/>
+    </listener>
+  </object>
+  <object id="door" type="Test06.Door, Test06" />
+
+  <!--生命周期接口-->
+  <object id="dog" type="Test06.Dog, Test06"
+          init-method="Init" destroy-method="Destroy" />
+  <!--抽象对象定义和子对象定义-->
+  <object id="parent" type="Test06.Parent, Test06" abstract="true">
+    <property name="Name" value="parent"/>
+  </object>
+
+  <object id="child" type="Test06.Child, Test06" parent="parent"/>
+</objects>
