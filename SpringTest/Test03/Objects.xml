@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<objects xmlns="http://www.springframework.net">
+
+  <!--构造器-->
+  <object id="personDao" type="Test03.PersonDao, Test03" />
+
+  <!--嵌套类型-->
+  <object id="person" type="Test03.PersonDao+Person, Test03" />
+
+  <!--静态工厂-->
+  <object id="staticObjectsFactory" type="Test03.StaticObjectsFactory, Test03" factory-method="CreateInstance"/>
+
+  <!-- 实例工厂 -->
+  <object id="instanceObjectsFactory" type="Test03.InstanceObjectsFactory, Test03" /><!--工厂-->
+  <object id="instancePersonDao" factory-method="CreateInstance" factory-object="instanceObjectsFactory" /> <!--创建的对象-->
+
+  <!-- 泛型类型 GenericClass<int> -->
+  <object id="genericClass" type="Test03.GenericClass&lt;int>, Test03" />
+
+
+</objects>
