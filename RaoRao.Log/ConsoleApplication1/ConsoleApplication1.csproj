@@ -53,7 +53,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\Log4.xml" />
+    <Content Include="Config\Log4.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RaoRao.Log\RaoRao.Log.csproj">
