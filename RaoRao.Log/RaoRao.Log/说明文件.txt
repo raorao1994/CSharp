@@ -1,4 +1,4 @@
-﻿1、引用log4net.DLL和RaoRao.Log.DLL文件
+﻿1、引用log4net.DLL和RaoRao.Log.DLL文件（.NET Framework4.0以上版本使用）
 2、加载Log4.XML文件
 3、在app.config或者web.config文件中添加节点
 <appSettings>
