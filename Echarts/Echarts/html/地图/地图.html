@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>地图</title>
+    <meta charset="utf-8" />
+    <script src="../../JS/jquery.js"></script>
+    <!-- 1.0、引入 echarts.js -->
+    <script src="../../JS/echarts.js"></script>
+    <script src="../../JS/other/china.js"></script>
+    <script src="../../JS/echarts-2.2-2.7/geoJson/china-main-city/china-main-city-map.js"></script>
+    <style>
+        #china-map {
+            width: 1000px;
+            height: 1000px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <select id="city">
+        
+    </select>
+    <!-- 2.0、为ECharts准备一个具备大小（宽高）的Dom -->
+    <div style="width:100%;height:960px;" id="echart">
+
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        //加载地图列表
+        $.each(cityMap, function (name, val) {
+            $("#city").append('<option value="'+val+'">'+name+'</option>');
+        });
+        // 3.0、基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart'));
+
+        // 4.0、指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '降水量',
+                subtext: '纯属虚构',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            visualMap: {
+                min: 0,
+                max: 1000,
+                left: 'left',
+                top: 'bottom',
+                text: ['高', '低'],
+                calculable: true
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    dataView: { readOnly: false },
+                    saveAsImage: {}
+                }
+            },
+            animation: true,
+            animationDurationUpdate: 1000,
+            animationEasingUpdate: 'cubicInOut',
+            series: [
+                {
+                    name: 'a',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: true,
+                    //data: [
+                    //    { name: '北京', value: randomData() },
+                    //    { name: '天津', value: randomData() },
+                    //    { name: '上海', value: randomData() },
+                    //    { name: '重庆', value: randomData() },
+                    //    { name: '河北', value: randomData() },
+                    //    { name: '河南', value: randomData() },
+                    //    { name: '云南', value: randomData() },
+                    //    { name: '辽宁', value: randomData() },
+                    //    { name: '黑龙江', value: randomData() },
+                    //    { name: '湖南', value: randomData() },
+                    //    { name: '安徽', value: randomData() },
+                    //    { name: '山东', value: randomData() },
+                    //    { name: '新疆', value: randomData() },
+                    //    { name: '江苏', value: randomData() },
+                    //    { name: '浙江', value: randomData() },
+                    //    { name: '江西', value: randomData() },
+                    //    { name: '湖北', value: randomData() },
+                    //    { name: '广西', value: randomData() },
+                    //    { name: '甘肃', value: randomData() },
+                    //    { name: '山西', value: randomData() },
+                    //    { name: '内蒙古', value: randomData() },
+                    //    { name: '陕西', value: randomData() },
+                    //    { name: '吉林', value: randomData() },
+                    //    { name: '福建', value: randomData() },
+                    //    { name: '贵州', value: randomData() },
+                    //    { name: '广东', value: randomData() },
+                    //    { name: '青海', value: randomData() },
+                    //    { name: '西藏', value: randomData() },
+                    //    { name: '四川', value: randomData() },
+                    //    { name: '宁夏', value: randomData() },
+                    //    { name: '海南', value: randomData() },
+                    //    { name: '台湾', value: randomData() },
+                    //    { name: '香港', value: randomData() },
+                    //    { name: '澳门', value: randomData() }
+                    //]
+                }
+            ]
+        };
+        function randomData() {
+            var val = Math.random() * 100;
+            return val;
+        }
+        // 5.0、使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        //选择地图
+        $("#city").change(function () {
+            var val = $(this).val();
+            $.getJSON("../../JS/echarts-2.2-2.7/geoJson/china-main-city/" + val + ".json", function (mdata) {
+                echarts.registerMap(val, mdata);
+                myChart.setOption({
+                    series: {
+                        name: 'a',
+                        type: 'map',
+                        mapType: val,
+                        roam: true,
+                    }
+                });
+            });
+        });
+    });
+</script>

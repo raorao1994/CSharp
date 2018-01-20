@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>动态添加新节点信息</title>
+    <meta charset="utf-8" />
+    <script src="../../JS/jquery.js"></script>
+    <!-- 1.0、引入 echarts.js -->
+    <script src="../../JS/echarts.js"></script>
+</head>
+<body>
+    <!-- 2.0、为ECharts准备一个具备大小（宽高）的Dom -->
+    <div style="width:100%;height:960px;" id="echart">
+
+    </div>
+</body>
+</html>
+<script>
+    var xdata = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    var ydata = [820, 932, 901, 934, 1290, 1330, 1320];
+    $(function () {
+        // 3.0、基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart'));
+
+        // 4.0、指定图表的配置项和数据
+        var option = {
+            dataZoom: [
+                    {
+                        type: 'slider',//组件现在支持几种子组件:slider,inside,select
+                        xAxisIndex: 0,
+                        start: 10,
+                        end: 60
+                    },
+                    {
+                        type: 'inside',
+                        xAxisIndex: 0,
+                        start: 10,
+                        end: 60
+                    },
+                    {
+                        type: 'slider',
+                        yAxisIndex: 0,
+                        start: 30,
+                        end: 80
+                    },
+                    {
+                        type: 'inside',
+                        yAxisIndex: 0,
+                        start: 30,
+                        end: 80
+                    }
+            ],
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: xdata
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: ydata,
+                type: 'line',
+                smooth: true
+            }]
+        };
+        // 5.0、使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        //添加新节点
+        setInterval(function () {
+            var option = myChart.getOption();
+            var val = 120 + Math.random() * 30 + Math.random() * 500;
+            var time = new Date();
+            ydata.push(parseInt(val));
+            xdata.push(time.getSeconds());
+
+            //删除前一节点
+            //xdata.shift();
+            //ydata.shift();
+
+            myChart.setOption({
+                xAxis: {
+                    data: xdata
+                },
+                series: [{
+                    name: '成交',
+                    data: ydata
+                }]
+            });
+        }, 100);
+    });
+</script>

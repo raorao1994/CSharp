@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>曲线图</title>
+    <meta charset="utf-8" />
+    <script src="../../JS/jquery.js"></script>
+    <!-- 1.0、引入 echarts.js -->
+    <script src="../../JS/echarts.js"></script>
+</head>
+<body>
+    <!-- 2.0、为ECharts准备一个具备大小（宽高）的Dom -->
+    <div style="width:100%;height:960px;" id="echart">
+
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        // 3.0、基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart'));
+
+        // 4.0、指定图表的配置项和数据
+        var option = {
+            xAxis: {
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [820, 932, 901, 934, 1290, 1330, 1320],
+                type: 'line',
+                smooth: true
+            }]
+        };
+        // 5.0、使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    });
+</script>
