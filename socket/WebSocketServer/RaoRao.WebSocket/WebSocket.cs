@@ -44,8 +44,8 @@ namespace RaoRao.WebSocket
         /// <summary>
         /// 初始化WebSocket端口
         /// </summary>
-        /// <param name="Port"></param>
-        public WebSocket(int Port)
+        /// <param name="Port">端口号默认为9000</param>
+        public WebSocket(int Port = 9000)
         {
             port = Port;
         }
@@ -132,26 +132,24 @@ namespace RaoRao.WebSocket
                 {
                     client.Send(WebSocketHelper.PackageHandShakeData(buffer, length));
                     ClientPool[ip].isWeb = true;
-                    Console.WriteLine("客户端:" + ip + "上线了");
+                    Console.WriteLine("客户端：\t" + ip + "\t上线了");
                     return;
                 }
                 if (ClientPool[ip].isWeb)
                 {
                     msg = WebSocketHelper.AnalyzeClientData(buffer, length);
-                    Console.WriteLine("接受到来自客户端:");
-                    MessageReceived(clientip,msg);
-                    //sendmsg(str, ip);
+                    MessageReceived(clientip, msg);
+                    Console.WriteLine("客户端：\t" + ip + "\t信息：\t" + msg);
                 }
-                Console.WriteLine(msg);
             }
             catch (Exception e)
             {
                 //断开连接
                 client.Disconnect(true);
                 ClientPool.Remove(ip);
-                Console.WriteLine("客户端:" + ip + "下线了");
-                if(ClientDisconnected!=null)
-                ClientDisconnected(clientip);
+                Console.WriteLine("客户端：\t" + ip + "\t下线了");
+                if (ClientDisconnected != null)
+                    ClientDisconnected(clientip);
                 return;
             }
         }
@@ -162,7 +160,7 @@ namespace RaoRao.WebSocket
         /// <param name="ip">IPEndPoint</param>
         /// <param name="msg">msg</param>
         /// <returns></returns>
-        public bool SendMsg(IPEndPoint ip,string msg)
+        public bool SendMsg(IPEndPoint ip, string msg)
         {
             try
             {
@@ -173,6 +171,7 @@ namespace RaoRao.WebSocket
                     byte[] buffer = WebSocketHelper.PackageServerData(msg);
                     session.SockeClient.Send(buffer);
                     result = true;
+                    Console.WriteLine("发送至：\t" + ip.ToString()+ "\t信息：\t" + msg);
                 }
                 return result;
             }
@@ -198,6 +197,7 @@ namespace RaoRao.WebSocket
                         byte[] buffer = WebSocketHelper.PackageServerData(msg);
                         session.SockeClient.Send(buffer);
                         result = true;
+                        Console.WriteLine("发送至：\t" + session.IP.ToString() + "\t信息：\t" + msg);
                     }
                 }
                 return result;
