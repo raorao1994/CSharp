@@ -25,6 +25,7 @@ namespace PublicLibrary
                 if (!string.IsNullOrEmpty(echoStr))
                 {
                     context.Response.Write(echoStr);
+                    context.Response.End();
                     return true;
                 }
 
