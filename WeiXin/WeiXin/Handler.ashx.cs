@@ -32,7 +32,6 @@ namespace WeiXin
             str += "tmpStr="+ tmpStr;
             RaoRao.Log.LogOperater.Debug(new Exception(), str);
             HttpRequestHelper.ValidUrl(context,"raorao");
-
         }
 
         public bool IsReusable
