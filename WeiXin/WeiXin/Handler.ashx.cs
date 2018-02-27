@@ -14,7 +14,8 @@ namespace WeiXin
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
-            context.Response.Write("Hello World");
+            RaoRao.Log.LogOperater.Debug(new Exception(), "这是错误");
+            context.Response.Write("OK");
         }
 
         public bool IsReusable

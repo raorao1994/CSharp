@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,6 +16,7 @@ namespace PublicLibrary
     /// </summary>
     public class Utility
     {
+        #region 其他
         //静态成员
         //“显示信息”页的url
         public static string ShowMessageUrl = "~/ShowMessage.aspx";
@@ -28,36 +30,6 @@ namespace PublicLibrary
         {
             HttpServerUtility server = HttpContext.Current.Server;
             return ShowMessageUrl + "?Title=" + server.UrlEncode(title) + "&Description=" + server.UrlEncode(description);
-        }
-
-        /// <summary>
-        /// 对指定字符串进行MD5加密（采用.net的方式）
-        /// </summary>
-        /// <param name="source">需要被加密的字符串</param>
-        /// <param name="source">输出参数，返回加密之后的结果</param>
-        /// <returns>返回是否加密成功</returns>
-        public static bool MD5(string source, out string result)
-        {
-            bool bSuccessed = false;
-            result = "";
-            try
-            {
-                byte[] byteSource = Encoding.Default.GetBytes(source);	//使用默认的ANSI编码
-                System.Security.Cryptography.MD5 md5 = new MD5CryptoServiceProvider();				//创建MD5对象
-                byte[] byteHash = md5.ComputeHash(byteSource);			//进行HASH运算
-                result = BitConverter.ToString(byteHash);				//将得到的结果转化为字符串
-                result = result.Replace("-", "");						//去掉结果中的减号“-”（以下2步是为了和ASP模式下的MD5兼容而设置）
-                result = result.ToLower();								//将结果转化为小写
-                md5.Clear();
-                bSuccessed = true;
-            }
-            catch
-            {
-                bSuccessed = false;
-            }
-            if (!bSuccessed)
-                result = "";
-            return bSuccessed;
         }
 
         /// <summary>
@@ -86,6 +58,9 @@ namespace PublicLibrary
                 cs.RegisterStartupScript(cs.GetType(), scriptKey, string.Format("<script>if(window.confirm('{0}')){1}</script>", alertText, doText));
         }
 
+        #endregion
+
+        #region 字符串操作
         /// <summary>
         /// 得到GUID字符串，去掉“-”号，转换成大写字母
         /// </summary>
@@ -146,7 +121,10 @@ namespace PublicLibrary
                 }
             }
             return false;
-        }
+        } 
+        #endregion
+
+        #region 加密
         /// <summary>
         /// 根据指定的密码和哈希算法生成一个适合于存储在配置文件中的哈希密码
         /// </summary>
@@ -170,6 +148,44 @@ namespace PublicLibrary
             string str_sha1_out = BitConverter.ToString(bytes_sha1_out);
             return str_sha1_out;
         }
+        /// <summary>
+        /// 对指定字符串进行MD5加密（采用.net的方式）
+        /// </summary>
+        /// <param name="source">需要被加密的字符串</param>
+        /// <param name="source">输出参数，返回加密之后的结果</param>
+        /// <returns>返回是否加密成功</returns>
+        public static bool MD5(string source, out string result)
+        {
+            bool bSuccessed = false;
+            result = "";
+            try
+            {
+                byte[] byteSource = Encoding.Default.GetBytes(source);	//使用默认的ANSI编码
+                System.Security.Cryptography.MD5 md5 = new MD5CryptoServiceProvider();				//创建MD5对象
+                byte[] byteHash = md5.ComputeHash(byteSource);			//进行HASH运算
+                result = BitConverter.ToString(byteHash);				//将得到的结果转化为字符串
+                result = result.Replace("-", "");						//去掉结果中的减号“-”（以下2步是为了和ASP模式下的MD5兼容而设置）
+                result = result.ToLower();								//将结果转化为小写
+                md5.Clear();
+                bSuccessed = true;
+            }
+            catch
+            {
+                bSuccessed = false;
+            }
+            if (!bSuccessed)
+                result = "";
+            return bSuccessed;
+        }
+        #endregion
 
+        public static string GetConnectionStrings()
+        {
+            return ConfigurationManager.ConnectionStrings["strCon"].ToString();
+        }
+        public static string GetAppSettings()
+        {
+            return ConfigurationManager.AppSettings["ConnectionString"];
+        }
     }
 }

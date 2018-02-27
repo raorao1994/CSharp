@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -41,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cryptography.cs" />
+    <Compile Include="ExtendHelper.cs" />
+    <Compile Include="MsgCrypt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HttpRequestHelper.cs" />
     <Compile Include="Utility.cs" />
