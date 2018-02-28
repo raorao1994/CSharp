@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,6 +69,18 @@ namespace PublicLibrary
             {
                 return false;
             }
+        }
+        /// <summary>
+        /// 将请求转为string类型
+        /// </summary>
+        /// <param name="context">HttpContext</param>
+        /// <returns>请求数据</returns>
+        public static string HttpRequestToStr(HttpContext context)
+        {
+            Stream s = context.Request.InputStream;
+            byte[] b = new byte[s.Length];
+            s.Read(b, 0, (int)s.Length);
+            return Encoding.UTF8.GetString(b);
         }
     }
 }
