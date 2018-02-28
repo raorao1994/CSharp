@@ -51,8 +51,6 @@ namespace PublicLibrary
             Array.Copy(btmpMsg, 20 + len, bAppid, 0, btmpMsg.Length - 20 - len);
             string oriMsg = Encoding.UTF8.GetString(bMsg);
             appid = Encoding.UTF8.GetString(bAppid);
-
-
             return oriMsg;
         }
 

@@ -17,6 +17,10 @@ namespace WeiXin.Msg
         public void ProcessRequest(HttpContext context)
         {
             string postStr =HttpRequestHelper.HttpRequestToStr(context);
+            string EncodingAESKey = Utility.GetAppSettings("EncodingAESKey");
+            string AppID = Utility.GetAppSettings("AppID");
+            postStr=Cryptography.AES_decrypt(postStr, EncodingAESKey,ref AppID);
+
         }
 
         public bool IsReusable

@@ -179,13 +179,13 @@ namespace PublicLibrary
         }
         #endregion
 
-        public static string GetConnectionStrings()
+        public static string GetConnectionStrings(string key)
         {
-            return ConfigurationManager.ConnectionStrings["strCon"].ToString();
+            return ConfigurationManager.ConnectionStrings[key].ToString();
         }
-        public static string GetAppSettings()
+        public static string GetAppSettings(string key)
         {
-            return ConfigurationManager.AppSettings["ConnectionString"];
+            return ConfigurationManager.AppSettings[key];
         }
     }
 }

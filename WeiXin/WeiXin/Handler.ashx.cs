@@ -14,7 +14,8 @@ namespace WeiXin
 
         public void ProcessRequest(HttpContext context)
         {
-            HttpRequestHelper.ValidUrl(context,"raorao");
+            string token = Utility.GetAppSettings("token");
+            HttpRequestHelper.ValidUrl(context, token);
         }
 
         public bool IsReusable
