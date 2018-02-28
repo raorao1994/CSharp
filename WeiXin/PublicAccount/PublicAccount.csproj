@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EFA87A16-41AE-48BF-AF6D-BFF6EF92B093}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>raoaro.weixin.PublicAccount</RootNamespace>
+    <AssemblyName>PublicAccount</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\NewtonJson\NewtonJson\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessToken.cs" />
+    <Compile Include="AccountInfoCollection.cs" />
+    <Compile Include="CustomerService\CustomerServiceAccount.cs" />
+    <Compile Include="CustomerService\CustomerServiceOnlineInfo.cs" />
+    <Compile Include="CustomerService\CustomerServiceOnlineStatusEnum.cs" />
+    <Compile Include="CustomerService\CustomerServiceOperateEnum.cs" />
+    <Compile Include="CustomerService\CustomerServiceRecord.cs" />
+    <Compile Include="CustomerService\CustomerServiceSession.cs" />
+    <Compile Include="CustomerService\CustomerSession.cs" />
+    <Compile Include="CustomerService\WaitCase.cs" />
+    <Compile Include="DataStatistics\ArticleData.cs" />
+    <Compile Include="DataStatistics\ArticleSummary.cs" />
+    <Compile Include="DataStatistics\ArticleTotal.cs" />
+    <Compile Include="DataStatistics\ArticleTotalDetail.cs" />
+    <Compile Include="DataStatistics\DataStatistics.cs" />
+    <Compile Include="DataStatistics\InterfaceSummary.cs" />
+    <Compile Include="DataStatistics\InterfaceSummaryHour.cs" />
+    <Compile Include="Menu\NewsForMenu.cs" />
+    <Compile Include="Menu\NewsMenu.cs" />
+    <Compile Include="Menu\ValueMenu.cs" />
+    <Compile Include="Meterial\Meterial.cs" />
+    <Compile Include="Meterial\MeterialCount.cs" />
+    <Compile Include="Meterial\MeterialItem.cs" />
+    <Compile Include="Meterial\BatchMeterial.cs" />
+    <Compile Include="Meterial\VideoMeterial.cs" />
+    <Compile Include="Miscellaneous\IParsable.cs" />
+    <Compile Include="DataStatistics\ShareSceneEnum.cs" />
+    <Compile Include="DataStatistics\UpstreamMsg.cs" />
+    <Compile Include="DataStatistics\UpstreamMsgDist.cs" />
+    <Compile Include="DataStatistics\UpstreamMsgHour.cs" />
+    <Compile Include="DataStatistics\UserCumulate.cs" />
+    <Compile Include="DataStatistics\UserRead.cs" />
+    <Compile Include="DataStatistics\UserReadHour.cs" />
+    <Compile Include="DataStatistics\UserShare.cs" />
+    <Compile Include="DataStatistics\UserShareHour.cs" />
+    <Compile Include="DataStatistics\UserSourceEnum.cs" />
+    <Compile Include="DataStatistics\UserSummary.cs" />
+    <Compile Include="MassMessage\MassMessage.cs" />
+    <Compile Include="Miscellaneous\Cryptography.cs" />
+    <Compile Include="CustomerService\CustomerService.cs" />
+    <Compile Include="ErrorMessage.cs" />
+    <Compile Include="MassMessage\MassMessageTypeEnum.cs" />
+    <Compile Include="Menu\BaseMenu.cs" />
+    <Compile Include="Menu\MenuContainer.cs" />
+    <Compile Include="Menu\MenuHelper.cs" />
+    <Compile Include="Menu\MenuTypeEnum.cs" />
+    <Compile Include="Menu\KeyMenu.cs" />
+    <Compile Include="Menu\ViewMenu.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="Miscellaneous\LanguageEnum.cs" />
+    <Compile Include="Miscellaneous\OAuthAccessToken.cs" />
+    <Compile Include="Miscellaneous\OAuthScopeEnum.cs" />
+    <Compile Include="Miscellaneous\QrCode.cs" />
+    <Compile Include="Miscellaneous\SexEnum.cs" />
+    <Compile Include="Miscellaneous\ShortUrl.cs" />
+    <Compile Include="MultiMedia\MultiMediaArticle.cs" />
+    <Compile Include="MultiMedia\MultiMediaHelper.cs" />
+    <Compile Include="MultiMedia\MultiMediaTypeEnum.cs" />
+    <Compile Include="MultiMedia\MultiMediaUploadResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestMessage\HandleRequestMessageDelegate.cs" />
+    <Compile Include="RequestMessage\RequestBaseMessage.cs" />
+    <Compile Include="RequestMessage\RequestClickMessage.cs" />
+    <Compile Include="RequestMessage\RequestEventMessage.cs" />
+    <Compile Include="RequestMessage\RequestImageMessage.cs" />
+    <Compile Include="RequestMessage\RequestKfCloseSessionMessage.cs" />
+    <Compile Include="RequestMessage\RequestKfCreateSessionMessage.cs" />
+    <Compile Include="RequestMessage\RequestKfSwitchSessionMessage.cs" />
+    <Compile Include="RequestMessage\RequestLinkMessage.cs" />
+    <Compile Include="RequestMessage\RequestLocationMessage.cs" />
+    <Compile Include="RequestMessage\RequestLocationSelectMessage.cs" />
+    <Compile Include="RequestMessage\RequestMassSendJobFinishMessage.cs" />
+    <Compile Include="RequestMessage\RequestMessageHelper.cs" />
+    <Compile Include="RequestMessage\RequestMessageTypeEnum.cs" />
+    <Compile Include="RequestMessage\RequestPicMessage.cs" />
+    <Compile Include="RequestMessage\RequestReportLocationMessage.cs" />
+    <Compile Include="RequestMessage\RequestScanCodeMessage.cs" />
+    <Compile Include="RequestMessage\RequestScanMessage.cs" />
+    <Compile Include="RequestMessage\RequestSubscribeMessage.cs" />
+    <Compile Include="RequestMessage\RequestTemplateSendJobFinishMessage.cs" />
+    <Compile Include="RequestMessage\RequestTextMessage.cs" />
+    <Compile Include="RequestMessage\RequestUnsubscribeMessage.cs" />
+    <Compile Include="RequestMessage\RequestVideoMessage.cs" />
+    <Compile Include="RequestMessage\RequestViewMessage.cs" />
+    <Compile Include="RequestMessage\RequestVoiceMessage.cs" />
+    <Compile Include="RequestMessage\ScanCodeInfo.cs" />
+    <Compile Include="RequestMessage\SendLocationInfo.cs" />
+    <Compile Include="RequestMessage\SendPicsInfo.cs" />
+    <Compile Include="ResponseMessage\ResponseBaseMessage.cs" />
+    <Compile Include="ResponseMessage\ResponseImageMessage.cs" />
+    <Compile Include="ResponseMessage\ResponseMessageTypeEnum.cs" />
+    <Compile Include="ResponseMessage\ResponseMusicMessage.cs" />
+    <Compile Include="ResponseMessage\ResponseNewsMessage.cs" />
+    <Compile Include="ResponseMessage\ResponseTextMessage.cs" />
+    <Compile Include="ResponseMessage\ResponseTransferCustomerServiceMessage.cs" />
+    <Compile Include="ResponseMessage\ResponseVideoMessage.cs" />
+    <Compile Include="ResponseMessage\ResponseVoiceMessage.cs" />
+    <Compile Include="DataStatistics\UpstreamMsgCountIntervalEnum.cs" />
+    <Compile Include="DataStatistics\UpstreamMsgTypeEnum.cs" />
+    <Compile Include="Semantic\CommonProtocol\CommonProtocol.cs" />
+    <Compile Include="Semantic\CommonProtocol\CommonProtocolTypeEnum.cs" />
+    <Compile Include="Semantic\CommonProtocol\DateTimeIntervalProtocol.cs" />
+    <Compile Include="Semantic\CommonProtocol\DateTimeRepeatProtocol.cs" />
+    <Compile Include="Semantic\CommonProtocol\DateTimeSingleProtocol.cs" />
+    <Compile Include="Semantic\CommonProtocol\LocationProtocol.cs" />
+    <Compile Include="Semantic\CommonProtocol\NumberProtocol.cs" />
+    <Compile Include="Semantic\Reply\AppCheckTypeEnum.cs" />
+    <Compile Include="Semantic\Reply\AppReply.cs" />
+    <Compile Include="Semantic\Reply\AppSemantic.cs" />
+    <Compile Include="Semantic\Reply\AppSortEnum.cs" />
+    <Compile Include="Semantic\Reply\BaikeReply.cs" />
+    <Compile Include="Semantic\Reply\BaikeSemantic.cs" />
+    <Compile Include="Semantic\Reply\BaseReply.cs" />
+    <Compile Include="Semantic\Reply\BaseSemantic.cs" />
+    <Compile Include="Semantic\Reply\CarInstructionOperatorEnum.cs" />
+    <Compile Include="Semantic\Reply\CarInstructionPositionEnum.cs" />
+    <Compile Include="Semantic\Reply\CarInstructionReply.cs" />
+    <Compile Include="Semantic\Reply\CarInstructionSemantic.cs" />
+    <Compile Include="Semantic\Reply\CookbookReply.cs" />
+    <Compile Include="Semantic\Reply\CookbookSemantic.cs" />
+    <Compile Include="Semantic\Reply\CouponEnum.cs" />
+    <Compile Include="Semantic\Reply\CouponReply.cs" />
+    <Compile Include="Semantic\Reply\CouponSemantic.cs" />
+    <Compile Include="Semantic\Reply\CouponSortEnum.cs" />
+    <Compile Include="Semantic\Reply\FlightReply.cs" />
+    <Compile Include="Semantic\Reply\FlightSeatEnum.cs" />
+    <Compile Include="Semantic\Reply\FlightSemantic.cs" />
+    <Compile Include="Semantic\Reply\FlightSortEnum.cs" />
+    <Compile Include="Semantic\Reply\HotelLevelEnum.cs" />
+    <Compile Include="Semantic\Reply\HotelReply.cs" />
+    <Compile Include="Semantic\Reply\HotelSemantic.cs" />
+    <Compile Include="Semantic\Reply\InstructionOperatorEnum.cs" />
+    <Compile Include="Semantic\Reply\InstructionReply.cs" />
+    <Compile Include="Semantic\Reply\InstructionSemantic.cs" />
+    <Compile Include="Semantic\Reply\InstructionValueEnum.cs" />
+    <Compile Include="Semantic\Reply\IntentEnum.cs" />
+    <Compile Include="Semantic\Reply\MapReply.cs" />
+    <Compile Include="Semantic\Reply\MapSemantic.cs" />
+    <Compile Include="Semantic\Reply\MovieReply.cs" />
+    <Compile Include="Semantic\Reply\MovieSemantic.cs" />
+    <Compile Include="Semantic\Reply\MovieSortEnum.cs" />
+    <Compile Include="Semantic\Reply\MusicReply.cs" />
+    <Compile Include="Semantic\Reply\MusicSemantic.cs" />
+    <Compile Include="Semantic\Reply\MusicSortEnum.cs" />
+    <Compile Include="Semantic\Reply\NearbyReply.cs" />
+    <Compile Include="Semantic\Reply\NearbySemantic.cs" />
+    <Compile Include="Semantic\Reply\NewsReply.cs" />
+    <Compile Include="Semantic\Reply\NewsSemantic.cs" />
+    <Compile Include="Semantic\Reply\NovelReply.cs" />
+    <Compile Include="Semantic\Reply\NovelSemantic.cs" />
+    <Compile Include="Semantic\Reply\NovelSortEnum.cs" />
+    <Compile Include="Semantic\Reply\RemindReply.cs" />
+    <Compile Include="Semantic\Reply\RemindSemantic.cs" />
+    <Compile Include="Semantic\Reply\RemindTypeEnum.cs" />
+    <Compile Include="Semantic\Reply\RestaurantReply.cs" />
+    <Compile Include="Semantic\Reply\RestaurantSemantic.cs" />
+    <Compile Include="Semantic\Reply\RoomTypeEnum.cs" />
+    <Compile Include="Semantic\Reply\RouteSortTypeEnum.cs" />
+    <Compile Include="Semantic\Reply\RouteTypeEnum.cs" />
+    <Compile Include="Semantic\Reply\SearchReply.cs" />
+    <Compile Include="Semantic\Reply\SearchSemantic.cs" />
+    <Compile Include="Semantic\Reply\SortEnum.cs" />
+    <Compile Include="Semantic\Reply\StockCategoryEnum.cs" />
+    <Compile Include="Semantic\Reply\StockReply.cs" />
+    <Compile Include="Semantic\Reply\StockResult.cs" />
+    <Compile Include="Semantic\Reply\StockSemantic.cs" />
+    <Compile Include="Semantic\Reply\TelephoneReply.cs" />
+    <Compile Include="Semantic\Reply\TelephoneSemantic.cs" />
+    <Compile Include="Semantic\Reply\TrainCategoryEnum.cs" />
+    <Compile Include="Semantic\Reply\TrainReply.cs" />
+    <Compile Include="Semantic\Reply\TrainSeatEnum.cs" />
+    <Compile Include="Semantic\Reply\TrainSemantic.cs" />
+    <Compile Include="Semantic\Reply\TrainTypeEnum.cs" />
+    <Compile Include="Semantic\Reply\TravelCategoryEnum.cs" />
+    <Compile Include="Semantic\Reply\TravelReply.cs" />
+    <Compile Include="Semantic\Reply\TravelSemantic.cs" />
+    <Compile Include="Semantic\Reply\TvInstructionDeviceEnum.cs" />
+    <Compile Include="Semantic\Reply\TvInstructionFileTypeEnum.cs" />
+    <Compile Include="Semantic\Reply\TvInstructionOperatorEnum.cs" />
+    <Compile Include="Semantic\Reply\TvInstructionReply.cs" />
+    <Compile Include="Semantic\Reply\TvInstructionSemantic.cs" />
+    <Compile Include="Semantic\Reply\TvInstructionValueEnum.cs" />
+    <Compile Include="Semantic\Reply\TvReply.cs" />
+    <Compile Include="Semantic\Reply\TvSemantic.cs" />
+    <Compile Include="Semantic\Reply\VideoCategoryEnum.cs" />
+    <Compile Include="Semantic\Reply\VideoReply.cs" />
+    <Compile Include="Semantic\Reply\VideoSemantic.cs" />
+    <Compile Include="Semantic\Reply\VideoSortEnum.cs" />
+    <Compile Include="Semantic\Reply\WeatherReply.cs" />
+    <Compile Include="Semantic\Reply\WeatherSemantic.cs" />
+    <Compile Include="Semantic\Reply\WebsiteReply.cs" />
+    <Compile Include="Semantic\Reply\WebsiteSemantic.cs" />
+    <Compile Include="Semantic\Semantic.cs" />
+    <Compile Include="Semantic\ServiceTypeEnum.cs" />
+    <Compile Include="ServerAddress.cs" />
+    <Compile Include="Miscellaneous\MessageEncryptTypeEnum.cs" />
+    <Compile Include="Miscellaneous\HttpHelper.cs" />
+    <Compile Include="AccountInfo.cs" />
+    <Compile Include="TemplateMessage\Industry.cs" />
+    <Compile Include="TemplateMessage\PrimaryIndustryEnum.cs" />
+    <Compile Include="TemplateMessage\Template.cs" />
+    <Compile Include="TemplateMessage\TemplateMessage.cs" />
+    <Compile Include="TemplateMessage\TemplateMessageSendStatusEnum.cs" />
+    <Compile Include="UserManagement\UserGroup.cs" />
+    <Compile Include="UserManagement\UserInfo.cs" />
+    <Compile Include="UserManagement\UserManagement.cs" />
+    <Compile Include="Miscellaneous\Utility.cs" />
+    <Compile Include="Miscellaneous\WXBizMsgCrypt.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PublicLibrary\PublicLibrary.csproj">
+      <Project>{7963f2e2-9b38-4581-a297-35ad27ba6190}</Project>
+      <Name>PublicLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
