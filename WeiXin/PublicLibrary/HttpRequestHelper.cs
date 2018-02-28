@@ -52,6 +52,14 @@ namespace PublicLibrary
             string tmpStr = string.Join("", ArrTmp);
             tmpStr = Utility.HashPasswordForStoringInConfigFile(tmpStr, "SHA1");
             tmpStr = tmpStr.ToLower();
+            //保存验证信息
+            string echoStr = context.Request["echoStr"];//echostr(随机字符串)
+            string str = "echoStr=" + echoStr +
+               "signature=" + signature +
+               "timestamp=" + timestamp +
+               "nonce=" + nonce;
+            str += "tmpStr=" + tmpStr;
+            RaoRao.Log.LogOperater.Debug(new Exception(), str);
             if (tmpStr == signature)
             {
                 return true;
