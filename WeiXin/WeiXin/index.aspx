@@ -13,6 +13,9 @@
             <asp:Button ID="Button1" runat="server" Text="按钮" OnClick="Button1_Click" />
         </div>
         <asp:Label ID="Label1" runat="server" Text="未点击"></asp:Label>
+        <hr />
+        <h2>路径：</h2><asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
     </form>
+    
 </body>
 </html>

@@ -18,6 +18,8 @@ namespace WeiXin
         {
             RaoRao.Log.LogOperater.Debug(new Exception(), "index.aspx点击了");
             this.Label1.Text = "点击了";
+            string str = AppDomain.CurrentDomain.BaseDirectory;
+            this.Label2.Text = str;
         }
     }
 }
