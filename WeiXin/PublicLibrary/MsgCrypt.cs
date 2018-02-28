@@ -105,7 +105,7 @@ namespace PublicLibrary
         // @param sTimeStamp: 时间戳，可以自己生成，也可以用URL参数的timestamp
         // @param sNonce: 随机串，可以自己生成，也可以用URL参数的nonce
         // @param sEncryptMsg: 加密后的可以直接回复用户的密文，包括msg_signature, timestamp, nonce, encrypt的xml格式的字符串,
-        //                        当return返回0时有效
+        //当return返回0时有效
         // return：成功0，失败返回对应的错误码
         public int EncryptMsg(string sReplyMsg, string sTimeStamp, string sNonce, ref string sEncryptMsg)
         {
