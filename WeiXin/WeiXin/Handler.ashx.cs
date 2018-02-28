@@ -14,10 +14,8 @@ namespace WeiXin
 
         public void ProcessRequest(HttpContext context)
         {
-            //context.Response.ContentType = "text/plain";
-            //RaoRao.Log.LogOperater.Debug(new Exception(), "这是错误");
-            //context.Response.Write("OK");
             string echoStr = context.Request["echoStr"];//echostr(随机字符串)
+            //signature（微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。）
             string signature = context.Request["signature"];
             string timestamp = context.Request["timestamp"];//timestamp（时间戳）
             string nonce = context.Request["nonce"];//nonce（随机数）
