@@ -17,8 +17,8 @@ namespace RaoRao.Log
         {
             //GetConfig();
             string[] configFile = ConfigurationSettings.AppSettings.GetValues("Log4");
-            string path = AppDomain.CurrentDomain.BaseDirectory;
-            FileInfo file = new FileInfo(path+configFile[0]);
+            //string path = AppDomain.CurrentDomain.BaseDirectory;
+            FileInfo file = new FileInfo(configFile[0]);
             log4net.Config.XmlConfigurator.Configure(file);
         }
         private static void GetConfig()

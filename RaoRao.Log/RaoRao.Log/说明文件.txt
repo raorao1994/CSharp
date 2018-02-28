@@ -2,6 +2,6 @@
 2、加载Log4.XML文件
 3、在app.config或者web.config文件中添加节点
 <appSettings>
-   <add key="Log4" value="Config/Log4.xml"/> value为Log4.xml相对于应用程序的路径
+   <add key="Log4" value="E:\Github\C#\trunk\RaoRao.Log\ConsoleApplication1\Config\Log4.xml"/> value为Log4.xml的绝对路径
 </appSettings>
 4、通过LogOperater调用日志访问工具
