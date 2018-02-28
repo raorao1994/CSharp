@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicLibrary", "PublicLibr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicAccount", "PublicAccount\PublicAccount.csproj", "{EFA87A16-41AE-48BF-AF6D-BFF6EF92B093}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuling", "raoaro.Tuling\Tuling.csproj", "{6BEA2279-CF55-42D0-B66C-3EF8F1EFF166}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuling", "Tuling\Tuling.csproj", "{6BEA2279-CF55-42D0-B66C-3EF8F1EFF166}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
