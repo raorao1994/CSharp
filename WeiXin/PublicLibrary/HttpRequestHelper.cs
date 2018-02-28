@@ -77,7 +77,7 @@ namespace PublicLibrary
         /// <returns>请求数据</returns>
         public static string HttpRequestToStr(HttpContext context)
         {
-            Stream s = context.Request.InputStream;
+            Stream s = context.Request.GetBufferedInputStream();
             byte[] b = new byte[s.Length];
             s.Read(b, 0, (int)s.Length);
             return Encoding.UTF8.GetString(b);

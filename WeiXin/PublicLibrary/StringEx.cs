@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Script.Serialization;
 
 namespace PublicLibrary
 {
@@ -157,6 +158,28 @@ namespace PublicLibrary
             }
 
             return (Re_STR.Replace("\\r\\n", "")).Replace("\\r", "");
+        }
+        /// <summary>
+        /// json格式字符串转对应对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static T JsonStrToModel<T>(this string str) where T : new()
+        {
+            JavaScriptSerializer json = new JavaScriptSerializer();
+            return json.Deserialize<T>(str);
+        }
+        /// <summary>
+        /// 实体对象转字符串
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string ModelToJsonStr(object model)
+        {
+            JavaScriptSerializer json = new JavaScriptSerializer();
+            return json.Serialize(model);
         }
     }
 }

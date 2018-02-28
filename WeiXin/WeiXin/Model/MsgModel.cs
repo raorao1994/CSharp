@@ -8,19 +8,59 @@ using System.Web;
 namespace WeiXin.Model
 {
     /// <summary>
+    /// 消息类型枚举
+    /// </summary>
+    public enum MsgType
+    {
+        /// <summary>
+        ///文本类型
+        /// </summary>
+        TEXT,
+        /// <summary>
+        /// 图片类型
+        /// </summary>
+        IMAGE,
+        /// <summary>
+        /// 语音类型
+        /// </summary>
+        VOICE,
+        /// <summary>
+        /// 视频类型
+        /// </summary>
+        VIDEO,
+        /// <summary>
+        /// 地理位置类型
+        /// </summary>
+        LOCATION,
+        /// <summary>
+        /// 链接类型
+        /// </summary>
+        LINK,
+        /// <summary>
+        /// 事件类型
+        /// </summary>
+        EVENT
+    }
+    /// <summary>
+    /// 初始信息类
+    /// </summary>
+    [Serializable]
+    public class InitMsg
+    {
+        public string ToUserName { get; set; }
+        public string Encrypt { get; set; }
+    }
+    /// <summary>
     /// 信息父类类
     /// </summary>
     public class BaseMsg
     {
+        public string URL { get; set; }
         public string ToUserName { get; set; }
         public string FromUserName { get; set; }
         public string CreateTime { get; set; }
         public string MsgType { get; set; }
         public string MsgId { get; set; }
-
-        public string Appid { get; set; }
-        public string Token { get; set; }
-        public string EncodingAESKey { get; set; }
     }
     /// <summary>
     /// 文本信息类

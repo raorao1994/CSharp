@@ -31,8 +31,7 @@ namespace PublicLibrary
         /// </summary>
         /// <param name="Input">密文</param>
         /// <param name="EncodingAESKey"></param>
-        /// <returns></returns>
-        /// 
+        /// <returns>明文</returns>
         public static string AES_decrypt(String Input, string EncodingAESKey, ref string appid)
         {
             byte[] Key;
@@ -53,7 +52,12 @@ namespace PublicLibrary
             appid = Encoding.UTF8.GetString(bAppid);
             return oriMsg;
         }
-
+        /// <summary>
+        /// 加密方法
+        /// </summary>
+        /// <param name="Input">明文</param>
+        /// <param name="EncodingAESKey">EncodingAESKey</param>
+        /// <returns>密文</returns>
         public static String AES_encrypt(String Input, string EncodingAESKey, string appid)
         {
             byte[] Key;
