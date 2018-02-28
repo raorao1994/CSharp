@@ -7,7 +7,7 @@
     <ProjectGuid>{EFA87A16-41AE-48BF-AF6D-BFF6EF92B093}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>raoaro.weixin.PublicAccount</RootNamespace>
+    <RootNamespace>PublicAccount</RootNamespace>
     <AssemblyName>PublicAccount</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
