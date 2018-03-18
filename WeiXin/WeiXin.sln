@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicAccount", "PublicAcco
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tuling", "Tuling\Tuling.csproj", "{6BEA2279-CF55-42D0-B66C-3EF8F1EFF166}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{027C512F-0038-4A73-A31E-405A3C656423}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{6BEA2279-CF55-42D0-B66C-3EF8F1EFF166}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BEA2279-CF55-42D0-B66C-3EF8F1EFF166}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BEA2279-CF55-42D0-B66C-3EF8F1EFF166}.Release|Any CPU.Build.0 = Release|Any CPU
+		{027C512F-0038-4A73-A31E-405A3C656423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{027C512F-0038-4A73-A31E-405A3C656423}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{027C512F-0038-4A73-A31E-405A3C656423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{027C512F-0038-4A73-A31E-405A3C656423}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
