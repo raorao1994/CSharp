@@ -1,0 +1,144 @@
+// RecognitionCards.cpp : 定义控制台应用程序的入口点。
+//识别扑克牌
+#include "stdafx.h"
+#include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <iostream>
+#include <io.h>
+#include <map>
+#include <fstream>
+#include <windows.h>
+
+using namespace std;
+using namespace cv;
+
+string imgPath = "../img/4.jpg";
+//string imgTempPath = "../img/template";
+string imgTempPath = "E:/SVN/CShap/trunk/ChessProject/img/template";
+double minTh = 0.04;//0.025
+int aroundPix = 50;
+vector<Mat> TempImgs;
+Mat src;
+
+void GetAllTemp();
+void Recognition(Mat img, Mat src);
+
+int main()
+{
+	time_t start, end;
+	double cost;
+	time(&start);
+	//0、获取所有模版
+	GetAllTemp();
+	//1、读取图片文件
+	Mat src = imread(imgPath);
+	Mat gray;
+	cvtColor(src, gray, CV_BGR2GRAY);
+	Recognition(gray, src);
+	//结束，计算用时
+	time(&end);
+	cost = difftime(end, start);
+	cout << "耗时" << cost << "秒"<<endl;
+	imshow("原图", src);
+	waitKey(0);
+    return 0;
+}
+//读取所有模版
+void GetAllTemp()
+{
+	intptr_t hFile = 0;
+	struct  _finddata_t  fileinfo;
+	string p;
+	long i;
+	if ((hFile = _findfirst(p.assign(imgTempPath).append("\\*").c_str(), &fileinfo)) != -1)
+	{
+		do
+		{
+			if (!(fileinfo.attrib& _A_SUBDIR))
+			{
+				string tmp_path = p.assign(imgTempPath).append("\\").append(fileinfo.name);
+				Mat temp = imread(tmp_path, CV_LOAD_IMAGE_GRAYSCALE);
+				TempImgs.push_back(temp);
+			}
+		} while (_findnext(hFile, &fileinfo) == 0);
+	}
+}
+//识别所有模版
+void Recognition(Mat img,Mat src)
+{
+	for (size_t i = 0; i < TempImgs.size(); i++)
+	{
+		Mat result;
+		//2、读取模版图片
+		Mat temp = TempImgs[i];
+		//3、匹配结果
+		int result_cols = img.cols - temp.cols + 1;
+		int result_rows = img.rows - temp.rows + 1;
+		//4、图像匹配
+		//这里我们使用的匹配算法是标准平方差匹配 method=CV_TM_SQDIFF_NORMED，数值越小匹配度越好
+		matchTemplate(img, temp, result, CV_TM_SQDIFF_NORMED);
+		//5、标准归一化
+		//normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+		//6、计算出匹配值
+		//单目标匹配
+		double minVal = -1;
+		double maxVal;
+		Point minLoc;
+		Point maxLoc;
+		minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+		cout << "匹配度：" << minVal << endl;
+		cout << "-----------分界线-----------" << endl;
+		if (minVal > minTh)continue;
+		//7、绘制出匹配区域
+		/*rectangle(src, minLoc, Point(minLoc.x + temp.cols, minLoc.y + temp.rows),
+			Scalar(0, 0, 0), 2, 8, 0);*/
+		double matchValue = result.at<float>(minLoc.y, minLoc.x);
+		//8、判断临近坐标是否存在匹配点
+		for (int i = minLoc.x- aroundPix; i<minLoc.x+ aroundPix; i++)
+		{
+			//4.2获得resultImg中(j,x)位置的匹配值matchValue  
+			double matchValue = result.at<float>(minLoc.y, i);
+			int tempX = 0;
+			//4.3给定筛选条件  
+			//条件1:概率值大于0.9  
+			//条件2:任何选中的点在x方向和y方向上都要比上一个点大5(避免画边框重影的情况)  
+			if (matchValue < minTh)
+			{
+				//cout << "匹配度：" << matchValue << endl;
+				//5.给筛选出的点画出边框和文字  
+				rectangle(src, Point(i, minLoc.y), Point(i+ temp.cols, minLoc.y + temp.rows),
+					Scalar(0, 255, 0), 2, 8, 0);
+				tempX = i;
+				i += 10;
+			}
+		}
+
+		//多目标匹配
+		//int tempX = 0;
+		//int tempY = 0;
+		//char prob[10] = { 0 };
+		////4.1遍历resultImg  
+		//for (int i = 0; i<result.rows; i++)
+		//{
+		//	for (int j = 0; j<result.cols; j++)
+		//	{
+		//		//4.2获得resultImg中(j,x)位置的匹配值matchValue  
+		//		double matchValue = result.at<float>(i, j);
+		//		sprintf(prob, "%.2f", matchValue);
+		//		//4.3给定筛选条件  
+		//		//条件1:概率值大于0.9  
+		//		//条件2:任何选中的点在x方向和y方向上都要比上一个点大5(避免画边框重影的情况)  
+		//		if (matchValue < 0.09&& abs(i - tempY)>5 && abs(j - tempX)>5)
+		//		{
+		//			//cout << "匹配度：" << matchValue << endl;
+		//			//5.给筛选出的点画出边框和文字  
+		//			rectangle(img, Point(j, i), Point(j + temp.cols, i + temp.rows),
+		//				Scalar(0, 255, 0), 2, 8, 0);
+		//			tempX = j;
+		//			tempY = i;
+		//		}
+		//	}
+		//}
+	}
+}
