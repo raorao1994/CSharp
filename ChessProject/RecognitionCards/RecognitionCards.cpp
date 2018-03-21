@@ -19,27 +19,30 @@ string imgTempPath = "E:/SVN/CShap/trunk/ChessProject/img/template";
 double minTh = 0.04;//0.025
 int aroundPix = 50;
 vector<Mat> TempImgs;
+vector<string> Lables;
 Mat src;
 
 void GetAllTemp();
-void Recognition(Mat img, Mat src);
+vector<string> Recognition(Mat img, Mat src);
 
 int main()
 {
-	time_t start, end;
-	double cost;
-	time(&start);
+	LARGE_INTEGER freq;
+	LARGE_INTEGER start_t, stop_t;
+	double exe_time;
+	QueryPerformanceFrequency(&freq);
 	//0、获取所有模版
 	GetAllTemp();
 	//1、读取图片文件
+	QueryPerformanceCounter(&start_t);
 	Mat src = imread(imgPath);
 	Mat gray;
 	cvtColor(src, gray, CV_BGR2GRAY);
-	Recognition(gray, src);
+	vector<string> str=Recognition(gray, src);
 	//结束，计算用时
-	time(&end);
-	cost = difftime(end, start);
-	cout << "耗时" << cost << "秒"<<endl;
+	QueryPerformanceCounter(&stop_t);
+	exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
+	cout << "耗时" << exe_time << "毫秒"<<endl;
 	imshow("原图", src);
 	waitKey(0);
     return 0;
@@ -60,13 +63,15 @@ void GetAllTemp()
 				string tmp_path = p.assign(imgTempPath).append("\\").append(fileinfo.name);
 				Mat temp = imread(tmp_path, CV_LOAD_IMAGE_GRAYSCALE);
 				TempImgs.push_back(temp);
+				Lables.push_back(fileinfo.name);
 			}
 		} while (_findnext(hFile, &fileinfo) == 0);
 	}
 }
 //识别所有模版
-void Recognition(Mat img,Mat src)
+vector<string> Recognition(Mat img,Mat src)
 {
+	vector<string> resultLable;
 	for (size_t i = 0; i < TempImgs.size(); i++)
 	{
 		Mat result;
@@ -87,33 +92,30 @@ void Recognition(Mat img,Mat src)
 		Point minLoc;
 		Point maxLoc;
 		minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
-		cout << "匹配度：" << minVal << endl;
-		cout << "-----------分界线-----------" << endl;
 		if (minVal > minTh)continue;
 		//7、绘制出匹配区域
 		/*rectangle(src, minLoc, Point(minLoc.x + temp.cols, minLoc.y + temp.rows),
 			Scalar(0, 0, 0), 2, 8, 0);*/
 		double matchValue = result.at<float>(minLoc.y, minLoc.x);
 		//8、判断临近坐标是否存在匹配点
-		for (int i = minLoc.x- aroundPix; i<minLoc.x+ aroundPix; i++)
+		for (int x = minLoc.x- aroundPix; x<minLoc.x+ aroundPix; x++)
 		{
 			//4.2获得resultImg中(j,x)位置的匹配值matchValue  
-			double matchValue = result.at<float>(minLoc.y, i);
-			int tempX = 0;
+			double matchValue = result.at<float>(minLoc.y, x);
 			//4.3给定筛选条件  
 			//条件1:概率值大于0.9  
-			//条件2:任何选中的点在x方向和y方向上都要比上一个点大5(避免画边框重影的情况)  
 			if (matchValue < minTh)
 			{
 				//cout << "匹配度：" << matchValue << endl;
 				//5.给筛选出的点画出边框和文字  
-				rectangle(src, Point(i, minLoc.y), Point(i+ temp.cols, minLoc.y + temp.rows),
+				rectangle(src, Point(x, minLoc.y), Point(x+ temp.cols, minLoc.y + temp.rows),
 					Scalar(0, 255, 0), 2, 8, 0);
-				tempX = i;
-				i += 10;
+				x += 10;
+				int index=Lables[0].find('.');
+				string a = Lables[0].substr(0, index);
+				resultLable.push_back(a);
 			}
 		}
-
 		//多目标匹配
 		//int tempX = 0;
 		//int tempY = 0;
@@ -141,4 +143,5 @@ void Recognition(Mat img,Mat src)
 		//	}
 		//}
 	}
+	return resultLable;
 }
