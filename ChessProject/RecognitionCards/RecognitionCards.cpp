@@ -9,6 +9,7 @@
 #include <map>
 #include <fstream>
 #include <windows.h>
+#include "Helper.h"
 
 using namespace std;
 using namespace cv;

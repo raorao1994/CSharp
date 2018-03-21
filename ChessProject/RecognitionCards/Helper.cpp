@@ -2,15 +2,19 @@
 #include "Helper.h"
 
 
-Helper::Helper()
+Helper::Helper(int Pix, int minThs)
 {
+	aroundPix = Pix;
+	minTh = minThs;
 }
-
 
 Helper::~Helper()
 {
 }
 
+/*
+*stringToLPCWSTR 将string转化为LPCWSTR
+*/
 LPCWSTR Helper::stringToLPCWSTR(string orig)
 {
 	size_t origsize = orig.length() + 1;
@@ -20,7 +24,9 @@ LPCWSTR Helper::stringToLPCWSTR(string orig)
 	mbstowcs_s(&convertedChars, wcstring, origsize, orig.c_str(), _TRUNCATE);
 	return wcstring;
 }
-
+/*
+*CopyScreenToBitmap 获取屏幕位图
+*/
 HBITMAP Helper::CopyScreenToBitmap()
 {
 	int nWidth, nHeight;
@@ -57,7 +63,11 @@ HBITMAP Helper::CopyScreenToBitmap()
 	//返回位图句柄
 	return hBitmap;
 }
-
+/*
+*SaveBitmapToFile 保存屏幕位图
+*HBITMAP hBitmap 位图
+*string szfilename保存路径
+*/
 BOOL Helper::SaveBitmapToFile(HBITMAP hBitmap, string szfilename)
 {
 	HDC hScrDC;
@@ -157,4 +167,76 @@ BOOL Helper::SaveBitmapToFile(HBITMAP hBitmap, string szfilename)
 	CloseHandle(fh);
 
 	return     TRUE;
+}
+
+void Helper::GetAllTemp(string path)
+{
+	intptr_t hFile = 0;
+	struct  _finddata_t  fileinfo;
+	string p;
+	long i;
+	if ((hFile = _findfirst(p.assign(path).append("\\*").c_str(), &fileinfo)) != -1)
+	{
+		do
+		{
+			if (!(fileinfo.attrib& _A_SUBDIR))
+			{
+				string tmp_path = p.assign(path).append("\\").append(fileinfo.name);
+				Mat temp = imread(tmp_path, CV_LOAD_IMAGE_GRAYSCALE);
+				TempImgs.push_back(temp);
+				Lables.push_back(fileinfo.name);
+			}
+		} while (_findnext(hFile, &fileinfo) == 0);
+	}
+}
+
+vector<string> Helper::Recognition(Mat img, Mat src)
+{
+	vector<string> resultLable;
+	for (size_t i = 0; i < TempImgs.size(); i++)
+	{
+		Mat result;
+		//2、读取模版图片
+		Mat temp = TempImgs[i];
+		//3、匹配结果
+		int result_cols = img.cols - temp.cols + 1;
+		int result_rows = img.rows - temp.rows + 1;
+		//4、图像匹配
+		//这里我们使用的匹配算法是标准平方差匹配 method=CV_TM_SQDIFF_NORMED，数值越小匹配度越好
+		matchTemplate(img, temp, result, CV_TM_SQDIFF_NORMED);
+		//5、标准归一化
+		//normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+		//6、计算出匹配值
+		//单目标匹配
+		double minVal = -1;
+		double maxVal;
+		Point minLoc;
+		Point maxLoc;
+		minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+		if (minVal > minTh)continue;
+		//7、绘制出匹配区域
+		/*rectangle(src, minLoc, Point(minLoc.x + temp.cols, minLoc.y + temp.rows),
+		Scalar(0, 0, 0), 2, 8, 0);*/
+		double matchValue = result.at<float>(minLoc.y, minLoc.x);
+		//8、判断临近坐标是否存在匹配点
+		for (int x = minLoc.x - aroundPix; x<minLoc.x + aroundPix; x++)
+		{
+			//4.2获得resultImg中(j,x)位置的匹配值matchValue  
+			double matchValue = result.at<float>(minLoc.y, x);
+			//4.3给定筛选条件  
+			//条件1:概率值大于0.9  
+			if (matchValue < minTh)
+			{
+				//cout << "匹配度：" << matchValue << endl;
+				//5.给筛选出的点画出边框和文字  
+				rectangle(src, Point(x, minLoc.y), Point(x + temp.cols, minLoc.y + temp.rows),
+					Scalar(0, 255, 0), 2, 8, 0);
+				x += 10;
+				int index = Lables[0].find('.');
+				string a = Lables[0].substr(0, index);
+				resultLable.push_back(a);
+			}
+		}
+	}
+	return resultLable;
 }
