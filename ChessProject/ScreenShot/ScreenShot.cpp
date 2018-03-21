@@ -10,71 +10,69 @@
 using namespace std;
 using namespace cv;
 
-LPCWSTR stringToLPCWSTR(std::string orig)
+BOOL SaveBitmapToFile(HBITMAP   hBitmap, string szfilename);
+
+LPCWSTR stringToLPCWSTR(string orig)
 {
 	size_t origsize = orig.length() + 1;
 	const size_t newsize = 100;
 	size_t convertedChars = 0;
 	wchar_t *wcstring = (wchar_t *)malloc(sizeof(wchar_t)*(orig.length() - 1));
 	mbstowcs_s(&convertedChars, wcstring, origsize, orig.c_str(), _TRUNCATE);
-
 	return wcstring;
 }
 //截图1
-int screenshot()
+int screenshot1(string path)
 {
+	//屏幕和内存设备描述表
 	HDC hDC, hMemDC;
+	//屏幕分辨率
 	int x, y;
+	//位图句柄
 	HBITMAP hbmp, holdbmp;
-	DWORD err;
-
-	BOOL b;
-
 	//获取屏幕DC
 	hDC = GetDC(NULL);
-	err = GetLastError();
 	//创建一个内存DC
 	hMemDC = CreateCompatibleDC(hDC);
-	err = GetLastError();
-
 	//获取屏幕大小
 	x = GetDeviceCaps(hDC, HORZRES);
 	y = GetDeviceCaps(hDC, VERTRES);
-	//创建一个和屏幕DC相同的位图
-	hbmp = ::CreateCompatibleBitmap(hDC, x, y);
-	err = ::GetLastError();
-	//把位图选到内存DC中
-	holdbmp = (HBITMAP)::SelectObject(hMemDC, hbmp);
-	//把屏幕DC拷贝到内存DC中
-	b = BitBlt(hMemDC, 0, 0, x, y, hDC, x, y, SRCCOPY);
+	//创建一个与屏幕设备描述表兼容的 位图
+	hbmp = CreateCompatibleBitmap(hDC, x, y);
+	//把新位图选到内存设备描述表中
+	holdbmp = (HBITMAP)SelectObject(hMemDC, hbmp);
+	//把屏幕设备描述表拷贝到内存设备描述表中
+	BitBlt(hMemDC, 0, 0, x, y, hDC, 0, 0, SRCCOPY);
 	//得到位图句柄
-	hbmp = (HBITMAP)::SelectObject(hMemDC, holdbmp);
+	hbmp = (HBITMAP)SelectObject(hMemDC, holdbmp);
+
+	//SaveBitmapToFile(hbmp, path);
+	//return 1;
+	//清除
+	DeleteDC(hMemDC);
+
+	//保存位图
 	//计算每个像数所占字节数
 	int ibits;
 	WORD bitcount;
+	//hDC= CreateDC(stringToLPCWSTR("DISPLAY"), NULL, NULL, NULL);
 	ibits = GetDeviceCaps(hDC, BITSPIXEL)*GetDeviceCaps(hDC, PLANES);
+	//清除
+	DeleteDC(hDC);
 	if (ibits <= 1)
 		bitcount = 1;
-	else if (ibits <= 4)
+	else  if (ibits <= 4)
 		bitcount = 4;
 	else if (ibits <= 8)
 		bitcount = 8;
-	else if (ibits <= 16)
-		bitcount = 16;
-	else if (ibits <= 24)
-		bitcount = 24;
 	else
-		bitcount = 32;
-	DWORD dwtsbsize = 0, dwwritten;//调色板
-								   //计算调色板大小
-	if (bitcount <= 8)
-		dwtsbsize = (1 << bitcount) * sizeof(RGBQUAD);
+		bitcount = 24;
 
 	BITMAP bmp; //位图属性结构
 	BITMAPFILEHEADER bmfhdr; //位图文件头结构
 	BITMAPINFOHEADER bi; //位图信息头结构
 	LPBITMAPINFOHEADER lpbi; //指向位图信息头结构
-	GetObject(hbmp, sizeof(bmp), (LPVOID)&bmp);
+	GetObject(hbmp, sizeof(bmp), (LPSTR)&bmp);
 	bi.biSize = sizeof(BITMAPINFOHEADER);
 	bi.biWidth = bmp.bmWidth;
 	bi.biHeight = bmp.bmHeight;
@@ -87,14 +85,15 @@ int screenshot()
 	bi.biClrUsed = 0;
 	bi.biClrImportant = 0;
 
-	//位图大小
-	DWORD dwbitsize;
-	dwbitsize = ((bmp.bmWidth*bitcount + 31) / 32) * 4 * bmp.bmHeight;
+	//定义调色板大小,位图中像素字节大小，位图文件大小写入文件字节数    
+	DWORD dwPaletteSize =0, dwBmBitsSize = 0, dwwritten=0;//调色板;
+	dwBmBitsSize = ((bmp.bmWidth*bitcount + 31) / 32) * 4 * bmp.bmHeight;
 	//为位图分配内存
 	HANDLE fh, hdib, hpal, holdpal = NULL;
-	hdib = VirtualAlloc(NULL, dwbitsize + dwtsbsize + sizeof(BITMAPINFOHEADER), MEM_COMMIT, PAGE_READWRITE);
-	lpbi = (LPBITMAPINFOHEADER)hdib;
+	hdib = GlobalAlloc(GHND, dwPaletteSize + dwBmBitsSize + sizeof(BITMAPINFOHEADER));
+	lpbi = (LPBITMAPINFOHEADER)GlobalLock(hdib);
 	*lpbi = bi;
+
 	// 处理调色板 
 	hpal = GetStockObject(DEFAULT_PALETTE);
 	if (hpal)
@@ -104,17 +103,17 @@ int screenshot()
 	}
 	// 获取该调色板下新的像素值
 	GetDIBits(hDC, hbmp, 0, (UINT)bmp.bmHeight, (LPSTR)lpbi +
-		sizeof(BITMAPINFOHEADER) + dwtsbsize, (BITMAPINFO*)lpbi, DIB_RGB_COLORS);
+		sizeof(BITMAPINFOHEADER) + dwPaletteSize, (BITMAPINFO*)lpbi, DIB_RGB_COLORS);
 	//恢复调色板 
 	if (holdpal)
 	{
 		SelectPalette(hDC, (HPALETTE)holdpal, true);
 		RealizePalette(hDC);
+		ReleaseDC(NULL, hDC);
 	}
 
 	//创建位图文件 
-	string p = "D:/1.bmp";//C:/1.bmp
-	fh = CreateFile(stringToLPCWSTR(p), GENERIC_WRITE, 0, NULL,
+	fh = CreateFile(stringToLPCWSTR(path), GENERIC_WRITE, 0, NULL,
 		CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL |
 		FILE_FLAG_SEQUENTIAL_SCAN, NULL);
 	if (fh == INVALID_HANDLE_VALUE)
@@ -124,25 +123,26 @@ int screenshot()
 	bmfhdr.bfType = 0x4d42; //"bm"
 	//位图大小
 	DWORD dwbmpsize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) +
-		dwtsbsize + dwbitsize;
+		dwBmBitsSize + dwPaletteSize;
 	bmfhdr.bfSize = dwbmpsize;
 	bmfhdr.bfReserved1 = 0;
 	bmfhdr.bfReserved2 = 0;
 	bmfhdr.bfOffBits = (DWORD)sizeof(BITMAPFILEHEADER) +
-		(DWORD)sizeof(BITMAPINFOHEADER) + dwtsbsize;
+		(DWORD)sizeof(BITMAPINFOHEADER) + dwPaletteSize;
 
 	// 写入位图文件头
 	WriteFile(fh, (LPSTR)&bmfhdr, sizeof(BITMAPFILEHEADER), &dwwritten, NULL);
-
 	// 写入位图文件其余内容
-	WriteFile(fh, (LPSTR)lpbi, dwbitsize, &dwwritten, NULL);
-	//清除 
-	VirtualFree(hdib, dwbitsize + dwtsbsize + sizeof(BITMAPINFOHEADER), MEM_DECOMMIT);
+	WriteFile(fh, (LPSTR)lpbi, dwbmpsize, &dwwritten, NULL);
+	//清除                    
+	GlobalUnlock(hdib);
+	GlobalFree(hdib);
 	CloseHandle(fh);
 }
 //截图2
-HBITMAP CopyScreenToBitmap(int &nWidth, int &nHeight)
+HBITMAP CopyScreenToBitmap()
 {
+	int nWidth, nHeight;
 	//屏幕和内存设备描述表
 	HDC hScrDC, hMemDC;
 	//位图句柄
@@ -288,12 +288,16 @@ int main()
 	QueryPerformanceFrequency(&freq);
 	QueryPerformanceCounter(&start_t);
 	//screenshot();
-	int w=1280, h=960;
-	HBITMAP img=CopyScreenToBitmap(w, h);
+	//截图
+	HBITMAP img=CopyScreenToBitmap();
 	SaveBitmapToFile(img,"D:/1.bmp");
+	screenshot1("D:/1.bmp");
+
 	QueryPerformanceCounter(&stop_t);
 	exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
 	cout << "耗时" << exe_time << "毫秒" << endl;
+	Mat imgb=imread("D:/1.bmp");
+	imshow("imgb", imgb);
 	waitKey();
 	return 0;
 }
