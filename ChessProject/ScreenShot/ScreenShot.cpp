@@ -286,18 +286,22 @@ int main()
 	LARGE_INTEGER start_t, stop_t;
 	double exe_time;
 	QueryPerformanceFrequency(&freq);
-	QueryPerformanceCounter(&start_t);
-	//screenshot();
-	//½ØÍ¼
-	HBITMAP img=CopyScreenToBitmap();
-	SaveBitmapToFile(img,"D:/1.bmp");
-	screenshot1("D:/1.bmp");
-
-	QueryPerformanceCounter(&stop_t);
-	exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
-	cout << "ºÄÊ±" << exe_time << "ºÁÃë" << endl;
-	Mat imgb=imread("D:/1.bmp");
-	imshow("imgb", imgb);
+	
+	while (true) {
+		//½ØÍ¼
+		QueryPerformanceCounter(&start_t);
+		//screenshot();
+		HBITMAP img = CopyScreenToBitmap();
+		SaveBitmapToFile(img, "D:/1.bmp");
+		//screenshot1("D:/1.bmp");
+		QueryPerformanceCounter(&stop_t);
+		exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
+		cout << "ºÄÊ±" << exe_time << "ºÁÃë" << endl;
+		Mat imgb = imread("D:/1.bmp");
+		imshow("imgb", imgb);
+		waitKey(30);
+	}
+	
 	waitKey();
 	return 0;
 }
