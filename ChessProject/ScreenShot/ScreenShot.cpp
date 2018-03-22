@@ -172,7 +172,7 @@ HBITMAP CopyScreenToBitmap()
 	//清除
 	DeleteDC(hScrDC);
 	DeleteDC(hMemDC);
-
+	DeleteObject(hOldBitmap);
 	//返回位图句柄
 	return hBitmap;
 }
@@ -278,8 +278,30 @@ BOOL SaveBitmapToFile(HBITMAP   hBitmap, string szfilename)
 	return     TRUE;
 
 }
+//_mat图像转HBITMAP
+BOOL MatToHBitmap(HBITMAP& _hBmp, Mat& _mat)
+{
+	//MAT类的TYPE=（nChannels-1+ CV_8U）<<3
+	int nChannels = (_mat.type() >> 3) - CV_8U + 1;
+	int iSize = _mat.cols*_mat.rows*nChannels;
+	_hBmp = CreateBitmap(_mat.cols, _mat.rows,
+		1, nChannels * 8, _mat.data);
+	return TRUE;
 
-
+}
+//HBITMAP图像转_mat
+BOOL HBitmapToMat(HBITMAP& _hBmp, Mat& _mat)
+{
+	BITMAP bmp;
+	GetObject(_hBmp, sizeof(BITMAP), &bmp);
+	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+	int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+	Mat v_mat;
+	v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
+	GetBitmapBits(_hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, v_mat.data);
+	_mat = v_mat;
+	return TRUE;
+}
 int main()
 {
 	LARGE_INTEGER freq;
@@ -292,14 +314,16 @@ int main()
 		QueryPerformanceCounter(&start_t);
 		//screenshot();
 		HBITMAP img = CopyScreenToBitmap();
-		SaveBitmapToFile(img, "D:/1.bmp");
+		//SaveBitmapToFile(img, "D:/1.bmp");
 		//screenshot1("D:/1.bmp");
 		QueryPerformanceCounter(&stop_t);
 		exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
 		cout << "耗时" << exe_time << "毫秒" << endl;
-		Mat imgb = imread("D:/1.bmp");
-		imshow("imgb", imgb);
-		waitKey(30);
+		//Mat imgb = imread("D:/1.bmp");
+		Mat imgb;
+		if(HBitmapToMat(img, imgb))
+			imshow("imgb", imgb);
+		waitKey(1000);
 	}
 	
 	waitKey();
