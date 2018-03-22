@@ -32,21 +32,53 @@ int main()
 	LARGE_INTEGER start_t, stop_t;
 	double exe_time;
 	QueryPerformanceFrequency(&freq);
-	//0、获取所有模版
-	GetAllTemp();
-	//1、读取图片文件
-	QueryPerformanceCounter(&start_t);
-	Mat src = imread(imgPath);
-	Mat gray;
-	cvtColor(src, gray, CV_BGR2GRAY);
-	vector<string> str=Recognition(gray, src);
-	//结束，计算用时
-	QueryPerformanceCounter(&stop_t);
-	exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
-	cout << "耗时" << exe_time << "毫秒"<<endl;
-	imshow("原图", src);
+	////0、获取所有模版
+	//GetAllTemp();
+	////1、读取图片文件
+	//QueryPerformanceCounter(&start_t);
+	//Mat src = imread(imgPath);
+	//Mat gray;
+	//cvtColor(src, gray, CV_BGR2GRAY);
+	//vector<string> str=Recognition(gray, src);
+	////结束，计算用时
+	//QueryPerformanceCounter(&stop_t);
+	//exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
+	//cout << "耗时" << exe_time << "毫秒"<<endl;
+	//imshow("原图", src);
+	//waitKey(0);
+ //   return 0;
+
+	//1、实例化操作类
+	Helper helper = Helper(30,0.06);
+	//2、加载模版文件到内存
+	helper.GetAllTemp("E:\\SVN\\CShap\\trunk\\ChessProject\\img\\template1");
+	//3、截图识别
+	Mat ScreenImg,gary;
+	while (true)
+	{
+		QueryPerformanceCounter(&start_t);
+		//截取屏幕
+		HBITMAP bitMap = helper.CopyScreenToBitmap();
+		//转换成Mat对象
+		helper.HBitmapToMat(bitMap, ScreenImg);
+		//屏幕Mat对象转灰度图
+		cvtColor(ScreenImg, gary, CV_BGR2GRAY);
+		vector<string> lables= helper.Recognition(gary, ScreenImg);
+		cout << "识别出:" << lables.size() << "张牌" << endl;
+		string str = "";
+		for (size_t i = 0; i < lables.size(); i++)
+		{
+			str.append(lables[i]);
+		}
+		cout << "牌为:" << str << endl;
+		QueryPerformanceCounter(&stop_t);
+		exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
+		cout << "耗时" << exe_time << "毫秒" << endl;
+		imshow("ScteenImg", ScreenImg);
+		waitKey(10);
+	}
 	waitKey(0);
-    return 0;
+	return 0;
 }
 //读取所有模版
 void GetAllTemp()

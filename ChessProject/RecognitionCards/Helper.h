@@ -19,16 +19,19 @@ public:
 	//模版图片对应lable列表
 	vector<string> Lables;
 	//扑克牌文字间隔像素
-	int aroundPix = 50;
+	int aroundPix = 30;
 	//精确度阀值
 	double minTh = 0.04;//0.025
 
-	Helper(int Pix=50, int minTh=0.04);
+	Helper(int Pix=50, double minTh=0.04);
 	~Helper();
 	LPCWSTR stringToLPCWSTR(string orig);
 	HBITMAP CopyScreenToBitmap();
 	BOOL SaveBitmapToFile(HBITMAP   hBitmap, string szfilename);
 	void GetAllTemp(string path);
 	vector<string> Recognition(Mat img, Mat src);
+	Point GetTempPoint(string imgPath, string tempPath);
+	BOOL MatToHBitmap(HBITMAP& _hBmp, Mat& _mat);
+	BOOL HBitmapToMat(HBITMAP& _hBmp, Mat& _mat);
 };
 

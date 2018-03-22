@@ -2,7 +2,7 @@
 #include "Helper.h"
 
 
-Helper::Helper(int Pix, int minThs)
+Helper::Helper(int Pix, double minThs)
 {
 	aroundPix = Pix;
 	minTh = minThs;
@@ -168,7 +168,9 @@ BOOL Helper::SaveBitmapToFile(HBITMAP hBitmap, string szfilename)
 
 	return     TRUE;
 }
-
+/*
+*获取所有模版图片
+*/
 void Helper::GetAllTemp(string path)
 {
 	intptr_t hFile = 0;
@@ -189,8 +191,12 @@ void Helper::GetAllTemp(string path)
 		} while (_findnext(hFile, &fileinfo) == 0);
 	}
 }
-
-vector<string> Helper::Recognition(Mat img, Mat src)
+/*
+*识别图片中的扑克牌
+*gary待识别的灰度图
+*src原图
+*/
+vector<string> Helper::Recognition(Mat gary, Mat src)
 {
 	vector<string> resultLable;
 	for (size_t i = 0; i < TempImgs.size(); i++)
@@ -198,12 +204,14 @@ vector<string> Helper::Recognition(Mat img, Mat src)
 		Mat result;
 		//2、读取模版图片
 		Mat temp = TempImgs[i];
+		int width = gary.cols;
+		int height = gary.rows;
 		//3、匹配结果
-		int result_cols = img.cols - temp.cols + 1;
-		int result_rows = img.rows - temp.rows + 1;
+		int result_cols = gary.cols - temp.cols + 1;
+		int result_rows = gary.rows - temp.rows + 1;
 		//4、图像匹配
 		//这里我们使用的匹配算法是标准平方差匹配 method=CV_TM_SQDIFF_NORMED，数值越小匹配度越好
-		matchTemplate(img, temp, result, CV_TM_SQDIFF_NORMED);
+		matchTemplate(gary, temp, result, CV_TM_SQDIFF_NORMED);
 		//5、标准归一化
 		//normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
 		//6、计算出匹配值
@@ -217,26 +225,96 @@ vector<string> Helper::Recognition(Mat img, Mat src)
 		//7、绘制出匹配区域
 		/*rectangle(src, minLoc, Point(minLoc.x + temp.cols, minLoc.y + temp.rows),
 		Scalar(0, 0, 0), 2, 8, 0);*/
-		double matchValue = result.at<float>(minLoc.y, minLoc.x);
+		//double matchValue = result.at<float>(minLoc.y, minLoc.x);
 		//8、判断临近坐标是否存在匹配点
-		for (int x = minLoc.x - aroundPix; x<minLoc.x + aroundPix; x++)
+		int count = 0;//同一只牌不能超过四个
+		for (int x = minLoc.x - aroundPix*3; x<minLoc.x + aroundPix*3; x++)
 		{
-			//4.2获得resultImg中(j,x)位置的匹配值matchValue  
-			double matchValue = result.at<float>(minLoc.y, x);
-			//4.3给定筛选条件  
-			//条件1:概率值大于0.9  
-			if (matchValue < minTh)
+			for (int y = minLoc.y- aroundPix*1.5; y < minLoc.y + aroundPix*1.5; y++)
 			{
-				//cout << "匹配度：" << matchValue << endl;
-				//5.给筛选出的点画出边框和文字  
-				rectangle(src, Point(x, minLoc.y), Point(x + temp.cols, minLoc.y + temp.rows),
-					Scalar(0, 255, 0), 2, 8, 0);
-				x += 10;
-				int index = Lables[0].find('.');
-				string a = Lables[0].substr(0, index);
-				resultLable.push_back(a);
+				if (x >= width, y >= height)continue;
+				if (count >= 4)break;//同一只牌不能超过四个
+				//4.2获得resultImg中(j,x)位置的匹配值matchValue  
+				double matchValue = 1;
+				try
+				{
+					matchValue = result.at<float>(y, x);
+				}
+				catch (exception e) {
+					matchValue = 1;
+					continue;
+				}
+				//4.3给定筛选条件  
+				//条件1:概率值大于0.9  
+				if (matchValue < minTh)
+				{
+					//cout << "匹配度：" << matchValue << endl;
+					//5.给筛选出的点画出边框和文字  
+					rectangle(src, Point(x, y), Point(x + temp.cols, y + temp.rows),
+						Scalar(0, 255, 0), 2, 8, 0);
+					x += 10;
+					int index = Lables[i].find('.');
+					string a = Lables[i].substr(0, index);
+					resultLable.push_back(a);
+					count++;
+				}
 			}
 		}
 	}
 	return resultLable;
+}
+/*
+*获取模版图片在图片中的坐标
+*/
+Point Helper::GetTempPoint(string imgPath,string tempPath)
+{
+	Point p(0,0);
+	Mat result;
+	Mat img= imread(imgPath, CV_LOAD_IMAGE_GRAYSCALE);
+	//2、读取模版图片
+	Mat temp = imread(tempPath, CV_LOAD_IMAGE_GRAYSCALE);
+	//3、匹配结果
+	int result_cols = img.cols - temp.cols + 1;
+	int result_rows = img.rows - temp.rows + 1;
+	//4、图像匹配
+	//这里我们使用的匹配算法是标准平方差匹配 method=CV_TM_SQDIFF_NORMED，数值越小匹配度越好
+	matchTemplate(img, temp, result, CV_TM_SQDIFF_NORMED);
+	//5、标准归一化
+	normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+	//6、计算出匹配值
+	//单目标匹配
+	double minVal = -1;
+	double maxVal;
+	Point minLoc;
+	Point maxLoc;
+	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+	if (minVal > minTh) return p;
+	//7、绘制出匹配区域
+	/*rectangle(src, minLoc, Point(minLoc.x + temp.cols, minLoc.y + temp.rows),
+	Scalar(0, 0, 0), 2, 8, 0);*/
+	return minLoc;
+}
+//_mat图像转HBITMAP
+BOOL Helper::MatToHBitmap(HBITMAP& _hBmp, Mat& _mat)
+{
+	//MAT类的TYPE=（nChannels-1+ CV_8U）<<3
+	int nChannels = (_mat.type() >> 3) - CV_8U + 1;
+	int iSize = _mat.cols*_mat.rows*nChannels;
+	_hBmp = CreateBitmap(_mat.cols, _mat.rows,
+		1, nChannels * 8, _mat.data);
+	return TRUE;
+
+}
+//HBITMAP图像转_mat
+BOOL Helper::HBitmapToMat(HBITMAP& _hBmp, Mat& _mat)
+{
+	BITMAP bmp;
+	GetObject(_hBmp, sizeof(BITMAP), &bmp);
+	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+	int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+	Mat v_mat;
+	v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
+	GetBitmapBits(_hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, v_mat.data);
+	_mat = v_mat;
+	return TRUE;
 }
