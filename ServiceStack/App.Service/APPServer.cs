@@ -29,5 +29,12 @@ namespace App.Service
             model1.state = "200";
             return model1;
         }
+        public object Post(WebRequestModel model)
+        {
+            ResponseModel model1 = new ResponseModel();
+            model1.msg = "Web" + model.ID + ":" + model.Name;
+            model1.state = "200";
+            return model1;
+        }
     }
 }
