@@ -40,4 +40,14 @@ namespace App.Model
         public int ID { get; set; }
         public string Name { get; set; }
     }
+
+    /// <summary>
+    /// 请求模型
+    /// </summary>
+    [Route("/RedisRequestModel")]
+    [Route("/RedisRequestModel/{ID}")]
+    public class RedisRequestModel
+    {
+        public int ID { get; set; }
+    }
 }

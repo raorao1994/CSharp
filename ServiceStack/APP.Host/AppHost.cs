@@ -18,7 +18,7 @@ namespace APP.Host
         public static Assembly[] assemblys = {Assembly.Load("App.Service") };
         //告诉seviceStack你的服务程序名及如何找到你的服务程序
         public AppHost() 
-        : base("Hello Web Services", typeof(App.Service.APPServer).Assembly) { }
+        : base("Hello Web Services", typeof(App.Service.RedisServer).Assembly) { }
         public override void Configure(Funq.Container container)
         {
             //注册你的服务所使用的任何依赖

@@ -14,4 +14,13 @@ namespace App.Model
         public string state { get; set; }
         public string msg { get; set; }
     }
+
+    /// <summary>
+    /// 返回数据模型
+    /// </summary>
+    public class RedisResponseModel
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
 }
