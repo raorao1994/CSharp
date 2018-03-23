@@ -68,7 +68,7 @@ int main()
 		string str = "";
 		for (size_t i = 0; i < lables.size(); i++)
 		{
-			str.append(lables[i]);
+			str.append(lables[i]).append(",");
 		}
 		cout << "ÅÆÎª:" << str << endl;
 		QueryPerformanceCounter(&stop_t);

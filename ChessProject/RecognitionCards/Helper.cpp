@@ -252,11 +252,10 @@ vector<string> Helper::Recognition(Mat gary, Mat src)
 					//5.给筛选出的点画出边框和文字  
 					rectangle(src, Point(x, y), Point(x + temp.cols, y + temp.rows),
 						Scalar(0, 255, 0), 2, 8, 0);
-					x += 10;
 					int index = Lables[i].find('.');
 					string a = Lables[i].substr(0, index);
 					resultLable.push_back(a);
-					count++;
+					count++; x += 10;
 				}
 			}
 		}
