@@ -29,4 +29,15 @@ namespace App.Model
         public int ID { get; set; }
         public string Name { get; set; }
     }
+    /// <summary>
+    /// 请求模型
+    /// </summary>
+    [Route("/OtherRequestModel")]
+    [Route("/OtherRequestModel/{ID}")]
+    [Route("/OtherRequestModel/{ID}/{Name}")]
+    public class OtherRequestModel
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
 }

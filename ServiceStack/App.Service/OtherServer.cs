@@ -1,18 +1,18 @@
-﻿using System;
+﻿using App.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using App.Model;
 
 namespace App.Service
 {
     /// <summary>
     /// 服务
     /// </summary>
-    public class APPServer: ServiceStack.Service
+    public class OtherServer : ServiceStack.Service
     {
-        public object Get(RequestModel model)
+        public object Get(OtherRequestModel model)
         {
             ResponseModel model1 = new ResponseModel();
             model1.msg = "App" + model.ID + ":" + model.Name;
@@ -20,5 +20,4 @@ namespace App.Service
             return model1;
         }
     }
-    
 }
