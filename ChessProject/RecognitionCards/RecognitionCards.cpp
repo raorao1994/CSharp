@@ -14,14 +14,18 @@
 using namespace std;
 using namespace cv;
 
+/*参数*/
 string imgPath = "../img/4.jpg";
 //string imgTempPath = "../img/template";
 string imgTempPath = "E:/SVN/CShap/trunk/ChessProject/img/template";
-double minTh = 0.04;//0.025
-int aroundPix = 50;
+double minTh = 0.06;//0.025阀值
+int aroundPix = 30;//单张像素值
 vector<Mat> TempImgs;
 vector<string> Lables;
 Mat src;
+int x = 258, y = 123;//整图距屏幕右上角距离
+int myX = 100, myY = 300, myW = 650, myH = 80;
+
 
 void GetAllTemp();
 vector<string> Recognition(Mat img, Mat src);
@@ -49,7 +53,7 @@ int main()
  //   return 0;
 
 	//1、实例化操作类
-	Helper helper = Helper(30,0.06);
+	Helper helper = Helper(aroundPix, minTh);
 	//2、加载模版文件到内存
 	helper.GetAllTemp("E:\\SVN\\CShap\\trunk\\ChessProject\\img\\template1");
 	//3、截图识别
@@ -63,7 +67,12 @@ int main()
 		helper.HBitmapToMat(bitMap, ScreenImg);
 		//屏幕Mat对象转灰度图
 		cvtColor(ScreenImg, gary, CV_BGR2GRAY);
-		vector<string> lables= helper.Recognition(gary, ScreenImg);
+
+		Rect rect = Rect(x+myX, y+myY, myW, myH);//254, 121, 856, 556
+		gary = helper.CutImg(gary, rect);
+
+		//识别图像
+		vector<string> lables= helper.Recognition(gary, gary);
 		cout << "识别出:" << lables.size() << "张牌" << endl;
 		string str = "";
 		for (size_t i = 0; i < lables.size(); i++)
@@ -71,10 +80,12 @@ int main()
 			str.append(lables[i]).append(",");
 		}
 		cout << "牌为:" << str << endl;
+
+		//计时结束
 		QueryPerformanceCounter(&stop_t);
 		exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
 		cout << "耗时" << exe_time << "毫秒" << endl;
-		imshow("ScteenImg", ScreenImg);
+		imshow("ScteenImg", gary);
 		waitKey(10);
 	}
 	waitKey(0);

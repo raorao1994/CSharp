@@ -33,5 +33,6 @@ public:
 	Point GetTempPoint(string imgPath, string tempPath);
 	BOOL MatToHBitmap(HBITMAP& _hBmp, Mat& _mat);
 	BOOL HBitmapToMat(HBITMAP& _hBmp, Mat& _mat);
+	Mat CutImg(Mat img,Rect rect);
 };
 

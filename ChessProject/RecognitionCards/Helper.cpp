@@ -232,10 +232,10 @@ vector<string> Helper::Recognition(Mat gary, Mat src)
 		{
 			for (int y = minLoc.y- aroundPix*1.5; y < minLoc.y + aroundPix*1.5; y++)
 			{
-				if (x >= width, y >= height)continue;
+				if (x >= result_cols ||y >= result_rows || x <0 || y <0)continue;
 				if (count >= 4)break;//同一只牌不能超过四个
 				//4.2获得resultImg中(j,x)位置的匹配值matchValue  
-				double matchValue = 1;
+				float matchValue = 1;
 				try
 				{
 					matchValue = result.at<float>(y, x);
@@ -316,4 +316,12 @@ BOOL Helper::HBitmapToMat(HBITMAP& _hBmp, Mat& _mat)
 	GetBitmapBits(_hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, v_mat.data);
 	_mat = v_mat;
 	return TRUE;
+}
+/*
+*裁剪图片
+*/
+Mat Helper::CutImg(Mat img, Rect rect)
+{
+	Mat _img = Mat(img, rect);
+	return _img;
 }
