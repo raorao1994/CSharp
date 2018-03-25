@@ -29,38 +29,57 @@ LPCWSTR Helper::stringToLPCWSTR(string orig)
 */
 HBITMAP Helper::CopyScreenToBitmap()
 {
-	int nWidth, nHeight;
-	//屏幕和内存设备描述表
-	HDC hScrDC, hMemDC;
-	//位图句柄
-	HBITMAP hBitmap, hOldBitmap;
-	//屏幕分辨率
-	int xScrn, yScrn;
-	//为屏幕创建设备描述表
-	hScrDC = GetDC(NULL);
-	//为屏幕设备描述表创建兼容的内存设备描述表
-	hMemDC = CreateCompatibleDC(hScrDC);
-	//获得屏幕分辨率
-	xScrn = GetDeviceCaps(hScrDC, HORZRES);
-	yScrn = GetDeviceCaps(hScrDC, VERTRES);
+	//int nWidth, nHeight;
+	////屏幕和内存设备描述表
+	//HDC hScrDC, hMemDC;
+	////位图句柄
+	//HBITMAP hBitmap , hOldBitmap;
+	////屏幕分辨率
+	//int xScrn, yScrn;
+	////为屏幕创建设备描述表
+	//hScrDC = GetDC(NULL);
+	////为屏幕设备描述表创建兼容的内存设备描述表
+	//hMemDC = CreateCompatibleDC(hScrDC);
+	////获得屏幕分辨率
+	//xScrn = GetDeviceCaps(hScrDC, HORZRES);
+	//yScrn = GetDeviceCaps(hScrDC, VERTRES);
 
-	//存储屏幕的宽度
-	nWidth = xScrn;
-	nHeight = yScrn;
+	////存储屏幕的宽度
+	//nWidth = xScrn;
+	//nHeight = yScrn;
 
-	//创建一个与屏幕设备描述表兼容的 位图
-	hBitmap = CreateCompatibleBitmap(hScrDC, xScrn, yScrn);
-	//把新位图选到内存设备描述表中
-	hOldBitmap = (HBITMAP)SelectObject(hMemDC, hBitmap);
-	//把屏幕设备描述表拷贝到内存设备描述表中
-	BitBlt(hMemDC, 0, 0, xScrn, yScrn, hScrDC, 0, 0, SRCCOPY);
+	////创建一个与屏幕设备描述表兼容的 位图
+	//hBitmap = CreateCompatibleBitmap(hScrDC, xScrn, yScrn);
+	////把新位图选到内存设备描述表中
+	//hOldBitmap = (HBITMAP)SelectObject(hMemDC, hBitmap);
+	////把屏幕设备描述表拷贝到内存设备描述表中
+	//BitBlt(hMemDC, 0, 0, xScrn, yScrn, hScrDC, 0, 0, SRCCOPY);
 	//得到屏幕位图句柄
-	hBitmap = (HBITMAP)SelectObject(hMemDC, hOldBitmap);
+	//hBitmap = (HBITMAP)SelectObject(hMemDC, hOldBitmap);
 	//清除
-	DeleteDC(hScrDC);
-	DeleteDC(hMemDC);
-
+	//DeleteDC(hScrDC);
+	//DeleteDC(hMemDC);
+	//DeleteObject(hMemDC);
+	//DeleteObject(hScrDC);
+	
+	//hOldBitmap.recycle();   // 回收bitmap的内存  
+	//hOldBitmap = NULL;
+	//DeleteObject(hOldBitmap);
 	//返回位图句柄
+
+
+	int width, height;
+	HBITMAP hBitmap;
+	HDC hdc = GetDC(NULL);
+	HDC comHDC = CreateCompatibleDC(hdc);
+	width = GetSystemMetrics(SM_CXSCREEN);
+	height = GetSystemMetrics(SM_CYSCREEN);
+	hBitmap = CreateCompatibleBitmap(hdc, width, height);
+	SelectObject(comHDC, hBitmap);
+	BitBlt(comHDC, 0, 0, width, height, hdc, 0, 0, SRCCOPY);
+	//清理内存
+	DeleteDC(hdc);
+	DeleteDC(comHDC);
 	return hBitmap;
 }
 /*
@@ -199,11 +218,12 @@ void Helper::GetAllTemp(string path)
 vector<string> Helper::Recognition(Mat gary, Mat src)
 {
 	vector<string> resultLable;
+	Mat result;
+	Mat temp;
 	for (size_t i = 0; i < TempImgs.size(); i++)
 	{
-		Mat result;
 		//2、读取模版图片
-		Mat temp = TempImgs[i];
+		temp = TempImgs[i];
 		int width = gary.cols;
 		int height = gary.rows;
 		//3、匹配结果
@@ -230,8 +250,9 @@ vector<string> Helper::Recognition(Mat gary, Mat src)
 		int count = 0;//同一只牌不能超过四个
 		for (int x = minLoc.x - aroundPix*3; x<minLoc.x + aroundPix*3; x++)
 		{
-			for (int y = minLoc.y- aroundPix*1.5; y < minLoc.y + aroundPix*1.5; y++)
-			{
+			//for (int y = minLoc.y- aroundPix*1.5; y < minLoc.y + aroundPix*1.5; y++)
+			//{
+				int y = minLoc.y;
 				if (x >= result_cols ||y >= result_rows || x <0 || y <0)continue;
 				if (count >= 4)break;//同一只牌不能超过四个
 				//4.2获得resultImg中(j,x)位置的匹配值matchValue  
@@ -257,19 +278,21 @@ vector<string> Helper::Recognition(Mat gary, Mat src)
 					resultLable.push_back(a);
 					count++; x += 10;
 				}
-			}
+			//}
 		}
 	}
+	//释放内存
+	temp.release();
+	result.release();
 	return resultLable;
 }
 /*
 *获取模版图片在图片中的坐标
 */
-Point Helper::GetTempPoint(string imgPath,string tempPath)
+Point Helper::GetTempPoint(Mat img,string tempPath)
 {
 	Point p(0,0);
 	Mat result;
-	Mat img= imread(imgPath, CV_LOAD_IMAGE_GRAYSCALE);
 	//2、读取模版图片
 	Mat temp = imread(tempPath, CV_LOAD_IMAGE_GRAYSCALE);
 	//3、匹配结果
@@ -324,4 +347,126 @@ Mat Helper::CutImg(Mat img, Rect rect)
 {
 	Mat _img = Mat(img, rect);
 	return _img;
+}
+/*
+*初始化扑克牌
+*/
+void Helper::InitCards()
+{
+	Cards.clear();
+	Cards.insert(pair<string, int>("3", 4));
+	Cards.insert(pair<string, int>("4", 4));
+	Cards.insert(pair<string, int>("5", 4));
+	Cards.insert(pair<string, int>("6", 4));
+	Cards.insert(pair<string, int>("7", 4));
+	Cards.insert(pair<string, int>("8", 4));
+	Cards.insert(pair<string, int>("9", 4));
+	Cards.insert(pair<string, int>("10", 4));
+	Cards.insert(pair<string, int>("J", 4));
+	Cards.insert(pair<string, int>("Q", 4));
+	Cards.insert(pair<string, int>("K", 4));
+	Cards.insert(pair<string, int>("A", 3));
+	Cards.insert(pair<string, int>("2", 1));
+}
+/*
+*初始化扑克牌
+*/
+void Helper::CountCards(vector<string> lables)
+{
+	for (size_t i = 0; i < lables.size(); i++)
+	{
+		int val = Cards[lables[i]];
+		Cards[lables[i]] = val - 1;
+	}
+}
+
+/*
+*根据三人矩形位置，分别统计出牌情况计算
+*img 原始灰度图
+*my 自己位置选狂
+*previous 上一家位置选框
+*next 下一家位置选框
+*/
+void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
+{
+	//获取三人位置图像
+	myImg = Mat(img, my);
+	previousImg = Mat(img, previous);
+	nextImg = Mat(img, next);
+	//获取牌
+	vector<string> myLables = Recognition(myImg, myImg);
+	vector<string> previousLables = Recognition(previousImg, previousImg);
+	vector<string> nextLables = Recognition(nextImg, nextImg);
+	//计算my的牌
+	string str = vectorToString(myLables);
+	if (myLables.size() > 0)
+	{
+		if (str == myStr&&myCount>=0) {
+			myCount++;
+			if (myCount >= lableCount)
+			{
+				CountCards(myLables);
+				myCount = -1;
+				cout << "我打出的牌：" << str << endl;
+			}
+		}
+		if (str != myStr)
+		{
+			myStr = str;
+			myCount = 0;
+		}
+	}
+	//计算上一家的牌
+	str = vectorToString(previousLables);
+	if (previousLables.size() > 0)
+	{
+		if (str == previousStr&&previousCount>=0) {
+			previousCount++;
+			if (previousCount >= lableCount)
+			{
+				CountCards(previousLables);
+				previousCount = -1;
+				cout << "上一家打出的牌：" << str << endl;
+			}
+		}
+		if (str != previousStr)
+		{
+			previousStr = str;
+			previousCount = 0;
+		}
+		
+	}
+	//计算下一家的牌
+	str = vectorToString(nextLables);
+	if (nextLables.size() > 0)
+	{
+		if (str == nextStr&&nextCount>=0) {
+			nextCount++;
+			if (nextCount >= lableCount)
+			{
+				CountCards(nextLables);
+				nextCount = -1;
+				cout << "下一家打出的牌：" << str << endl;
+			}
+		}
+		if (str != nextStr)
+		{
+			nextStr = str;
+			nextCount = 0;
+		}
+	}
+
+	imshow("my", myImg);
+	imshow("previousImg", previousImg);
+	imshow("nextImg", nextImg);
+}
+/*数组转string*/
+string Helper::vectorToString(vector<string> vec)
+{
+	string str = "";
+	for (size_t i = 0; i < vec.size(); i++)
+	{
+		str.append(vec[i]);
+	}
+	return str;
 }
