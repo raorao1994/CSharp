@@ -211,6 +211,30 @@ void Helper::GetAllTemp(string path)
 	}
 }
 /*
+*获取所有我的模版图片
+*/
+vector<Mat> Helper::GetAllMyTemp(string path)
+{
+	vector<Mat> temps;
+	intptr_t hFile = 0;
+	struct  _finddata_t  fileinfo;
+	string p;
+	long i;
+	if ((hFile = _findfirst(p.assign(path).append("\\*").c_str(), &fileinfo)) != -1)
+	{
+		do
+		{
+			if (!(fileinfo.attrib& _A_SUBDIR))
+			{
+				string tmp_path = p.assign(path).append("\\").append(fileinfo.name);
+				Mat temp = imread(tmp_path, CV_LOAD_IMAGE_GRAYSCALE);
+				temps.push_back(temp);
+			}
+		} while (_findnext(hFile, &fileinfo) == 0);
+	}
+	return temps;
+}
+/*
 *识别图片中的扑克牌
 *gary待识别的灰度图
 *src原图
@@ -286,12 +310,78 @@ vector<string> Helper::Recognition(Mat gary, Mat src)
 	result.release();
 	return resultLable;
 }
+vector<string> Helper::Recognitions(Mat gary, vector<Mat> tempImgs,double minThs)
+{
+	vector<string> resultLable;
+	Mat result;
+	Mat temp;
+	for (size_t i = 0; i < tempImgs.size(); i++)
+	{
+		//2、读取模版图片
+		temp = tempImgs[i];
+		int width = gary.cols;
+		int height = gary.rows;
+		//3、匹配结果
+		int result_cols = gary.cols - temp.cols + 1;
+		int result_rows = gary.rows - temp.rows + 1;
+		//4、图像匹配
+		//这里我们使用的匹配算法是标准平方差匹配 method=CV_TM_SQDIFF_NORMED，数值越小匹配度越好
+		matchTemplate(gary, temp, result, CV_TM_SQDIFF_NORMED);
+		//5、标准归一化
+		//normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+		//6、计算出匹配值
+		//单目标匹配
+		double minVal = -1;
+		double maxVal;
+		Point minLoc;
+		Point maxLoc;
+		minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+		if (minVal > minThs)continue;
+		//8、判断临近坐标是否存在匹配点
+		int count = 0;//同一只牌不能超过四个
+		for (int x = minLoc.x - aroundPix * 3; x<minLoc.x + aroundPix * 3; x++)
+		{
+			for (int y = minLoc.y- aroundPix; y < minLoc.y + aroundPix; y++)
+			{
+			//int y = minLoc.y;
+			if (x >= result_cols || y >= result_rows || x <0 || y <0)continue;
+			if (count >= 4)break;//同一只牌不能超过四个
+			//4.2获得resultImg中(j,x)位置的匹配值matchValue  
+			float matchValue = 1;
+			try
+			{
+				matchValue = result.at<float>(y, x);
+			}
+			catch (exception e) {
+				matchValue = 1;
+				continue;
+			}
+			//4.3给定筛选条件  
+			//条件1:概率值大于0.9  
+			if (matchValue < minTh)
+			{
+				//cout << "匹配度：" << matchValue << endl;
+				//5.给筛选出的点画出边框和文字  
+				//rectangle(src, Point(x, y), Point(x + temp.cols, y + temp.rows),
+					//Scalar(0, 255, 0), 2, 8, 0);
+				int index = Lables[i].find('.');
+				string a = Lables[i].substr(0, index);
+				resultLable.push_back(a);
+				count++; x += 10;
+			}
+			}
+		}
+	}
+	//释放内存
+	temp.release();
+	result.release();
+	return resultLable;
+}
 /*
 *获取模版图片在图片中的坐标
 */
-Point Helper::GetTempPoint(Mat img,string tempPath)
+bool Helper::HaveTemp(Mat img,string tempPath,double minThs)
 {
-	Point p(0,0);
 	Mat result;
 	//2、读取模版图片
 	Mat temp = imread(tempPath, CV_LOAD_IMAGE_GRAYSCALE);
@@ -302,7 +392,7 @@ Point Helper::GetTempPoint(Mat img,string tempPath)
 	//这里我们使用的匹配算法是标准平方差匹配 method=CV_TM_SQDIFF_NORMED，数值越小匹配度越好
 	matchTemplate(img, temp, result, CV_TM_SQDIFF_NORMED);
 	//5、标准归一化
-	normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+	//normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
 	//6、计算出匹配值
 	//单目标匹配
 	double minVal = -1;
@@ -310,11 +400,13 @@ Point Helper::GetTempPoint(Mat img,string tempPath)
 	Point minLoc;
 	Point maxLoc;
 	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
-	if (minVal > minTh) return p;
-	//7、绘制出匹配区域
-	/*rectangle(src, minLoc, Point(minLoc.x + temp.cols, minLoc.y + temp.rows),
-	Scalar(0, 0, 0), 2, 8, 0);*/
-	return minLoc;
+	if (minVal > minThs) {
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 //_mat图像转HBITMAP
 BOOL Helper::MatToHBitmap(HBITMAP& _hBmp, Mat& _mat)
@@ -354,19 +446,19 @@ Mat Helper::CutImg(Mat img, Rect rect)
 void Helper::InitCards()
 {
 	Cards.clear();
-	Cards.insert(pair<string, int>("3", 4));
-	Cards.insert(pair<string, int>("4", 4));
-	Cards.insert(pair<string, int>("5", 4));
-	Cards.insert(pair<string, int>("6", 4));
-	Cards.insert(pair<string, int>("7", 4));
-	Cards.insert(pair<string, int>("8", 4));
-	Cards.insert(pair<string, int>("9", 4));
+	Cards.insert(pair<string, int>("03", 4));
+	Cards.insert(pair<string, int>("04", 4));
+	Cards.insert(pair<string, int>("05", 4));
+	Cards.insert(pair<string, int>("06", 4));
+	Cards.insert(pair<string, int>("07", 4));
+	Cards.insert(pair<string, int>("08", 4));
+	Cards.insert(pair<string, int>("09", 4));
 	Cards.insert(pair<string, int>("10", 4));
-	Cards.insert(pair<string, int>("J", 4));
-	Cards.insert(pair<string, int>("Q", 4));
-	Cards.insert(pair<string, int>("K", 4));
-	Cards.insert(pair<string, int>("A", 3));
-	Cards.insert(pair<string, int>("2", 1));
+	Cards.insert(pair<string, int>("J1", 4));
+	Cards.insert(pair<string, int>("Q1", 4));
+	Cards.insert(pair<string, int>("K1", 4));
+	Cards.insert(pair<string, int>("A1", 3));
+	Cards.insert(pair<string, int>("02", 1));
 }
 /*
 *初始化扑克牌
@@ -405,9 +497,11 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 			myCount++;
 			if (myCount >= lableCount)
 			{
-				CountCards(myLables);
+				//CountCards(myLables);
 				myCount = -1;
-				cout << "我打出的牌：" << str << endl;
+				outputStr = "我打出的牌：" + str;
+				PlayCardsCount += myLables.size();
+				//cout << "我打出的牌：" << str << endl;
 			}
 		}
 		if (str != myStr)
@@ -426,7 +520,9 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 			{
 				CountCards(previousLables);
 				previousCount = -1;
-				cout << "上一家打出的牌：" << str << endl;
+				outputStr = "上一家打出的牌：" + str;
+				PlayCardsCount += previousLables.size();
+				//cout << "上一家打出的牌：" << str << endl;
 			}
 		}
 		if (str != previousStr)
@@ -446,7 +542,9 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 			{
 				CountCards(nextLables);
 				nextCount = -1;
-				cout << "下一家打出的牌：" << str << endl;
+				outputStr = "下一家打出的牌：" + str;
+				PlayCardsCount += nextLables.size();
+				//cout << "下一家打出的牌：" << str << endl;
 			}
 		}
 		if (str != nextStr)
@@ -456,9 +554,9 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 		}
 	}
 
-	imshow("my", myImg);
-	imshow("previousImg", previousImg);
-	imshow("nextImg", nextImg);
+	//imshow("my", myImg);
+	//imshow("previousImg", previousImg);
+	//imshow("nextImg", nextImg);
 }
 /*数组转string*/
 string Helper::vectorToString(vector<string> vec)
@@ -466,7 +564,107 @@ string Helper::vectorToString(vector<string> vec)
 	string str = "";
 	for (size_t i = 0; i < vec.size(); i++)
 	{
-		str.append(vec[i]);
+		str.append(vec[i]).append(",");
 	}
 	return str;
 }
+//int转字符串
+string Helper::int2str(const int &int_temp)
+{
+	stringstream stream;
+	stream << int_temp;
+	//string_temp = stream.str();   //此处也可以用 stream>>string_temp  
+	return  stream.str();
+}
+/*展示扑克牌信息*/
+void Helper::ShowCards()
+{
+	//先清屏
+	system("cls");
+	cout << "-----------------------牌信息---------------------" << endl;
+	string str1 = "|牌型|";
+	string str2 = "|牌数|";
+	map<string, int>::iterator it;
+	it = Cards.begin();
+
+	while (it != Cards.end())
+	{
+		str1.append(it->first).append("|");
+		str2.append(int2str(it->second)).append(" ").append("|");
+
+		//cout << it->first << "\t" << int2str(it->second) << endl;
+		it++;
+	}
+	cout << str1 << endl;
+	//cout << "--------------------------------------------------" << endl;
+	cout << str2 << endl;
+	cout << "--------------------------------------------------" << endl;
+	cout << outputStr << endl;
+}
+
+
+
+
+
+
+
+
+#pragma region 第一版
+////0、获取所有模版
+//GetAllTemp();
+////1、读取图片文件
+//QueryPerformanceCounter(&start_t);
+//Mat src = imread(imgPath);
+//Mat gray;
+//cvtColor(src, gray, CV_BGR2GRAY);
+//vector<string> str=Recognition(gray, src);
+////结束，计算用时
+//QueryPerformanceCounter(&stop_t);
+//exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
+//cout << "耗时" << exe_time << "毫秒"<<endl;
+//imshow("原图", src);
+//waitKey(0);
+//   return 0;  
+#pragma endregion
+
+
+//#pragma region 第二版
+//1、实例化操作类
+//Helper helper = Helper(aroundPix, minTh);
+////2、加载模版文件到内存
+//helper.GetAllTemp("E:\\SVN\\CShap\\trunk\\ChessProject\\img\\1024\\temp2");
+////3、截图识别
+//Mat ScreenImg,gary;
+//HBITMAP bitMap;
+//string str = "";
+//while (true)
+//{
+//	str = "";
+//	QueryPerformanceCounter(&start_t);
+//	//截取屏幕
+//	bitMap = helper.CopyScreenToBitmap();
+//	//转换成Mat对象
+//	helper.HBitmapToMat(bitMap, ScreenImg);
+//	//屏幕Mat对象转灰度图
+//	cvtColor(ScreenImg, gary, CV_BGR2GRAY);
+//	Rect rect = Rect(x+myX, y+myY, myW, myH);//254, 121, 856, 556
+//	gary = helper.CutImg(gary, rect);
+//	//识别图像
+//	vector<string> lables= helper.Recognition(gary, gary);
+//	cout << "识别出:" << lables.size() << "张牌" << endl;
+//	for (size_t i = 0; i < lables.size(); i++)
+//	{
+//		str.append(lables[i]).append(",");
+//	}
+//	cout << "牌为:" << str << endl;
+//	//计时结束
+//	QueryPerformanceCounter(&stop_t);
+//	exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
+//	cout << "耗时" << exe_time << "毫秒" << endl;
+//	imshow("ScteenImg", gary);
+//	waitKey(10);
+//	//释放内存
+//}
+//waitKey(0);
+//return 0;  
+#pragma endregion
