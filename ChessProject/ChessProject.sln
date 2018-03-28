@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScreenShot", "ScreenShot\Sc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlPhone", "ControlPhone\ControlPhone.csproj", "{0B675EAA-7BCD-4BAF-AAE0-B81E2C2A5A51}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "模版匹配", "模版匹配\模版匹配.vcxproj", "{63C2CB0E-7AF4-4607-A3A5-021ABA8A1E61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,16 @@ Global
 		{0B675EAA-7BCD-4BAF-AAE0-B81E2C2A5A51}.Release|x64.Build.0 = Release|Any CPU
 		{0B675EAA-7BCD-4BAF-AAE0-B81E2C2A5A51}.Release|x86.ActiveCfg = Release|Any CPU
 		{0B675EAA-7BCD-4BAF-AAE0-B81E2C2A5A51}.Release|x86.Build.0 = Release|Any CPU
+		{63C2CB0E-7AF4-4607-A3A5-021ABA8A1E61}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{63C2CB0E-7AF4-4607-A3A5-021ABA8A1E61}.Debug|x64.ActiveCfg = Debug|x64
+		{63C2CB0E-7AF4-4607-A3A5-021ABA8A1E61}.Debug|x64.Build.0 = Debug|x64
+		{63C2CB0E-7AF4-4607-A3A5-021ABA8A1E61}.Debug|x86.ActiveCfg = Debug|Win32
+		{63C2CB0E-7AF4-4607-A3A5-021ABA8A1E61}.Debug|x86.Build.0 = Debug|Win32
+		{63C2CB0E-7AF4-4607-A3A5-021ABA8A1E61}.Release|Any CPU.ActiveCfg = Release|Win32
+		{63C2CB0E-7AF4-4607-A3A5-021ABA8A1E61}.Release|x64.ActiveCfg = Release|x64
+		{63C2CB0E-7AF4-4607-A3A5-021ABA8A1E61}.Release|x64.Build.0 = Release|x64
+		{63C2CB0E-7AF4-4607-A3A5-021ABA8A1E61}.Release|x86.ActiveCfg = Release|Win32
+		{63C2CB0E-7AF4-4607-A3A5-021ABA8A1E61}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
