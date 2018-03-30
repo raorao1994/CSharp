@@ -9,12 +9,12 @@ using namespace cv;
 int main()
 {
 	//1、读取模版
-	Mat _temp = imread("img/07.png");
+	Mat _temp = imread("img/06.png");
 	Mat temp;
 	cvtColor(_temp, temp, CV_BGR2GRAY);
 	resize(temp, temp, Size(temp.cols *1.5, temp.rows * 1.5), 0, 0, INTER_LINEAR);
 	//2、读取查询图像
-	Mat _src = imread("2.png");
+	Mat _src = imread("5.png");
 	Mat src;
 	cvtColor(_src, src, CV_BGR2GRAY);
 	resize(src, src, Size(src.cols * 1.5, src.rows * 1.5), 0, 0, INTER_LINEAR);

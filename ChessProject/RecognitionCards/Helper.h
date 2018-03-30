@@ -24,6 +24,8 @@ public:
 	double minTh = 0.04;//0.025
 	//所有扑克牌
 	map<string, int> Cards;
+	//识别缩放比例
+	double scale = 1;
 	//输出识别的文字
 	string outputStr = "";
 	int PlayCardsCount = 0;//打出的牌的数量

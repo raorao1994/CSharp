@@ -204,6 +204,7 @@ void Helper::GetAllTemp(string path)
 			{
 				string tmp_path = p.assign(path).append("\\").append(fileinfo.name);
 				Mat temp = imread(tmp_path, CV_LOAD_IMAGE_GRAYSCALE);
+				//resize(temp, temp, Size(temp.cols * scale, temp.rows * scale), 0, 0, INTER_LINEAR);
 				TempImgs.push_back(temp);
 				Lables.push_back(fileinfo.name);
 			}
@@ -265,7 +266,7 @@ vector<string> Helper::Recognition(Mat gary, Mat src)
 		Point minLoc;
 		Point maxLoc;
 		minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
-		if (minVal > minTh)continue;
+		if (minVal > minTh*0.8)continue;
 		//7、绘制出匹配区域
 		/*rectangle(src, minLoc, Point(minLoc.x + temp.cols, minLoc.y + temp.rows),
 		Scalar(0, 0, 0), 2, 8, 0);*/
@@ -274,9 +275,9 @@ vector<string> Helper::Recognition(Mat gary, Mat src)
 		int count = 0;//同一只牌不能超过四个
 		for (int x = minLoc.x - aroundPix*3; x<minLoc.x + aroundPix*3; x++)
 		{
-			//for (int y = minLoc.y- aroundPix*1.5; y < minLoc.y + aroundPix*1.5; y++)
-			//{
-				int y = minLoc.y;
+			for (int y = minLoc.y- aroundPix*0.5; y < minLoc.y + aroundPix*0.5; y++)
+			{
+				//int y = minLoc.y;
 				if (x >= result_cols ||y >= result_rows || x <0 || y <0)continue;
 				if (count >= 4)break;//同一只牌不能超过四个
 				//4.2获得resultImg中(j,x)位置的匹配值matchValue  
@@ -302,7 +303,7 @@ vector<string> Helper::Recognition(Mat gary, Mat src)
 					resultLable.push_back(a);
 					count++; x += 10;
 				}
-			//}
+			}
 		}
 	}
 	//释放内存
@@ -485,12 +486,15 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 	myImg = Mat(img, my);
 	previousImg = Mat(img, previous);
 	nextImg = Mat(img, next);
+	//resize(myImg, myImg, Size(myImg.cols * scale, myImg.rows * scale), 0, 0, INTER_LINEAR);
+	//resize(previousImg, previousImg, Size(previousImg.cols * scale, previousImg.rows * scale), 0, 0, INTER_LINEAR);
+	//resize(nextImg, nextImg, Size(nextImg.cols * scale, nextImg.rows * scale), 0, 0, INTER_LINEAR);
 	//获取牌
 	vector<string> myLables = Recognition(myImg, myImg);
 	vector<string> previousLables = Recognition(previousImg, previousImg);
 	vector<string> nextLables = Recognition(nextImg, nextImg);
 	//计算my的牌
-	string str = vectorToString(myLables);
+	string str = vectorToString(myLables);//识别的牌
 	if (myLables.size() > 0)
 	{
 		if (str == myStr&&myCount>=0) {
@@ -501,7 +505,7 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 				myCount = -1;
 				outputStr = "我打出的牌：" + str;
 				PlayCardsCount += myLables.size();
-				//cout << "我打出的牌：" << str << endl;
+				cout << "我打出的牌：" << str << endl;
 			}
 		}
 		if (str != myStr)
@@ -522,7 +526,7 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 				previousCount = -1;
 				outputStr = "上一家打出的牌：" + str;
 				PlayCardsCount += previousLables.size();
-				//cout << "上一家打出的牌：" << str << endl;
+				cout << "上一家打出的牌：" << str << endl;
 			}
 		}
 		if (str != previousStr)
@@ -530,7 +534,6 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 			previousStr = str;
 			previousCount = 0;
 		}
-		
 	}
 	//计算下一家的牌
 	str = vectorToString(nextLables);
@@ -544,7 +547,7 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 				nextCount = -1;
 				outputStr = "下一家打出的牌：" + str;
 				PlayCardsCount += nextLables.size();
-				//cout << "下一家打出的牌：" << str << endl;
+				cout << "下一家打出的牌：" << str << endl;
 			}
 		}
 		if (str != nextStr)
@@ -554,9 +557,9 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 		}
 	}
 
-	//imshow("my", myImg);
-	//imshow("previousImg", previousImg);
-	//imshow("nextImg", nextImg);
+	imshow("my", myImg);
+	imshow("previousImg", previousImg);
+	imshow("nextImg", nextImg);
 }
 /*数组转string*/
 string Helper::vectorToString(vector<string> vec)
@@ -602,69 +605,3 @@ void Helper::ShowCards()
 	cout << outputStr << endl;
 }
 
-
-
-
-
-
-
-
-#pragma region 第一版
-////0、获取所有模版
-//GetAllTemp();
-////1、读取图片文件
-//QueryPerformanceCounter(&start_t);
-//Mat src = imread(imgPath);
-//Mat gray;
-//cvtColor(src, gray, CV_BGR2GRAY);
-//vector<string> str=Recognition(gray, src);
-////结束，计算用时
-//QueryPerformanceCounter(&stop_t);
-//exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
-//cout << "耗时" << exe_time << "毫秒"<<endl;
-//imshow("原图", src);
-//waitKey(0);
-//   return 0;  
-#pragma endregion
-
-
-//#pragma region 第二版
-//1、实例化操作类
-//Helper helper = Helper(aroundPix, minTh);
-////2、加载模版文件到内存
-//helper.GetAllTemp("E:\\SVN\\CShap\\trunk\\ChessProject\\img\\1024\\temp2");
-////3、截图识别
-//Mat ScreenImg,gary;
-//HBITMAP bitMap;
-//string str = "";
-//while (true)
-//{
-//	str = "";
-//	QueryPerformanceCounter(&start_t);
-//	//截取屏幕
-//	bitMap = helper.CopyScreenToBitmap();
-//	//转换成Mat对象
-//	helper.HBitmapToMat(bitMap, ScreenImg);
-//	//屏幕Mat对象转灰度图
-//	cvtColor(ScreenImg, gary, CV_BGR2GRAY);
-//	Rect rect = Rect(x+myX, y+myY, myW, myH);//254, 121, 856, 556
-//	gary = helper.CutImg(gary, rect);
-//	//识别图像
-//	vector<string> lables= helper.Recognition(gary, gary);
-//	cout << "识别出:" << lables.size() << "张牌" << endl;
-//	for (size_t i = 0; i < lables.size(); i++)
-//	{
-//		str.append(lables[i]).append(",");
-//	}
-//	cout << "牌为:" << str << endl;
-//	//计时结束
-//	QueryPerformanceCounter(&stop_t);
-//	exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
-//	cout << "耗时" << exe_time << "毫秒" << endl;
-//	imshow("ScteenImg", gary);
-//	waitKey(10);
-//	//释放内存
-//}
-//waitKey(0);
-//return 0;  
-#pragma endregion
