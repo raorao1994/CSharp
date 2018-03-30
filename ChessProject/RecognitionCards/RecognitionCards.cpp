@@ -48,9 +48,12 @@ int main()
 
 	//1、实例化操作类
 	Helper helper = Helper(aroundPix, minTh);
-	string temp = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\temp1";//打出牌识别模版
-	string temp2 = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\temp2";//手中牌模版
-	string temp3 = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\start.png";//手中牌模版
+	//string temp = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\temp1";//打出牌识别模版
+	//string temp2 = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\temp2";//手中牌模版
+	//string temp3 = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\start.png";//手中牌模版
+	string temp = "850\\temp1";//打出牌识别模版
+	string temp2 = "850\\temp2";//手中牌模版
+	string temp3 = "850\\start.png";//手中牌模版
 	//2、加载模版文件到内存
 	helper.GetAllTemp(temp);
 	vector<Mat> myTemp = helper.GetAllMyTemp(temp2);
@@ -80,7 +83,7 @@ int main()
 		{
 			helper.InitCards();
 			helper.outputStr = "手中的排："+helper.vectorToString(_lables);
-			helper.CountCards(_lables);
+			helper.CountCards(_lables, 0);
 		}
 		if (_lables.size() == 0)
 		{

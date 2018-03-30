@@ -460,16 +460,69 @@ void Helper::InitCards()
 	Cards.insert(pair<string, int>("K1", 4));
 	Cards.insert(pair<string, int>("A1", 3));
 	Cards.insert(pair<string, int>("02", 1));
+
+	prCards.clear();
+	prCards.insert(pair<string, int>("03", 0));
+	prCards.insert(pair<string, int>("04", 0));
+	prCards.insert(pair<string, int>("05", 0));
+	prCards.insert(pair<string, int>("06", 0));
+	prCards.insert(pair<string, int>("07", 0));
+	prCards.insert(pair<string, int>("08", 0));
+	prCards.insert(pair<string, int>("09", 0));
+	prCards.insert(pair<string, int>("10", 0));
+	prCards.insert(pair<string, int>("J1", 0));
+	prCards.insert(pair<string, int>("Q1", 0));
+	prCards.insert(pair<string, int>("K1", 0));
+	prCards.insert(pair<string, int>("A1", 0));
+	prCards.insert(pair<string, int>("02", 0));
+
+	neCards.clear();
+	neCards.insert(pair<string, int>("03", 0));
+	neCards.insert(pair<string, int>("04", 0));
+	neCards.insert(pair<string, int>("05", 0));
+	neCards.insert(pair<string, int>("06", 0));
+	neCards.insert(pair<string, int>("07", 0));
+	neCards.insert(pair<string, int>("08", 0));
+	neCards.insert(pair<string, int>("09", 0));
+	neCards.insert(pair<string, int>("10", 0));
+	neCards.insert(pair<string, int>("J1", 0));
+	neCards.insert(pair<string, int>("Q1", 0));
+	neCards.insert(pair<string, int>("K1", 0));
+	neCards.insert(pair<string, int>("A1", 0));
+	neCards.insert(pair<string, int>("02", 0));
 }
 /*
 *初始化扑克牌
+*type 0表示扣牌，1表示上家牌，2表示下家牌
 */
-void Helper::CountCards(vector<string> lables)
+void Helper::CountCards(vector<string> lables,int type)
 {
-	for (size_t i = 0; i < lables.size(); i++)
+	if (type == 0)
 	{
-		int val = Cards[lables[i]];
-		Cards[lables[i]] = val - 1;
+		for (size_t i = 0; i < lables.size(); i++)
+		{
+			int val = Cards[lables[i]];
+			Cards[lables[i]] = val - 1;
+		}
+		return;
+	}
+	if (type == 1)
+	{
+		for (size_t i = 0; i < lables.size(); i++)
+		{
+			int val = prCards[lables[i]];
+			prCards[lables[i]] = val + 1;
+		}
+		return;
+	}
+	if (type == 2)
+	{
+		for (size_t i = 0; i < lables.size(); i++)
+		{
+			int val = neCards[lables[i]];
+			neCards[lables[i]] = val + 1;
+		}
+		return;
 	}
 }
 
@@ -522,7 +575,8 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 			previousCount++;
 			if (previousCount >= lableCount)
 			{
-				CountCards(previousLables);
+				CountCards(previousLables, 0);
+				CountCards(previousLables,1);
 				previousCount = -1;
 				outputStr = "上一家打出的牌：" + str;
 				PlayCardsCount += previousLables.size();
@@ -543,7 +597,8 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 			nextCount++;
 			if (nextCount >= lableCount)
 			{
-				CountCards(nextLables);
+				CountCards(nextLables,0);
+				CountCards(nextLables,2);
 				nextCount = -1;
 				outputStr = "下一家打出的牌：" + str;
 				PlayCardsCount += nextLables.size();
@@ -557,9 +612,9 @@ void Helper::RecognitionCards(Mat img,Rect my,Rect previous,Rect next)
 		}
 	}
 
-	imshow("my", myImg);
-	imshow("previousImg", previousImg);
-	imshow("nextImg", nextImg);
+	//imshow("my", myImg);
+	//imshow("previousImg", previousImg);
+	//imshow("nextImg", nextImg);
 }
 /*数组转string*/
 string Helper::vectorToString(vector<string> vec)
@@ -584,24 +639,45 @@ void Helper::ShowCards()
 {
 	//先清屏
 	system("cls");
-	cout << "-----------------------牌信息---------------------" << endl;
+	cout << "----------------------剩余牌信息---------------------" << endl;
 	string str1 = "|牌型|";
 	string str2 = "|牌数|";
 	map<string, int>::iterator it;
 	it = Cards.begin();
-
 	while (it != Cards.end())
 	{
 		str1.append(it->first).append("|");
 		str2.append(int2str(it->second)).append(" ").append("|");
-
 		//cout << it->first << "\t" << int2str(it->second) << endl;
 		it++;
 	}
 	cout << str1 << endl;
-	//cout << "--------------------------------------------------" << endl;
 	cout << str2 << endl;
-	cout << "--------------------------------------------------" << endl;
+	cout << "----------------------上家出牌信息---------------------" << endl;
+	str1 = "|牌型|";
+	str2 = "|牌数|";
+	it = prCards.begin();
+	while (it != prCards.end())
+	{
+		str1.append(it->first).append("|");
+		str2.append(int2str(it->second)).append(" ").append("|");
+		it++;
+	}
+	cout << str1 << endl;
+	cout << str2 << endl;
+	cout << "----------------------下家出牌信息---------------------" << endl;
+	str1 = "|牌型|";
+	str2 = "|牌数|";
+	it = neCards.begin();
+	while (it != neCards.end())
+	{
+		str1.append(it->first).append("|");
+		str2.append(int2str(it->second)).append(" ").append("|");
+		it++;
+	}
+	cout << str1 << endl;
+	cout << str2 << endl;
+	cout << "------------------------信息结束---------------------" << endl;
 	cout << outputStr << endl;
 }
 

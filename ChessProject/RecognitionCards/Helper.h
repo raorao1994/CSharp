@@ -24,6 +24,10 @@ public:
 	double minTh = 0.04;//0.025
 	//所有扑克牌
 	map<string, int> Cards;
+	//上家打出牌记录
+	map<string, int> prCards;
+	//下家打出牌记录
+	map<string, int> neCards;
 	//识别缩放比例
 	double scale = 1;
 	//输出识别的文字
@@ -60,7 +64,7 @@ public:
 	/*
 	*统计牌
 	*/
-	void CountCards(vector<string> lables);
+	void CountCards(vector<string> lables, int type);
 	/*
 	*初始化扑克牌
 	*/
