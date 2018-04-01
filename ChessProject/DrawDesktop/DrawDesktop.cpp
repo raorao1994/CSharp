@@ -115,7 +115,6 @@ void DrawText1()
 {
 	// 获取一个可供画图的DC，我这里就直接用桌面算了
 	HDC hdc = GetWindowDC(GetDesktopWindow());
-
 	// 创建红色1像素宽度的实线画笔
 	HPEN hpen1 = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
 	// 将hpen1选进HDC，并保存HDC原来的画笔和画刷
@@ -123,12 +122,9 @@ void DrawText1()
 	//文字
 	//画布、距屏幕左上角xy，显示的文字，文字宽度
 	TextOutA(hdc, 700, 500, "陈兴旺", 6);
-	//TextOutW(hdc, 700, 500, stringToLPCWSTR("陈兴旺123131313123"), 5);
 	// 恢复原来的画笔和画刷
 	SelectObject(hdc, hpen_old);
 }
-
-
 
 int main()
 {

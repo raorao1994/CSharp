@@ -47,7 +47,6 @@ HBITMAP Helper::CopyScreenToBitmap()
 	////存储屏幕的宽度
 	//nWidth = xScrn;
 	//nHeight = yScrn;
-
 	////创建一个与屏幕设备描述表兼容的 位图
 	//hBitmap = CreateCompatibleBitmap(hScrDC, xScrn, yScrn);
 	////把新位图选到内存设备描述表中
@@ -633,6 +632,66 @@ string Helper::int2str(const int &int_temp)
 	stream << int_temp;
 	//string_temp = stream.str();   //此处也可以用 stream>>string_temp  
 	return  stream.str();
+}
+/*展示扑克牌信息*/
+void Helper::ShowLastCards()
+{
+	int width = GetSystemMetrics(SM_CXSCREEN);
+	int height = GetSystemMetrics(SM_CYSCREEN);
+	// 获取一个可供画图的DC，我这里就直接用桌面算了
+	HDC hdc = GetWindowDC(GetDesktopWindow());
+	// 创建红色1像素宽度的实线画笔
+	HPEN hpen1 = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+	// 将hpen1选进HDC，并保存HDC原来的画笔和画刷
+	HPEN hpen_old = (HPEN)SelectObject(hdc, hpen1);
+	//文字
+	//画布、距屏幕左上角xy，显示的文字，文字宽度
+	int x = width -320;
+	int y = 20;
+	TextOutA(hdc, x, y, "----------------------------剩余牌信息----------------------------", 64);
+	string str1 = "|牌型|";
+	string str2 = "|牌数|";
+	map<string, int>::iterator it;
+	it = Cards.begin();
+	while (it != Cards.end())
+	{
+		str1.append(it->first).append("|");
+		str2.append(int2str(it->second)).append("  ").append("|");
+		it++;
+	}
+	TextOutA(hdc, x, y+20, str1.c_str(), str1.length());
+	TextOutA(hdc, x, y+40, str2.c_str(), str2.length());
+	y = 80;
+	TextOutA(hdc, x, y, "----------------------------上家出牌信息----------------------------", 64);
+	str1 = "|牌型|";
+	str2 = "|牌数|";
+	it = prCards.begin();
+	while (it != prCards.end())
+	{
+		str1.append(it->first).append("|");
+		str2.append(int2str(it->second)).append("  ").append("|");
+		it++;
+	}
+	TextOutA(hdc, x, y + 20, str1.c_str(), str1.length());
+	TextOutA(hdc, x, y + 40, str2.c_str(), str2.length());
+	y = 140;
+	TextOutA(hdc, x, y, "----------------------------下家出牌信息----------------------------", 64);
+	str1 = "|牌型|";
+	str2 = "|牌数|";
+	it = neCards.begin();
+	while (it != neCards.end())
+	{
+		str1.append(it->first).append("|");
+		str2.append(int2str(it->second)).append("  ").append("|");
+		it++;
+	}
+	TextOutA(hdc, x, y + 20, str1.c_str(), str1.length());
+	TextOutA(hdc, x, y + 40, str2.c_str(), str2.length());
+	outputStr= outputStr + "                                   ";
+	TextOutA(hdc, x, y + 60, "当前信息：--------------------------------------------------------", 64);
+	TextOutA(hdc, x,y+80, outputStr.c_str(), outputStr.length());
+	// 恢复原来的画笔和画刷
+	SelectObject(hdc, hpen_old);
 }
 /*展示扑克牌信息*/
 void Helper::ShowCards()

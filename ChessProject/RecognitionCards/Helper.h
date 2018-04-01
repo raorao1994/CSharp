@@ -80,5 +80,7 @@ public:
 	void ShowCards();
 	//int转string
 	string int2str(const int &int_temp);
+	//显示剩余牌信息
+	void ShowLastCards();
 };
 

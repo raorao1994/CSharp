@@ -18,8 +18,8 @@ using namespace cv;
 double minTh = 0.12;//小牌阀值
 double maxTh = 0.06;//大牌阀值
 int aroundPix = 30;//单张像素值
-//int x = 0, y = 35;//整图距屏幕右上角距离
-int x = 256, y = 122;
+int x = 0, y = 35;//整图距屏幕右上角距离
+//int x = 256, y = 122;
 //1024
 //int myX = 350, myY = 278, myW = 440, myH = 60;//我的牌相对于图片位置
 //int peX = 140, peY = 188, peW = 440, peH = 60;//上家的牌相对于图片位置
@@ -48,12 +48,12 @@ int main()
 
 	//1、实例化操作类
 	Helper helper = Helper(aroundPix, minTh);
-	//string temp = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\temp1";//打出牌识别模版
-	//string temp2 = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\temp2";//手中牌模版
-	//string temp3 = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\start.png";//手中牌模版
-	string temp = "850\\temp1";//打出牌识别模版
-	string temp2 = "850\\temp2";//手中牌模版
-	string temp3 = "850\\start.png";//手中牌模版
+	string temp = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\temp1";//打出牌识别模版
+	string temp2 = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\temp2";//手中牌模版
+	string temp3 = "E:\\SVN\\CShap\\trunk\\ChessProject\\img\\850\\start.png";//手中牌模版
+	//string temp = "850\\temp1";//打出牌识别模版
+	//string temp2 = "850\\temp2";//手中牌模版
+	//string temp3 = "850\\start.png";//手中牌模版
 	//2、加载模版文件到内存
 	helper.GetAllTemp(temp);
 	vector<Mat> myTemp = helper.GetAllMyTemp(temp2);
@@ -94,7 +94,8 @@ int main()
 		haImg.release();
 		//识别打出的牌
 		helper.RecognitionCards(gary, my, percoius, next);
-		helper.ShowCards();
+		//helper.ShowCards();
+		helper.ShowLastCards();
 		//计时结束
 		QueryPerformanceCounter(&stop_t);
 		exe_time = 1e3*(stop_t.QuadPart - start_t.QuadPart) / freq.QuadPart;
