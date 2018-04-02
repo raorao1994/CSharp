@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <button id="btn">点击获取数据</button>
+</body>
+</html>
+<script src="js/jquery.js"></script>
+<script>
+    $(function () {
+        $("#btn").click(function () {
+            $.get("http://172.30.17.107:61890/My/12", function (result) {
+                //var data=JSON.parse(result);
+                alert(result);
+            });
+        });
+    });
+</script>

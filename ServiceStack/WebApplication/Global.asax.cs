@@ -12,7 +12,7 @@ namespace WebApplication
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-            new AppHost().Init();
+            //new AppHost().Init();
             //初始化其它服务主机...以实现同一asp.net程序中发布多个服务（note:个人见解）
         }
     }

@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta charset="utf-8"/>  
+    <meta content="" name="description">  
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">  
+    <meta name="renderer" content="webkit">  
+    <title>地图打印DPI测试</title>  
+    <link rel="stylesheet" href="http://172.30.17.212/arcgis_js_api/library/3.14/3.14/esri/css/esri.css" />  
+    <style>  
+        html,body{  
+            margin: 0;  
+            width: 100%;  
+            height: 100%;;  
+        }  
+        #map{  
+            width: 100%;  
+            height: 100%;;  
+        }  
+        #PrinterDiv{  
+            position: absolute;  
+            top: 0px;  
+            right: 0px;;  
+            width: 120px;  
+            height: 100px;  
+            background-color: #fff;  
+            border: 1px solid #ddd;  
+            text-align: center;  
+            line-height: 30px;  
+            padding: 10px;;  
+        }  
+    </style>  
+</head>  
+  
+<body>  
+<div id="map"></div>  
+  
+<div id="PrinterDiv">  
+    <span style="width: 100%;font-weight: bold;text-align: left">设置打印DPI：</span>  
+    <input id="dpi" style="width: 100%" value="96">  
+    <button id="print">打印</button>  
+</div>  
+</body>  
+<script type="text/javascript" src="http://172.30.17.212/arcgis_js_api/library/3.14/3.14/init.js"></script>
+<script type="text/javascript">  
+    require([  
+               "esri/map",  
+                "esri/dijit/Print",  
+                "esri/tasks/PrintTask",  
+                "esri/tasks/PrintParameters",  
+                "esri/tasks/PrintTemplate",  
+                "esri/layers/FeatureLayer",
+                "esri/layers/ArcGISDynamicMapServiceLayer",
+                "esri/tasks/Geoprocessor",  
+                "esri/SpatialReference",
+                "esri/symbols/TextSymbol",  
+                "esri/symbols/Font",  
+                "esri/graphic",  
+                "esri/geometry/Point",  
+                "esri/symbols/SimpleMarkerSymbol",  
+                "esri/symbols/SimpleLineSymbol",  
+                "esri/Color",  
+                "dojo/domReady!" 
+            ],  
+            function(  
+                   Map,  
+                   Print,  
+                    PrintTask,  
+                    PrintParameters,  
+                    PrintTemplate,   
+                    FeatureLayer,
+                    ArcGISDynamicMapServiceLayer,
+                    Geoprocessor,
+
+                    TextSymbol,  
+                    Font,  
+                    Graphic,  
+                    Point,  
+                    SimpleMarkerSymbol,  
+                    SimpleLineSymbol,  
+                    Color 
+            ){  
+                var map = new Map("map", {
+				    center: [887187.158, 2569729.89],
+				    zoom: 15,
+				    spatialReference: esri.SpatialReference({ "wkid": 2431 })
+				});
+                //var layerurl="http://172.30.17.212/ArcGIS/rest/services/DONGYING/DYDX/MapServer";
+                var layerurl = "map.ashx";
+                var l = new esri.layers.ArcGISDynamicMapServiceLayer(layerurl, { id: "img" });
+                map.addLayer(l);
+            });  
+</script>  
+</html>  
