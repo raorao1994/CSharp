@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Web;
 using System.Net;
 using System.IO;
+using System.Configuration;
 
 namespace APP
 {
@@ -59,8 +60,7 @@ namespace APP
         private void button2_Click(object sender, EventArgs e)
         {
             string result = textBox2.Text;
-            string key = "1234567891234567891234567891234567893213465789";
-            ///key = "123";
+            string key = ConfigurationManager.AppSettings["SecretKey"];
             string ss = Encryption.EncryptByDES(result, key);
             string mw = Encryption.DecryptByDES(ss, key);
             textBox2.Text = mw;
