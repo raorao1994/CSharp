@@ -65,7 +65,6 @@ namespace RaoRao.Socket.WebSocket
             }
             catch (Exception e)
             {
-                throw e;
                 Console.WriteLine("创建失败");
                 return false;
             }
@@ -106,7 +105,7 @@ namespace RaoRao.Socket.WebSocket
             }
             catch (Exception e)
             {
-                throw e;
+                //throw e;
             }
         }
         /// <summary>
