@@ -65,6 +65,7 @@ namespace RaoRao.Socket.TCPHelper
             }
             catch (Exception e)
             {
+                throw e;
                 return false;
             }
         }

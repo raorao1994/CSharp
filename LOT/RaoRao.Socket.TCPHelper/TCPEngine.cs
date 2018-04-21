@@ -66,6 +66,7 @@ namespace RaoRao.Socket.TCPHelper
             catch (Exception e)
             {
                 Console.WriteLine("创建失败");
+                throw e;
                 return false;
             }
         }
@@ -83,6 +84,7 @@ namespace RaoRao.Socket.TCPHelper
             catch (Exception e)
             {
                 Console.WriteLine("创建失败");
+                throw e;
                 return null;
             }
         }
@@ -113,6 +115,9 @@ namespace RaoRao.Socket.TCPHelper
                         ClientPool.Remove(session.IP);
                     }
                     ClientPool.Add(session.IP, session);
+                    IPEndPoint clientip = SockeClient.RemoteEndPoint as IPEndPoint;
+                    ClientConnected(clientip);
+                    Console.WriteLine("客户端:" + clientip + "上线");
                 }
                 //准备接受下一个客户端
                 server.BeginAccept(new AsyncCallback(accept), server);
@@ -179,6 +184,7 @@ namespace RaoRao.Socket.TCPHelper
             }
             catch (Exception e)
             {
+                throw e;
                 return false;
             }
         }
@@ -206,6 +212,7 @@ namespace RaoRao.Socket.TCPHelper
             }
             catch (Exception e)
             {
+                throw e;
                 return false;
             }
         }
@@ -233,6 +240,7 @@ namespace RaoRao.Socket.TCPHelper
             }
             catch (Exception e)
             {
+                throw e;
                 return false;
             }
         }
