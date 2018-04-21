@@ -59,6 +59,7 @@ namespace RaoRao.Socket.UDPHelper
             catch (Exception e)
             {
                 Console.WriteLine("创建失败");
+                throw e;
                 return false;
             }
         }
@@ -82,6 +83,7 @@ namespace RaoRao.Socket.UDPHelper
             }
             catch (Exception e)
             {
+                throw e;
                 return;
             }
         }
@@ -107,6 +109,7 @@ namespace RaoRao.Socket.UDPHelper
             }
             catch (Exception e)
             {
+                throw e;
                 return false;
             }
         }

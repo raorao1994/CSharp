@@ -65,6 +65,7 @@ namespace RaoRao.Socket.WebSocket
             }
             catch (Exception e)
             {
+                throw e;
                 Console.WriteLine("创建失败");
                 return false;
             }
@@ -96,6 +97,8 @@ namespace RaoRao.Socket.WebSocket
                         ClientPool.Remove(session.IP);
                     }
                     ClientPool.Add(session.IP, session);
+                    IPEndPoint ipaddress = SockeClient.RemoteEndPoint as IPEndPoint;
+                    ClientConnected(ipaddress);
                 }
                 //准备接受下一个客户端
                 server.BeginAccept(new AsyncCallback(accept), server);
@@ -176,6 +179,7 @@ namespace RaoRao.Socket.WebSocket
             }
             catch (Exception e)
             {
+                throw e;
                 return false;
             }
         }
@@ -203,6 +207,7 @@ namespace RaoRao.Socket.WebSocket
             }
             catch (Exception e)
             {
+                throw e;
                 return false;
             }
         }
