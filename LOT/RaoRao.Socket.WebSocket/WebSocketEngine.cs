@@ -98,7 +98,7 @@ namespace RaoRao.Socket.WebSocket
                     }
                     ClientPool.Add(session.IP, session);
                     IPEndPoint ipaddress = SockeClient.RemoteEndPoint as IPEndPoint;
-                    ClientConnected(ipaddress);
+                    try { ClientConnected(ipaddress); } catch (Exception e) { }
                     Console.WriteLine("客户端:"+ ipaddress+"上线");
                 }
                 //准备接受下一个客户端

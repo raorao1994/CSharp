@@ -116,7 +116,7 @@ namespace RaoRao.Socket.TCPHelper
                     }
                     ClientPool.Add(session.IP, session);
                     IPEndPoint clientip = SockeClient.RemoteEndPoint as IPEndPoint;
-                    ClientConnected(clientip);
+                    try { ClientConnected(clientip); } catch (Exception e) { }
                     Console.WriteLine("客户端:" + clientip + "上线");
                 }
                 //准备接受下一个客户端

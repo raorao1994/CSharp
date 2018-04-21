@@ -17,7 +17,8 @@ namespace LotTcpServer
         static void Main(string[] args)
         {
             //CreateWebSocketServer();
-            CreateTCPClient();
+            //CreateTCPClient();
+            CreateTCPServer();
             Console.Read();
         }
         static void CreateTCPClient()
