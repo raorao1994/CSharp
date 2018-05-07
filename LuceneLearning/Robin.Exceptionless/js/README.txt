@@ -1,6 +1,6 @@
 ﻿1、Robin.Log.ExceptionLess.js需要引用exceptionless.js和exceptionless.config.js动态库
 2、exceptionless.js和exceptionless.config.js动态库需要在Robin.Log.ExceptionLess前引用
-3、需要在配置文件中设置相应节点，具体配置如下
+3、需要在exceptionless.config.js配置文件中设置相应节点，具体配置如下
 var exceptionless_config = {
     //Exceptionless网站地址
     EL_ServerUrl: "http://172.30.80.25:9001",

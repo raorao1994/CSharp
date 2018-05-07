@@ -58,7 +58,6 @@
     <Content Include="js\exceptionless.min.js" />
     <Content Include="js\jquery.js" />
     <Content Include="js\README.txt" />
-    <Content Include="js\Robin.Log.ExceptionLess - 复制.js" />
     <Content Include="js\Robin.Log.ExceptionLess.js" />
     <Content Include="README.txt" />
   </ItemGroup>
