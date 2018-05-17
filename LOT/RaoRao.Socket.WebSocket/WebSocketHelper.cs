@@ -156,7 +156,7 @@ namespace RaoRao.Socket.WebSocket
          * Sec-WebSocket-Key: vDyPp55hT1PphRU5OAe2Wg==
          * Connection: Upgrade
          * Upgrade: Websocket
-         *Sec-WebSocket-Version: 13
+         * Sec-WebSocket-Version: 13
          * User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko
          * Host: localhost:8064
          * DNT: 1
@@ -171,7 +171,8 @@ namespace RaoRao.Socket.WebSocket
          * Sec-WebSocket-Accept: xsOSgr30aKL2GNZKNHKmeT1qYjA=
          * 
          * 在请求中的“Sec-WebSocket-Key”是随机的，服务器端会用这些数据来构造出一个SHA-1的信息摘要。把“Sec-WebSocket-Key”加上一个魔幻字符串
-         * “258EAFA5-E914-47DA-95CA-C5AB0DC85B11”。使用 SHA-1 <a class="keylink" href="http://www.2cto.com/article/jiami/" target="_blank">加密</a>，之后进行 BASE-64编码，将结果做为 “Sec-WebSocket-Accept” 头的值，返回给客户端
+         * “258EAFA5-E914-47DA-95CA-C5AB0DC85B11”。使用 SHA-1 <a class="keylink" href="http://www.2cto.com/article/jiami/" target="_blank">
+         * 加密</a>，之后进行 BASE-64编码，将结果做为 “Sec-WebSocket-Accept” 头的值，返回给客户端
          */
         #endregion
 
